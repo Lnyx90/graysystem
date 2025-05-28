@@ -8,8 +8,9 @@ import GameSideBar from '../components/GameSideBar';
 import useGameTime from '../hooks/GameTime';
 import Status from '../hooks/GameStats';
 import { getActionData, goBackToMainMap } from '../hooks/GameMapLocation';
-
+import '../components/GameInventory';
 import '../styles/Game.css';
+import GameInventory from '../components/GameInventory';
 
 function Game() {
 	//Player
@@ -32,6 +33,12 @@ function Game() {
 		clearInterval(moveIntervalRef.current);
 		moveIntervalRef.current = null;
 	}
+
+	const inventoryItems = [
+    { id: 1, name: 'Item 1', icon: '1' }, 
+    { id: 2, name: 'Item 2', icon: '2' },
+    { id: 3, name: 'Item 3', icon: '3' },
+  ];
 
 	//Date
 	const { gameTime, formattedDate, formattedTime, greeting } = useGameTime(10);
@@ -465,7 +472,48 @@ function Game() {
 			} else {
 				setActions([]);
 			}
-		} else if (currentMap === 'temple') {
+		} 
+		 else if (currentMap === 'mountain') {
+			if (
+			Math.sqrt((playerPosition.x - 2460) ** 2 + (playerPosition.y - 80) ** 2) < 80
+			) {
+			setActions([
+				'Enjoy the View',
+				'Capture the Moment',
+				'Rest & Eat Snacks',
+				'Hiking Journaling'
+			]);
+			setLocationText('You are at the Mountain Peak');
+			}
+
+			else if (
+			Math.sqrt((playerPosition.x - 2460) ** 2 + (playerPosition.y - 1800) ** 2) < 120
+			) {
+			setActions([
+				'Hiking',
+				'Observe Nature',
+				'Collect Firewood',
+				'Gather Spring Water'
+			]);
+			setLocationText('You are on the Mountain Slope');
+			}
+
+			else if (
+			Math.sqrt((playerPosition.x - 3860) ** 2 + (playerPosition.y - 2480) ** 2) < 120
+			) {
+			setActions([
+				'Set Up Tent',
+				'Cook Food',
+				'Build a Campfire',
+				'Talk to Fellow Campers'
+			]);
+			setLocationText('You are at the Campground');
+			}
+			else {
+			setActions([]);
+			}
+		} 
+		else if (currentMap === 'temple') {
 			if (
 				playerPosition.x >= 1740 &&
 				playerPosition.x <= 2180 &&
@@ -628,7 +676,7 @@ function Game() {
 					<div className='w-full h-full rounded-lg relative overflow-hidden'>
 						<div
 							id='map'
-							className='absolute scale-y-50 scale-x-50 md:scale-y-75 md:scale-x-75'
+							className='z-5 absolute scale-y-50 scale-x-50 md:scale-y-75 md:scale-x-75'
 							style={{
 								width: `${mapWidth}px`,
 								height: `${mapHeight}px`,
@@ -672,6 +720,7 @@ function Game() {
 					setLocationText={setLocationText}
 				/>
 			</div>
+			<GameInventory />
 		</div>
 	);
 }
