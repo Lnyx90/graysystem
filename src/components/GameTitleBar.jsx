@@ -12,12 +12,12 @@ function GameTitleBar({ formattedDate }) {
 				id='titleBar'
 				className='w-9/10 h-2/18 mx-auto p-3 text-white text-center rounded-lg flex flex-col md:flex-row md:flex-col justify-between items-center'
 			>
-				<span className='text-[10px] md:text-sm lg:text-base'>
+				<span className='text-[9px] md:text-sm lg:text-base'>
 					Archipelago Adventure
 				</span>
 				<button
 					onClick={() => setShowCard(true)}
-					className='md:mx-10 text-[10px] md:text-sm lg:text-base'
+					className='md:mx-10 text-[9px] md:text-sm lg:text-base'
 				>
 					Level <span>1</span>
 				</button>
@@ -26,7 +26,7 @@ function GameTitleBar({ formattedDate }) {
 						src='/images/symbol/calendar.png'
 						className='w-5 md:w-10 lg:w-20'
 					/>
-					<span className='text-[10px] md:text-sm lg:text-base'>
+					<span className='text-[9px] md:text-sm lg:text-base'>
 						{formattedDate}
 					</span>
 				</div>

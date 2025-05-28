@@ -22,46 +22,57 @@ function GameSideBar(props) {
 
 	return (
 		<div className='md:row-span-4 p-1 text-center rounded-lg bg-white'>
-			<div className='flex flex-col flex-wrap gap-y-2'>
-				<div className='text-[10px] md:text-sm lg:text-base'>
-					{currentMap === 'default' ? "You're Lost!" : locationText}
-				</div>
-
-				<div className='gap-1 flex items-center justify-center'>
-					<img
-						src='/images/symbol/time.png'
-						className='w-6 md:w-8'
-						alt='Time Icon'
-					/>
-					<span className='text-[10px]'>{formattedTime}</span>
-				</div>
-
-				<span className='text-[10px] md:text-sm lg:text-base'>{greeting}</span>
-
-				{actionData.length === 0 ? (
-					<div className='text-gray-600 text-[10px] md:text-sm lg:text-base'>
-						No actions available here
+			<div className='grid grid-cols-2 gap-4 md:space-y-0 md:flex md:flex-col flex-wrap md:gap-y-2'>
+				<div className='flex flex-col gap-1 md:gap-2 lg:gap-3'>
+					<div className='text-[6px] md:text-sm lg:text-base'>
+						{currentMap === 'default' ? "You're Lost!" : locationText}
 					</div>
-				) : (
-					actionData.map(function (action) {
-						return (
-							<button key={action.key} className='w-3/4 p-2 mx-auto text-white text-[10px] md:text-sm lg:text-base rounded-lg bg-blue-500 hover:bg-blue-700'>
-								{action.label}
+
+					<div className='flex items-center justify-center'>
+						<img
+							src='/images/symbol/time.png'
+							className='w-6 md:w-8'
+							alt='Time Icon'
+						/>
+						<span className='text-[6px] md:text-[10px] lg:text-[15px]'>
+							{formattedTime}
+						</span>
+					</div>
+
+					<span className='text-[6px] md:text-sm lg:text-base'>{greeting}</span>
+
+					{currentMap !== 'default' && (
+						<div>
+							<button
+								onClick={handleBackToMainMap}
+								className='h-fit w-fit p-2 text-white text-[7px] md:text-sm lg:text-base rounded-lg bg-red-500 hover:bg-red-700'
+							>
+								Back
 							</button>
-						);
-					})
-				)}
+						</div>
+					)}
+				</div>
 
-				{currentMap !== 'default' && (
-					<div>
-						<button
-							onClick={handleBackToMainMap}
-							className='w-3/4 p-2 text-white text-[10px] md:text-sm lg:text-base rounded-lg bg-red-500 hover:bg-red-700'
-						>
-							Back to Main Map
-						</button>
-					</div>
-				)}
+				<div className='flex flex-col gap-2'>
+					{actionData.length === 0 ? (
+						<div className='text-gray-600 text-[6px] md:text-sm lg:text-base'>
+							No actions available here
+						</div>
+					) : (
+						actionData.map(function (action) {
+							return (
+								<div className='flex justify-between items-center'>
+									<button
+										key={action.key}
+										className='h-fit w-9/10 p-1 mx-auto text-white text-[7px] md:text-xs lg:text-base rounded-lg bg-blue-500 hover:bg-blue-700'
+									>
+										{action.label}
+									</button>
+								</div>
+							);
+						})
+					)}
+				</div>
 			</div>
 		</div>
 	);

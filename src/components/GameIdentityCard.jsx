@@ -9,21 +9,21 @@ function IdentityCard({ onClose, characterImage, userName }) {
 			<div
 				onClick={() => setFlipped(!flipped)}
 				style={{ perspective: '1000px' }}
-				className='w-4/10'
+				className='w-4/5 md:w-3/4 lg:w-1/2'
 			>
 				<div
 					style={{
 						transformStyle: 'preserve-3d',
 						transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
 					}}
-					className='w-full h-full p-2 rounded-lg text-[10px] md:text-sm lg:text-base bg-white transition-transform duration-500'
+					className='w-full h-full p-2 rounded-lg text-[10px] md:text-sm lg:text-base border-2 bg-white transition-transform duration-500'
 				>
 					<div
 						className='flex flex-col fixed inset-0'
 						style={{ backfaceVisibility: 'hidden' }}
 					>
 						{!flipped && (
-							<div className='flex justify-end'>
+							<div className='flex justify-end p-2'>
 								<button
 									onClick={(e) => {
 										e.stopPropagation();
@@ -43,7 +43,7 @@ function IdentityCard({ onClose, characterImage, userName }) {
 							<div className='flex items-center justify-center'>
 								<img
 									src={selectedCharacterImage}
-									className='w-1/10 md:w-2/10 lg:w-3/10 p-0.5 md:p-1 lg:p-2'
+									className='w-3/10 p-0.5 md:p-1 lg:p-2'
 								/>
 							</div>
 							<div className='flex flex-col items-start justify-center'>
