@@ -87,7 +87,7 @@ function Game() {
 	const mapImages = {
 		default: '/images/background/GameDefaultMap.png',
 		lake: '/images/background/GameLakeMap.jpg',
-		beach: '/images/background/GameBeachMap.gif',
+		beach: '/images/background/GameBeach.gif',
 		mountain: '/images/background/GameMountainMap.jpeg',
 		temple: '/images/background/GameTempleMap.jpg',
 	};
@@ -449,11 +449,11 @@ function Game() {
 				playerPosition.x <= 2700 &&
 				playerPosition.y === 540
 			) {
-				setActions(["Enter Bites and Ticket's Shop"]);
-				setLocationText("Welcome to Bites and Ticket's Shop");
+				setActions(["Eat Snacks","Drink Coffee","Write Travel Journal"]);
+				setLocationText("Welcome to Bites Shop");
 			} else if (playerPosition.x === 3260 && playerPosition.y === 1530) {
-				setActions(['Enter Dockside Shop']);
-				setLocationText('You are near a shop');
+				setActions(['Rent a Boat', 'Rent speedboat']);
+				setLocationText('Welcome to Dockside shop');
 			} else if (
 				playerPosition.x >= 2700 &&
 				playerPosition.x <= 2860 &&
@@ -495,9 +495,44 @@ function Game() {
 					'Fly a Lanttern',
 					'Attend a Ceremony',
 				]);
+			}else{
+				setActions([]);
 			}
-		}
-	}, [playerPosition, currentMap]);
+		}else if (currentMap === 'beach') {
+			if (
+				playerPosition.x >= 1299 &&
+				playerPosition.x <= 1380 &&
+				playerPosition.y === 1100
+			) {
+				setActions([
+					'Eat Seafood',
+					'Drink Tropical Juice',
+					'Chit Chat',
+				]);
+				setLocationText(['You are near a Seaside Restaurant']);
+			} else if (
+				playerPosition.x >= 2619 &&
+				playerPosition.x <= 4659 &&
+				playerPosition.y === 1540
+			) {
+				setActions(['Take Picture','Learn Coral Ecosystem','Observe Small Marine Life']);
+				setLocationText(['You are at the Beach']);
+			} else if (
+				playerPosition.x >= 4059 &&
+				playerPosition.x <= 4139 &&
+				playerPosition.y <= 2020 &&
+				playerPosition.y >= 1860
+			) {
+				setActions([
+					'Tanning',
+					'Build Sandcastles',
+					'Seashell Hunt',
+					'Sightseeing',
+				]);
+			}else{
+				setActions([]);
+			}
+		}}, [playerPosition, currentMap]);
 
 	//Collision
 
