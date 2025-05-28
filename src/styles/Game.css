@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import 'tailwindcss';
+
+body {
+	font-family: 'Press Start 2P', cursive;
+}
+
+#titleBar {
+    @apply bg-blue-900
+}
+
+#map {
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+#bodyBackground{
+    background-image: url('/images/background/GameBackground.gif');
+}

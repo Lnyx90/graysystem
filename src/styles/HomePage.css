@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import 'tailwindcss';
+
+body {
+	font-family: 'Press Start 2P', cursive;
+}
+
+.home-page-container {
+	background-image: url('/images/background/HomePageBackground.gif');
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	transition: background 0.5 ease-in-out;
+}
+
+.text-glow {
+	text-shadow: 0 0 5px #34d399, 0 0 10px #34d399, 0 0 20px #34d399,
+		0 0 30px #10b981;
+}
+
+@keyframes glowPulse {
+	0%,
+	100% {
+		text-shadow: 0 0 5px #34d399, 0 0 10px #34d399, 0 0 20px #34d399,
+			0 0 30px #10b981;
+	}
+	50% {
+		text-shadow: none;
+	}
+}
+
+.glow-text {
+	animation: glow 1.5s infinite;
+}
+
+.text-glow-pulse-home {
+	color: black;
+	animation: glowPulse 2s infinite ease-in-out;
+}
+
+@keyframes floatUpDown {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-8px);
+	}
+}
+
+.button-float {
+	animation: floatUpDown 3s ease-in-out infinite;
+}

@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import 'tailwindcss';
+
+body {
+	font-family: 'Press Start 2P', cursive;
+}
+
+.character-float {
+	animation: floatUpDown 3s ease-in-out infinite;
+}
+
+@keyframes pulsePickChar {
+	0%, 100% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.05);
+	}
+}
+
+.text-pulse-pickchar {
+  animation: pulsePickChar 1.5s infinite ease-in-out;
+  color: white;
+}
