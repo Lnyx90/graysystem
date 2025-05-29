@@ -72,60 +72,60 @@ function Game() {
 	};
 
 	const timedActions = {
-	'Enjoy the View': {duration: 4000,effects: { happiness: +15, energy: -5 },},
-	'Capture the Moment': { duration: 4000, effects: { happiness: +15, energy: -5 } },
-	'Take a Picture': { duration: 4000, effects: { happiness: +15, energy: -5 } },
-	'Sightseeing': { duration: 4000, effects: { happiness: +15, energy: -5 } },
-	'Observing Borobudur': { duration: 4000, effects: { happiness: +15, energy: -5 } },
-	'Fly a Lantern': { duration: 4000, effects: { happiness: +15, energy: -5 } },
-	'Attend a Ceremony': { duration: 4000, effects: { happiness: +15, energy: -5 } },
+  'Enjoy the View': { duration: 2000, effects: { happiness: +15, energy: -5 } },
+  'Capture the Moment': { duration: 2000, effects: { happiness: +15, energy: -5 } },
+  'Take a Picture': { duration: 2000, effects: { happiness: +15, energy: -5 } },
+  'Sightseeing': { duration: 2000, effects: { happiness: +15, energy: -5 } },
+  'Observing Borobudur': { duration: 2000, effects: { happiness: +15, energy: -5 } },
+  'Fly a Lantern': { duration: 2000, effects: { happiness: +15, energy: -5 } },
+  'Attend a Ceremony': { duration: 2000, effects: { happiness: +15, energy: -5 } },
 
-	'Rest & Eat Snacks': { duration: 4000, effects: { hunger: +20, energy: +10, hygiene: -2 } },
-	'Eat Snacks': { duration: 4000, effects: { hunger: +20, energy: +10, hygiene: -2 } },
-	'Eat Seafood': { duration: 5000, effects: { hunger: +25, energy: +15, happiness: +5 } },
-	'Buy Fishing Rod': { duration: 3000, effects: { happiness: +10,  } },
-	'Become Cashier': { duration: 3000, effects: { happiness: +10, energy: -3 } },
+  'Rest & Eat Snacks': { duration: 2000, effects: { hunger: +20, energy: +10, hygiene: -2 } },
+  'Eat Snacks': { duration: 2000, effects: { hunger: +20, energy: +10, hygiene: -2 } },
+  'Eat Seafood': { duration: 3000, effects: { hunger: +25, energy: +15, happiness: +5 } },
 
-	'Write Travel Journal': { duration: 4000, effects: { happiness: +10 } },
-	'Hiking Journaling': { duration: 4000, effects: { happiness: +10 } },
+  'Buy Fishing Rod': { duration: 1000, effects: { happiness: +10 }, cost: 150 },
+  'Become Cashier': { duration: 2000, effects: { happiness: +10, energy: -3 }, earnings: 1000 },
 
-	'Buy Bucket': { duration: 3000, effects: { happiness: +10, energy: -3 } },
-	'Buy Bait': { duration: 3000, effects: { happiness: +10, energy: -3 } },
-	'Buy Sandcastle Bucket': { duration: 3000, effects: { happiness: +10, energy: -3 } },
-	'Buy Sandals': { duration: 3000, effects: { happiness: +10, energy: -3 } },
-	'Talk to Fellow Campers': { duration: 3000, effects: { happiness: +15, energy: -3 } },
+  'Write Travel Journal': { duration: 2000, effects: { happiness: +10 } },
+  'Hiking Journaling': { duration: 2000, effects: { happiness: +10 } },
 
-	'Buy Souvenir': { duration: 3000, effects: { happiness: +10, energy: -2 } },
-	'Buy Magnifying Glass': { duration: 3000, effects: { happiness: +15, energy: -5 } },
-	'Buy Journal': { duration: 3000, effects: { happiness: +15, energy: -5 } },
-	'Buy Drink': { duration: 3000, effects: { happiness: +10, energy: -5 } },
-	'Buy Binoculars': { duration: 3000, effects: { happiness: +15, energy: -5 } },
+  'Buy Bucket': { duration: 1000, effects: { happiness: +10, energy: -3 }, cost: 100 },
+  'Buy Bait': { duration: 1000, effects: { happiness: +10, energy: -3 }, cost: 50 },
+  'Buy Sandcastle Bucket': { duration: 1000, effects: { happiness: +10, energy: -3 }, cost: 120 },
+  'Buy Sandals': { duration: 1000, effects: { happiness: +10, energy: -3 }, cost: 200 },
+  'Talk to Fellow Campers': { duration: 2000, effects: { happiness: +15, energy: -3 } },
 
-	'Hiking': { duration: 5000, effects: { energy: -20, happiness: +15, hunger: -10 } },
-	'Fishing': { duration: 5000, effects: { hunger: -15, happiness: +10, energy: -10 } },
-	'Rent a Boat': { duration: 5000, effects: { happiness: +20, energy: -10 } },
-	'Become a Tour Guide': { duration: 5000, effects: { happiness: +25, energy: -15 } },
-	
-	'Collect Firewood': { duration: 3000, effects: { energy: -15 } },
-	'Build Campfire': { duration: 3000, effects: { energy: -15, happiness: +10 } },
-	'Build a Campfire': { duration: 3000, effects: { energy: -15, happiness: +10 } },
-	'Set Up Tent': { duration: 3000, effects: { energy: -10, hygiene: -3 } },
+  'Buy Souvenir': { duration: 1000, effects: { happiness: +10, energy: -2 }, cost: 80 },
+  'Buy Magnifying Glass': { duration: 1000, effects: { happiness: +15, energy: -5 }, cost: 250 },
+  'Buy Journal': { duration: 1000, effects: { happiness: +15, energy: -5 }, cost: 180 },
+  'Buy Drink': { duration: 1000, effects: { happiness: +10, energy: -5 }, cost: 50 },
+  'Buy Binoculars': { duration: 1000, effects: { happiness: +15, energy: -5 }, cost: 350 },
 
-	'Cook Food': { duration: 5000, effects: { hunger: +30, energy: -5 } },
-	'Observe Nature': { duration: 4000, effects: { happiness: +20, energy: -5, hygiene: +5 } },
-	'Learn Coral Ecosystem': { duration: 4000, effects: { happiness: +20, energy: -5, hygiene: +5 } },
-	'Observe Small Marine Life': { duration: 4000, effects: { happiness: +20, energy: -5, hygiene: +5 } },
+  'Hiking': { duration: 3000, effects: { energy: -20, happiness: +15, hunger: -10 } },
+  'Fishing': { duration: 3000, effects: { hunger: -15, happiness: +10, energy: -10 } },
+  'Rent a Boat': { duration: 3000, effects: { happiness: +20, energy: -10 } },
+  'Become a Tour Guide': { duration: 3000, effects: { happiness: +25, energy: -15 }, earnings: 5000 },
 
-	'Gather Spring Water': { duration: 3000, effects: { hygiene: +15, energy: -3 } },
-	'Tanning': { duration: 3000, effects: { happiness: +10, hygiene: -5 } },
-	'Build Sandcastles': { duration: 3000, effects: { happiness: +12, energy: -5 } },
-	'Seashell Hunt': { duration: 3000, effects: { happiness: +15, energy: -7 } },
-	'Visit Museum': { duration: 3000, effects: { happiness: +8, energy: -5 } },
+  'Collect Firewood': { duration: 2000, effects: { energy: -15 } },
+  'Build Campfire': { duration: 2000, effects: { energy: -15, happiness: +10 } },
+  'Build a Campfire': { duration: 2000, effects: { energy: -15, happiness: +10 } },
+  'Set Up Tent': { duration: 2000, effects: { energy: -10, hygiene: -3 } },
 
+  'Cook Food': { duration: 3000, effects: { hunger: +30, energy: -5 } },
+  'Observe Nature': { duration: 2000, effects: { happiness: +20, energy: -5, hygiene: +5 } },
+  'Learn Coral Ecosystem': { duration: 2000, effects: { happiness: +20, energy: -5, hygiene: +5 } },
+  'Observe Small Marine Life': { duration: 2000, effects: { happiness: +20, energy: -5, hygiene: +5 } },
 
-	'Eat': { duration: 5000, effects: { hunger: +30, energy: +10, hygiene: -5 } },
-	'Sleep': { duration: 7000, effects: { energy: +50, hygiene: -10, happiness: +10  } },
-	'Bath': { duration: 4000, effects: { hygiene: +30 } ,onStart: showBathPopup},
+  'Gather Spring Water': { duration: 2000, effects: { hygiene: +15, energy: -3 } },
+  'Tanning': { duration: 2000, effects: { happiness: +10, hygiene: -5 } },
+  'Build Sandcastles': { duration: 2000, effects: { happiness: +12, energy: -5 } },
+  'Seashell Hunt': { duration: 2000, effects: { happiness: +15, energy: -7 } },
+  'Visit Museum': { duration: 2000, effects: { happiness: +8, energy: -5 } },
+
+  'Eat': { duration: 3000, effects: { hunger: +30, energy: +10, hygiene: -5 } },
+  'Sleep': { duration: 4000, effects: { energy: +50, hygiene: -10, happiness: +10 } },
+  'Bath': { duration: 2000, effects: { hygiene: +30 } },
 };
 	
 useEffect(() => {
@@ -204,14 +204,21 @@ useEffect(() => {
 	const startTimedActivity = (activity) => {
 	if (activityInProgress) return;
 
+
+	if (activity.cost && money < activity.cost) {
+		showActionPopup("Not enough money!");
+		return;
+	}
+
 	const duration = activity.duration;
 	const steps = 10;
 	const intervalTime = duration / steps;
 	const deltaPerStep = {};
 
 	if (activity.onStart) {
-		activity.onStart(); 
+		activity.onStart();
 	}
+
 
 	Object.entries(activity.effects).forEach(([stat, totalDelta]) => {
 		deltaPerStep[stat] = totalDelta / steps;
@@ -221,24 +228,35 @@ useEffect(() => {
 	setCurrentActivity(activity);
 	setActivityInProgress(true);
 
+	
+	if (activity.cost) {
+		setMoney((prev) => prev - activity.cost);
+		showActionPopup(`Purchased for ${rupiah(activity.cost)}`);
+	}
+
 	const intervalId = setInterval(() => {
 		Object.entries(deltaPerStep).forEach(([key, delta]) => {
-			updateState(key, delta);
+			updateStats(key, delta); 
 		});
 
 		stepCount++;
 
 		if (stepCount >= steps) {
-			clearInterval(activityInterval.current);
+			clearInterval(intervalId);
 			activityInterval.current = null;
 			setActivityInProgress(false);
 			setCurrentActivity(null);
+
+			
+			if (activity.earnings) {
+				setMoney((prev) => prev + activity.earnings);
+				showActionPopup(`Earned ${rupiah(activity.earnings)}!`);
+			}
 		}
 	}, intervalTime);
 
 	activityInterval.current = intervalId;
 };
-
 
 const fastForward = () => {
   if (!currentActivity) return;
