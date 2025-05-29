@@ -8,8 +8,6 @@ import GameSideBar from '../components/GameSideBar';
 
 import useGameTime from '../hooks/GameTime';
 import { getActionData, goBackToMainMap } from '../hooks/GameMapLocation';
-
-
 import '../styles/Game.css';
 
 function Game() {
@@ -41,7 +39,7 @@ function Game() {
 		prev.includes(itemName) ? prev : [...prev, itemName]
 	);
 	};
-	
+
 	const performActions = (action) => {
 		
 		switch (typeof action === 'string' ? action : action.label) {
