@@ -13,7 +13,7 @@ function GameWelcomePopup({ player, showWelcomePopup, closePopUp }) {
 						<p className='p-0.5 md:p-1 lg:p-2'>You Have Chosen:</p>
 
 						<img
-									src={`/images/characters/${player.base}_down.png`}
+									src={`/images/characters/${player.base}_right.png`}
 									alt="player"
 								className='w-1/10 md:w-2/10 lg:w-3/10 mx-auto p-0.5 md:p-1 lg:p-2'/>
 

@@ -3,8 +3,32 @@ import "../styles/Game.css";
 
 const items = [
   { name: "Food", image: "/images/items/bahanmakanan.png" },
-  { name: "Drink", image: "/images/items/botol.png" },
+  { name: "Bottle", image: "/images/items/botol.png" },
   { name: "Phone", image: "/images/items/hp.png" },
+  { name: "Binocular", image:"/images/items/binokular.png"},
+  { name: "Fauna Book", image: "/images/items/bukuhewan.png" },
+  { name: "Journal", image: "/images/items/bukutulis.png" },
+  { name: "Towel", image: "/images/items/handuk.png" },
+  { name: "Magnifying Glass", image:"/images/items/kacapembesar.png"},
+  { name: "Camera", image: "/images/items/kamera.png" },
+  { name: "Wood", image: "/images/items/kayubakar.png" },
+  { name: "Stove", image: "/images/items/kompor.png" },
+  { name: "Matches", image:"/images/items/korek.png"},
+  { name: "Chair", image: "/images/items/kursisantai.png" },
+  { name: "Snack", image: "/images/items/makanan.png" },
+  { name: "Drink", image: "/images/items/minum.png" },
+  { name: "Fishing Rod", image:"/images/items/pancing.png"},
+  { name: "Peg", image: "/images/items/pasak.png" },
+  { name: "Knife", image: "/images/items/pisau.png" },
+  { name: "Sandal", image: "/images/items/sandal.png" },
+  { name: "SandBucket", image:"/images/items/sandcastle.png"},
+  { name: "Gloves", image: "/images/items/sarungtangan.png" },
+  { name: "Scroll", image: "/images/items/scroll.png" },
+  { name: "Shoes", image: "/images/items/sepatuhiking.png" },
+  { name: "Rope", image:"/images/items/tali.png"},
+  { name: "Tent", image: "/images/items/tenda.png" },
+  { name: "Bait", image: "/images/items/umpan.png" },
+  { name: "Bucket", image: "/images/items/wadah.png" },
 ];
 
 function GameBackpack() {
