@@ -8,6 +8,7 @@ import GameSideBar from '../components/GameSideBar';
 import useGameTime from '../hooks/GameTime';
 import Status from '../hooks/GameStats';
 import { getActionData, goBackToMainMap } from '../hooks/GameMapLocation';
+import { performActions } from '../hooks/GameUpdateStat';
 
 import '../styles/Game.css';
 
@@ -433,6 +434,8 @@ function Game() {
 				setPlayerPosition({ x: 100, y: 100 });
 				setActions([]);
 				setLocationText('Welcome to the Borobudur Temple');
+			} else if (playerPosition.x === 2500 && playerPosition.y === 1500) {
+				
 			}
 		} else if (currentMap === 'lake') {
 			if (
@@ -449,8 +452,12 @@ function Game() {
 				playerPosition.x <= 2700 &&
 				playerPosition.y === 540
 			) {
-				setActions(["Eat Snacks","Drink Coffee","Write Travel Journal"]);
-				setLocationText("Welcome to Bites Shop");
+				setActions([
+					{ id: 'eat-snacks', label: 'Eat Snacks' },
+					{ id: 'drink-coffee', label: 'Drink Coffee' },
+					{ id: 'write-journal', label: 'Write Journal' },
+				]);
+				setLocationText('Welcome to Bites Shop');
 			} else if (playerPosition.x === 3260 && playerPosition.y === 1530) {
 				setActions(['Rent a Boat', 'Rent speedboat']);
 				setLocationText('Welcome to Dockside shop');
@@ -495,27 +502,27 @@ function Game() {
 					'Fly a Lanttern',
 					'Attend a Ceremony',
 				]);
-			}else{
+			} else {
 				setActions([]);
 			}
-		}else if (currentMap === 'beach') {
+		} else if (currentMap === 'beach') {
 			if (
 				playerPosition.x >= 1299 &&
 				playerPosition.x <= 1380 &&
 				playerPosition.y === 1100
 			) {
-				setActions([
-					'Eat Seafood',
-					'Drink Tropical Juice',
-					'Chit Chat',
-				]);
+				setActions(['Eat Seafood', 'Drink Tropical Juice', 'Chit Chat']);
 				setLocationText(['You are near a Seaside Restaurant']);
 			} else if (
 				playerPosition.x >= 2619 &&
 				playerPosition.x <= 4659 &&
 				playerPosition.y === 1540
 			) {
-				setActions(['Take Picture','Learn Coral Ecosystem','Observe Small Marine Life']);
+				setActions([
+					'Take Picture',
+					'Learn Coral Ecosystem',
+					'Observe Small Marine Life',
+				]);
 				setLocationText(['You are at the Beach']);
 			} else if (
 				playerPosition.x >= 4059 &&
@@ -529,10 +536,11 @@ function Game() {
 					'Seashell Hunt',
 					'Sightseeing',
 				]);
-			}else{
+			} else {
 				setActions([]);
 			}
-		}}, [playerPosition, currentMap]);
+		}
+	}, [playerPosition, currentMap]);
 
 	//Collision
 
@@ -670,6 +678,7 @@ function Game() {
 					setPlayerPosition={setPlayerPosition}
 					setActions={setActions}
 					setLocationText={setLocationText}
+					performActions = {performActions}
 				/>
 			</div>
 		</div>

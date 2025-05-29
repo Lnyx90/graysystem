@@ -30,4 +30,4 @@ function GameStatusBar({ status }) {
 	);
 }
 
-export default GameStatusBar
+export default GameStatusBar;

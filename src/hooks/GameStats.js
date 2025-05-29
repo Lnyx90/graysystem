@@ -1,9 +1,9 @@
 const Status = {
 player: [
-  { id: 'hunger', value: 100, color: 'bg-red-500' },
-  { id: 'energy', value: 100, color: 'bg-yellow-300' },
-  { id: 'hygiene', value: 100, color: 'bg-blue-400' },
-  { id: 'happiness', value: 100, color: 'bg-pink-400' },
+  { id: 'hunger', value: 50, color: 'bg-red-500' },
+  { id: 'energy', value: 50, color: 'bg-yellow-300' },
+  { id: 'hygiene', value: 50, color: 'bg-blue-400' },
+  { id: 'happiness', value: 50, color: 'bg-pink-400' },
 ],
 
 	performAction: function(action) {
