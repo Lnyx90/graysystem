@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 
-function IdentityCard({ onClose, characterImage, userName }) {
+function IdentityCard({ onClose, userName }) {
 	const [flipped, setFlipped] = useState(false);
-	const selectedCharacterImage = localStorage.getItem('PlayerImage');
+	const characterImage = `/images/characters/${localStorage.getItem('PlayerImageBase')}_right.png`;
+
 
 	return (
 		<div className='mt-20 fixed flex inset-0 justify-center items-center text-center z-10'>
@@ -42,9 +43,10 @@ function IdentityCard({ onClose, characterImage, userName }) {
 						<div className='w-full h-full grid grid-cols-2'>
 							<div className='flex items-center justify-center'>
 								<img
-									src={selectedCharacterImage}
+									src={characterImage}
 									className='w-3/10 p-0.5 md:p-1 lg:p-2'
-								/>
+									alt="Player Character"
+									/>
 							</div>
 							<div className='flex flex-col items-start justify-center'>
 								<p className=''>Name: {userName}</p>
