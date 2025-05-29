@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { performActions } from '../hooks/GameUpdateStat';
 
 function GameStatusBar({ status }) {
 	return (
