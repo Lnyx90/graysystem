@@ -5,7 +5,7 @@ function GameWelcomePopup({ player, showWelcomePopup, closePopUp }) {
 
 	return (
 		<div className='mt-20 fixed flex inset-0 justify-center items-center text-center z-10'>
-			<div className='rounded-lg bg-white p-1'>
+			<div className='w-7/12 lg:w-2/7 md:w-3/9 sm:w-6/11 rounded-lg bg-white p-1'>
 				{showWelcomePopup && (
 					<div className='text-[10px] md:text-sm lg:text-base'>
 						<h2 className='p-0.5 md:p-1 lg:p-2'>Welcome, {player.name}!</h2>

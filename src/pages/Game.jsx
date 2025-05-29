@@ -36,6 +36,12 @@ function Game() {
 		);
 	};
 
+	const unlockItem = (itemName) => {
+	setUnlockedItems((prev) =>
+		prev.includes(itemName) ? prev : [...prev, itemName]
+	);
+	};
+	
 	const performActions = (action) => {
 		
 		switch (typeof action === 'string' ? action : action.label) {

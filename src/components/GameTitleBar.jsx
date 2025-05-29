@@ -3,6 +3,7 @@ import GameBackpack from './GameBackpack';
 import IdentityCard from './GameIdentityCard';
 
 function GameTitleBar({ formattedDate }) {
+	const [unlockedItems, setUnlockedItems] = useState([]);
 	const [showCard, setShowCard] = useState(false);
 	const [characterImage, setCharacterImage] = useState('');
 
@@ -24,7 +25,7 @@ function GameTitleBar({ formattedDate }) {
 						Level <span>1</span>
 					</button>
 					
-					<GameBackpack/>
+					<GameBackpack unlockedItems={unlockedItems} />
 				</div>
 
 				<div className='flex items-center'>
