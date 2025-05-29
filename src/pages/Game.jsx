@@ -682,11 +682,14 @@ function Game() {
 			) {
 				setActions(['Eat', 'Sleep', 'Bath']);
 				setLocationText('Welcome Home');
-			} else if (playerPosition.x === 2580 && playerPosition.y === 620) {
-				setActions(['Eat Snacks', 'Drink Coffee', 'Write Journal']);
+			} else if (
+				playerPosition.x === 2580 &&
+				playerPosition.y === 620
+			) {
+				setActions(['Buy Bucket', 'Buy Fishing Rod', 'Buy Bait']);
 				setLocationText('Welcome to Bites Shop');
 			} else if (playerPosition.x === 3220 && playerPosition.y === 1500) {
-				setActions(['Rent a Boat', 'Rent speedboat']);
+				setActions(['Rent a Boat', 'Become a Tour Guide', 'Buy Binoculars']);
 				setLocationText('Welcome to Dockside shop');
 			} else if (
 				playerPosition.x >= 2700 &&
@@ -746,9 +749,9 @@ function Game() {
 				playerPosition.y === 2180
 			) {
 				setActions([
-					'Buy Souvenir',
-					'Rent a Traditional Outfit',
-					'Take a Picture',
+					'Buy Magnifying Glass',
+					'Buy Journal',
+					'Buy Drink',
 				]);
 				setLocationText(['You are near a shop']);
 			} else if (
@@ -779,8 +782,8 @@ function Game() {
 				playerPosition.x <= 1380 &&
 				playerPosition.y === 1100
 			) {
-				setActions(['Eat Seafood', 'Drink Tropical Juice', 'Chit Chat']);
-				setLocationText(['You are near a Seaside Restaurant']);
+				setActions(['Buy Sandcastle Bucket', 'Drink Tropical Juice', 'Buy Sandals']);
+				setLocationText(['You are near a Seaside Shop']);
 			} else if (
 				playerPosition.x >= 2619 &&
 				playerPosition.x <= 4659 &&
