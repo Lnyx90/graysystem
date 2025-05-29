@@ -180,10 +180,10 @@ function Game() {
 	}
 
 	const inventoryItems = [
-    { id: 1, name: 'Item 1', icon: '1' }, 
-    { id: 2, name: 'Item 2', icon: '2' },
-    { id: 3, name: 'Item 3', icon: '3' },
-  ];
+		{ id: 1, name: 'Item 1', icon: '1' },
+		{ id: 2, name: 'Item 2', icon: '2' },
+		{ id: 3, name: 'Item 3', icon: '3' },
+	];
 
 	//Date
 	const { gameTime, formattedDate, formattedTime, greeting } = useGameTime(10);
@@ -556,7 +556,6 @@ function Game() {
 				setPlayerPosition({ x: 100, y: 100 });
 				setActions([]);
 				setLocationText('Welcome to Lake Toba');
-
 			} else if (
 				playerPosition.x >= 0 &&
 				playerPosition.x <= 1300 &&
@@ -604,11 +603,7 @@ function Game() {
 				playerPosition.x <= 2700 &&
 				playerPosition.y === 540
 			) {
-				setActions([
-					{ id: 'eat-snacks', label: 'Eat Snacks' },
-					{ id: 'drink-coffee', label: 'Drink Coffee' },
-					{ id: 'write-journal', label: 'Write Journal' },
-				]);
+				setActions(['Eat Snacks', 'Drink Coffee', 'Write Journal']);
 				setLocationText('Welcome to Bites Shop');
 			} else if (playerPosition.x === 3260 && playerPosition.y === 1530) {
 				setActions(['Rent a Boat', 'Rent speedboat']);
@@ -624,48 +619,47 @@ function Game() {
 			} else {
 				setActions([]);
 			}
-		} 
-		 else if (currentMap === 'mountain') {
+		} else if (currentMap === 'mountain') {
 			if (
-			Math.sqrt((playerPosition.x - 2460) ** 2 + (playerPosition.y - 80) ** 2) < 80
+				Math.sqrt(
+					(playerPosition.x - 2460) ** 2 + (playerPosition.y - 80) ** 2
+				) < 80
 			) {
-			setActions([
-				'Enjoy the View',
-				'Capture the Moment',
-				'Rest & Eat Snacks',
-				'Hiking Journaling'
-			]);
-			setLocationText('You are at the Mountain Peak');
-			}
-
-			else if (
-			Math.sqrt((playerPosition.x - 2460) ** 2 + (playerPosition.y - 1800) ** 2) < 120
+				setActions([
+					'Enjoy the View',
+					'Capture the Moment',
+					'Rest & Eat Snacks',
+					'Hiking Journaling',
+				]);
+				setLocationText('You are at the Mountain Peak');
+			} else if (
+				Math.sqrt(
+					(playerPosition.x - 2460) ** 2 + (playerPosition.y - 1800) ** 2
+				) < 120
 			) {
-			setActions([
-				'Hiking',
-				'Observe Nature',
-				'Collect Firewood',
-				'Gather Spring Water'
-			]);
-			setLocationText('You are on the Mountain Slope');
-			}
-
-			else if (
-			Math.sqrt((playerPosition.x - 3860) ** 2 + (playerPosition.y - 2480) ** 2) < 120
+				setActions([
+					'Hiking',
+					'Observe Nature',
+					'Collect Firewood',
+					'Gather Spring Water',
+				]);
+				setLocationText('You are on the Mountain Slope');
+			} else if (
+				Math.sqrt(
+					(playerPosition.x - 3860) ** 2 + (playerPosition.y - 2480) ** 2
+				) < 120
 			) {
-			setActions([
-				'Set Up Tent',
-				'Cook Food',
-				'Build a Campfire',
-				'Talk to Fellow Campers'
-			]);
-			setLocationText('You are at the Campground');
+				setActions([
+					'Set Up Tent',
+					'Cook Food',
+					'Build a Campfire',
+					'Talk to Fellow Campers',
+				]);
+				setLocationText('You are at the Campground');
+			} else {
+				setActions([]);
 			}
-			else {
-			setActions([]);
-			}
-		} 
-		else if (currentMap === 'temple') {
+		} else if (currentMap === 'temple') {
 			if (
 				playerPosition.x >= 1740 &&
 				playerPosition.x <= 2180 &&
@@ -685,9 +679,10 @@ function Game() {
 				setActions(['Visit Museum']);
 				setLocationText(['You are at the temple']);
 			} else if (
-				playerPosition.x >= 3940 &&
-				playerPosition.x <= 4220 &&
-				playerPosition.y === 940
+				playerPosition.x >= 2140 &&
+				playerPosition.x <= 2340 &&
+				playerPosition.y >= 880 &&
+				playerPosition.y <= 920
 			) {
 				setActions([
 					'Meditate',
@@ -732,36 +727,32 @@ function Game() {
 			} else {
 				setActions([]);
 			}
+		} else if (currentMap === 'home') {
+			if (
+				playerPosition.x > 1850 &&
+				playerPosition.x < 1950 &&
+				playerPosition.y > 250 &&
+				playerPosition.y < 350
+			) {
+				setActions(['Sleep']);
+				setLocationText(['This looks like a good place to rest']);
+			} else if (playerPosition.x === 2740 && playerPosition.y === 940) {
+				setActions(['Eat']);
+				setLocationText(['You are near the kitchen']);
+			} else if (
+				playerPosition.x > 1650 &&
+				playerPosition.x < 1750 &&
+				playerPosition.y > 1100 &&
+				playerPosition.y < 1200
+			) {
+				setActions(['Bath']);
+				setLocationText(['Time to freshen up']);
+			} else {
+				setActions([]);
+				setLocationText(['You are at home']);
+			}
 		}
-else if (currentMap === 'home') {
-  if (
-    playerPosition.x > 1850 && playerPosition.x < 1950 &&
-    playerPosition.y > 250 && playerPosition.y < 350
-  ) {
-    setActions(['Sleep']);
-    setLocationText(['This looks like a good place to rest']);
-  } else if (
-       playerPosition.x === 2740 &&
-    playerPosition.y === 940
-  ) {
-    setActions(['Eat']);
-    setLocationText(['You are near the kitchen']);
-  } else if (
-    playerPosition.x > 1650 && playerPosition.x < 1750 &&
-    playerPosition.y > 1100 && playerPosition.y < 1200
-  ) {
-    setActions(['Bath']);
-    setLocationText(['Time to freshen up']);
-  } else {
-    setActions([]);
-    setLocationText(['You are at home']);
-  }
-}
-
-
 	}, [playerPosition, currentMap]);
-
-
 
 	return (
 		<div
@@ -851,7 +842,7 @@ else if (currentMap === 'home') {
 							</button>
 						</div>
 					</div>
-					
+
 					<div className='w-full h-full rounded-lg relative overflow-hidden'>
 						<div
 							id='map'
@@ -886,8 +877,6 @@ else if (currentMap === 'home') {
 						</div>
 					</div>
 				</div>
-
-				
 
 				<GameSideBar
 					currentMap={currentMap}
