@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import GameBackpack from './GameBackpack';
 import IdentityCard from './GameIdentityCard';
 
-function GameTitleBar({ formattedDate }) {
-	const [unlockedItems, setUnlockedItems] = useState([]);
+function GameTitleBar({ formattedDate, unlockedItems, unlockItem }) {
 	const [showCard, setShowCard] = useState(false);
 	const [characterImage, setCharacterImage] = useState('');
 
@@ -24,7 +23,7 @@ function GameTitleBar({ formattedDate }) {
 					>
 						Level <span>1</span>
 					</button>
-					
+
 					<GameBackpack unlockedItems={unlockedItems} />
 				</div>
 
