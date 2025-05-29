@@ -1,24 +1,24 @@
-import React, { useEffect, useImperativeHandle, useState, useRef } from 'react';
+import React, { useEffect, useImperativeHandle, useState, useRef} from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import GameTitleBar from '../components/GameTitleBar';
 import GameWelcomePopup from '../components/GameWelcomePopup';
 import GameStatusBar from '../components/GameStatusBar';
 import GameSideBar from '../components/GameSideBar';
-import GameBackpack from '../components/GameBackpack';
-import useGameTime from '../hooks/GameTime';
-import { getActionData, goBackToMainMap } from '../hooks/GameMapLocation';
-import '../styles/Game.css';
 
+import useGameTime from '../hooks/GameTime';
+import Status from '../hooks/GameStats';
+import { getActionData, goBackToMainMap } from '../hooks/GameMapLocation';
+import { performActions } from '../hooks/GameUpdateStat';
+import '../components/GameInventory';
+
+import '../styles/Game.css';
+import GameInventory from '../components/GameInventory';
 
 function Game() {
 	//Player
 
-	const [player, setPlayer] = useState({
-		name: '',
-		base: '',
-		direction: 'down',
-	});
+	const [player, setPlayer] = useState({ name: '', base: '', direction: 'down' });
 	const [imageLoaded, setImageLoaded] = useState(false);
 	const [playerSize, setPlayerSize] = useState(65);
 
@@ -39,8 +39,8 @@ function Game() {
 		);
 	};
 
-
 	const performActions = (action) => {
+		
 		switch (typeof action === 'string' ? action : action.label) {
 			case 'Enjoy the View':
 			case 'Capture the Moment':
@@ -55,20 +55,20 @@ function Game() {
 
 			case 'Rest & Eat Snacks':
 			case 'Eat Snacks':
-				updateState('hunger', +20);
+				updateState('hunger', -20);
 				updateState('energy', +10);
 				updateState('hygiene', -2);
 				break;
 
 			case 'Eat Seafood':
-				updateState('hunger', +25);
+				updateState('hunger', -25);
 				updateState('energy', +15);
 				updateState('happiness', +5);
 				break;
 
 			case 'Drink Coffee':
 				updateState('energy', +25);
-				updateState('hunger', +5);
+				updateState('hunger', -5);
 				break;
 
 			case 'Drink Tropical Juice':
@@ -100,7 +100,7 @@ function Game() {
 			case 'Hiking':
 				updateState('energy', -20);
 				updateState('happiness', +15);
-				updateState('hunger', -10);
+				updateState('hunger', +10);
 				break;
 
 			case 'Fishing':
@@ -125,7 +125,7 @@ function Game() {
 				break;
 
 			case 'Cook Food':
-				updateState('hunger', +30);
+				updateState('hunger', -30);
 				updateState('energy', -5);
 				break;
 
@@ -162,50 +162,42 @@ function Game() {
 				updateState('energy', -5);
 				break;
 
-			case 'Eat':
-				showActionPopup('Delicious meal! Hunger satisfied.');
-				updateState('hunger', +30);
-				updateState('energy', +15);
-				updateState('hygiene', -5);
-				return;
+				 case 'Eat':
+        showActionPopup('Delicious meal! Hunger satisfied.');
+        updateState('hunger', +30);
+        updateState('energy', +10);
+        updateState('hygiene', -5);
+        return;
+	  case 'Sleep':
+		showActionPopup('Rested well! Energy restored.');
+		updateState('energy', +50);
+		updateState('hygiene', -10);
+		updateState('happiness', +10);
+		return;
+	  case 'Bath':
+  showBathPopup();
+  updateState('hygiene', +30);
+  return;
+	 
 
 			default:
 				break;
 		}
 	};
+
+	const [bathPopup, setBathPopup] = useState({
+  show: false,
+  message: "Bath Time!"
+});
+
+const showBathPopup = () => {
+  setBathPopup({ show: true, message: "Bath Time!" });
+  setTimeout(() => setBathPopup({ show: false, message: "" }), 3000);
+};
 	
-	useEffect(() => {
-		const interval = setInterval(() => {
-			setPlayerStatus((prevStatus) =>
-				prevStatus.map((stat) => {
-					let newValue = stat.value;
-
-					switch (stat.id) {
-						case 'hunger':
-							newValue = Math.max(0, stat.value - 1);
-							break;
-						case 'energy':
-							newValue = Math.max(0, stat.value - 2);
-							break;
-						case 'happiness':
-							newValue = Math.max(0, stat.value - 1);
-							break;
-						case 'hygiene':
-							newValue = Math.max(0, stat.value - 1);
-							break;
-						default:
-							break;
-					}
-
-					return { ...stat, value: newValue };
-				})
-			);
-		}, 8000);
-
-		return () => clearInterval(interval);
-	}, []);
 
 	const navigate = useNavigate();
+
 	React.useEffect(() => {
 		if (playerStatus.some((stat) => stat.value === 0)) {
 			navigate('/dead');
@@ -257,11 +249,13 @@ function Game() {
 	//Actions
 	const [actions, setActions] = useState([]);
 	const actionData = getActionData(actions);
-	const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
-	const showActionPopup = (message) => {
-		setActionPopup({ show: true, message });
-		setTimeout(() => setActionPopup({ show: false, message: '' }), 3000);
-	};
+const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
+	const showActionPopup = (message) => { 
+  setActionPopup({ show: true, message });
+  setTimeout(() => setActionPopup({ show: false, message: '' }), 3000);
+	}
+
+
 
 	//Map
 	let [currentMap, setCurrentMap] = useState('default');
@@ -295,7 +289,6 @@ function Game() {
 		beach: '/images/background/GameBeach.gif',
 		mountain: '/images/background/GameMountainMap.jpeg',
 		temple: '/images/background/GameTempleMap.jpg',
-		home: '/images/background/GameHomeMap.jpeg',
 	};
 
 	if (width >= 1440) {
@@ -410,39 +403,40 @@ function Game() {
 
 	//UseEffects
 	useEffect(() => {
-		const storedName = localStorage.getItem('playerName');
-		const storedBase = localStorage.getItem('PlayerImageBase');
+	const storedName = localStorage.getItem('playerName');
+	const storedBase = localStorage.getItem('PlayerImageBase'); 
 
-		document.body.style.backgroundImage = "url('/images/background/newbg.gif')";
+	document.body.style.backgroundImage = "url('/images/background/newbg.gif')";
 
-		setPlayer({
-			name: storedName || 'Player',
-			base: storedBase || 'char1',
-			direction: 'down',
-		});
-	}, []);
+	setPlayer({
+		name: storedName || 'Player',
+		base: storedBase || 'char1',
+		direction: 'down',
+	});
+}, []);
 
 	function movePlayer(direction) {
-		setPlayer((prev) => ({
-			...prev,
-			direction,
-		}));
+	setPlayer(prev => ({
+		...prev,
+		direction,
+	}));
 
-		setPlayerPosition((prev) => {
-			let { x, y } = prev;
-			const step = 20;
+	setPlayerPosition((prev) => {
+		let { x, y } = prev;
+		const step = 20;
 
-			if (direction === 'right') x += step;
-			if (direction === 'left') x -= step;
-			if (direction === 'up') y -= step;
-			if (direction === 'down') y += step;
+		if (direction === 'right') x += step;
+		if (direction === 'left') x -= step;
+		if (direction === 'up') y -= step;
+		if (direction === 'down') y += step;
 
-			x = Math.max(minX, Math.min(x, maxX));
-			y = Math.max(minY, Math.min(y, maxY));
+		x = Math.max(minX, Math.min(x, maxX));
+		y = Math.max(minY, Math.min(y, maxY));
 
-			return { x, y };
-		});
-	}
+		return { x, y };
+	});
+}
+
 
 	useEffect(() => {
 		if (!showWelcomePopup) {
@@ -474,6 +468,8 @@ function Game() {
 			return () => clearTimeout(timeoutId);
 		}
 	}, [showWelcomePopup]);
+
+	
 
 	useEffect(() => {
 		const handleResize = () => {
@@ -617,8 +613,8 @@ function Game() {
 				setActions([]);
 				setLocationText('Welcome to Lake Toba');
 			} else if (
-				playerPosition.x >= 1340 &&
-				playerPosition.x <= 1740 &&
+				playerPosition.x >= 0 &&
+				playerPosition.x <= 1300 &&
 				playerPosition.y >= 1640 &&
 				playerPosition.y <= 2350
 			) {
@@ -654,19 +650,16 @@ function Game() {
 				playerPosition.x <= 900 &&
 				playerPosition.y === 260
 			) {
-				setCurrentMap('home');
-				setPlayerPosition({ x: 100, y: 100 });
-				setActions([]);
+				setActions(['Eat', 'Sleep', 'Bath']);
 				setLocationText('Welcome Home');
 			} else if (
-				playerPosition.x >= 2500 &&
-				playerPosition.x <= 2640 &&
-				playerPosition.y >= 580 &&
-				playerPosition.y <= 700
+				playerPosition.x === 2580 &&
+				playerPosition.y === 620
 			) {
 				setActions(['Eat Snacks', 'Drink Coffee', 'Write Journal']);
 				setLocationText('Welcome to Bites Shop');
-			} else if (playerPosition.x === 3180 && playerPosition.y === 1500) {
+
+			} else if (playerPosition.x === 3220 && playerPosition.y === 1500) {
 				setActions(['Rent a Boat', 'Rent speedboat']);
 				setLocationText('Welcome to Dockside shop');
 			} else if (
@@ -756,14 +749,14 @@ function Game() {
 			}
 		} else if (currentMap === 'beach') {
 			if (
-				playerPosition.x >= 1140 &&
+				playerPosition.x >= 1299 &&
 				playerPosition.x <= 1380 &&
 				playerPosition.y === 1100
 			) {
 				setActions(['Eat Seafood', 'Drink Tropical Juice', 'Chit Chat']);
 				setLocationText(['You are near a Seaside Restaurant']);
 			} else if (
-				playerPosition.x >= 2500 &&
+				playerPosition.x >= 2619 &&
 				playerPosition.x <= 4659 &&
 				playerPosition.y === 1540
 			) {
@@ -788,36 +781,9 @@ function Game() {
 			} else {
 				setActions([]);
 			}
-		} else if (currentMap === 'home') {
-			if (
-				playerPosition.x > 1850 &&
-				playerPosition.x < 1950 &&
-				playerPosition.y > 250 &&
-				playerPosition.y < 350
-			) {
-				setActions(['Sleep']);
-				setLocationText(['This looks like a good place to rest']);
-			} else if (
-				playerPosition.x > 2750 &&
-				playerPosition.x < 2850 &&
-				playerPosition.y > 900 &&
-				playerPosition.y < 1000
-			) {
-				setActions(['Eat']);
-				setLocationText('You are in the kitchen');
-			}
-		} else if (
-			playerPosition.x > 1650 &&
-			playerPosition.x < 1750 &&
-			playerPosition.y > 1100 &&
-			playerPosition.y < 1200
-		) {
-			setActions(['Bath']);
-			setLocationText(['Time to freshen up']);
-		} else {
-			setActions([]);
-			setLocationText(['You are at home']);
 		}
+
+
 	}, [playerPosition, currentMap]);
 
 	return (
@@ -831,11 +797,27 @@ function Game() {
 				closePopUp={closePopUp}
 			/>
 			{/* Action Popup */}
-			{actionPopup.show && (
-				<div className='fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-white text-black px-4 py-2 rounded-lg shadow-lg z-50 animate-fade'>
+				{actionPopup.show && (
+				<div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-white text-black px-4 py-2 rounded-lg shadow-lg z-50 animate-fade">
 					{actionPopup.message}
 				</div>
-			)}
+				)}
+				{/* Add this to your JSX */}
+{bathPopup.show && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="animate-popup bg-white bg-opacity-90 p-4 rounded-lg shadow-xl border-2 border-blue-300 max-w-xs text-center">
+      <img 
+        src="/images/symbol/bath.gif" 
+        alt="Bathing" 
+        className="w-48 h-48 mx-auto mb-2"
+      />
+      <p className="text-lg font-bold text-blue-600">{bathPopup.message}</p>
+      <p className="text-sm text-gray-700">You feel clean and refreshed!</p>
+    </div>
+  </div>
+)}
+
+
 
 			<GameTitleBar formattedDate={formattedDate} />
 
@@ -948,9 +930,14 @@ function Game() {
 									<img
 										className='self-center'
 										style={{ width: playerSize }}
-										src={`/images/characters/${player.base}_${player.direction}.png`}
-										alt='player'
+										src={player.image}
 									/>
+
+									<div className='h-12 mt-2 gap-3 grid grid-cols-3'>
+										<div className='border-1 bg-white/30'></div>
+										<div className='border-1 bg-white/30'></div>
+										<div className='border-1 bg-white/30'></div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -970,9 +957,6 @@ function Game() {
 					performActions={performActions}
 				/>
 			</div>
-
-			<GameInventory />
-
 		</div>
 	);
 }

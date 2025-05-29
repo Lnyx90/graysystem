@@ -18,10 +18,3 @@ body {
     background-image: url('/images/background/GameBackground.gif');
 }
 
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
