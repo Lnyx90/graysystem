@@ -40,6 +40,7 @@ function Game() {
 	};
 
 	const performActions = (action) => {
+		
 		switch (typeof action === 'string' ? action : action.label) {
 			case 'Enjoy the View':
 			case 'Capture the Moment':
@@ -161,6 +162,13 @@ function Game() {
 				updateState('energy', -5);
 				break;
 
+				 case 'Eat':
+        showActionPopup('Delicious meal! Hunger satisfied.');
+        updateState('hunger', +30);
+        updateState('energy', +15);
+        updateState('hygiene', -5);
+        return;
+
 			default:
 				break;
 		}
@@ -219,6 +227,13 @@ function Game() {
 	//Actions
 	const [actions, setActions] = useState([]);
 	const actionData = getActionData(actions);
+const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
+	const showActionPopup = (message) => { 
+  setActionPopup({ show: true, message });
+  setTimeout(() => setActionPopup({ show: false, message: '' }), 3000);
+};
+
+
 
 	//Map
 	let [currentMap, setCurrentMap] = useState('default');
@@ -432,6 +447,8 @@ function Game() {
 			return () => clearTimeout(timeoutId);
 		}
 	}, [showWelcomePopup]);
+
+	
 
 	useEffect(() => {
 		const handleResize = () => {
@@ -745,31 +762,36 @@ function Game() {
 			} else {
 				setActions([]);
 			}
-		} else if (currentMap === 'home') {
-			if (
-				playerPosition.x > 1850 &&
-				playerPosition.x < 1950 &&
-				playerPosition.y > 250 &&
-				playerPosition.y < 350
-			) {
-				setActions(['Sleep']);
-				setLocationText(['This looks like a good place to rest']);
-			} else if (playerPosition.x === 2740 && playerPosition.y === 940) {
-				setActions(['Eat']);
-				setLocationText(['You are near the kitchen']);
-			} else if (
-				playerPosition.x > 1650 &&
-				playerPosition.x < 1750 &&
-				playerPosition.y > 1100 &&
-				playerPosition.y < 1200
-			) {
-				setActions(['Bath']);
-				setLocationText(['Time to freshen up']);
-			} else {
-				setActions([]);
-				setLocationText(['You are at home']);
-			}
-		}
+		} 
+
+else if (currentMap === 'home') {
+  if (
+    playerPosition.x > 1850 && playerPosition.x < 1950 &&
+    playerPosition.y > 250 && playerPosition.y < 350
+  ) {
+    setActions(['Sleep']);
+    setLocationText(['This looks like a good place to rest']);
+  } else if (
+       playerPosition.x > 2750 && playerPosition.x < 2850 &&
+    playerPosition.y > 900 &&playerPosition.y < 1000
+  ) {
+		setActions(['Eat']);
+		setLocationText('You are in the kitchen');
+	  }
+  } else if (
+    playerPosition.x > 1650 && playerPosition.x < 1750 &&
+    playerPosition.y > 1100 && playerPosition.y < 1200
+  ) {
+    setActions(['Bath']);
+    setLocationText(['Time to freshen up']);
+  } else {
+    setActions([]);
+    setLocationText(['You are at home']);
+  }
+
+
+
+
 	}, [playerPosition, currentMap]);
 
 	return (
@@ -782,6 +804,14 @@ function Game() {
 				showWelcomePopup={showWelcomePopup}
 				closePopUp={closePopUp}
 			/>
+			{/* Action Popup */}
+				{actionPopup.show && (
+				<div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-white text-black px-4 py-2 rounded-lg shadow-lg z-50 animate-fade">
+					{actionPopup.message}
+				</div>
+				)}
+
+
 
 			<GameTitleBar formattedDate={formattedDate} />
 
