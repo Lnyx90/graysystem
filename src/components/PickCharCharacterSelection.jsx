@@ -9,7 +9,7 @@ export default function CharacterSelection({ characters, currentIndex, isFading,
       </button>
 
       <img
-        src={`/images/characters/${characters[currentIndex]}_down.png`}
+        src={`/images/characters/${characters[currentIndex]}_right.png`}
         alt="Character"
         className={`w-24 sm:w-32 md:w-40 h-auto floating character-float ${
           isFading ? 'opacity-0 transition-opacity duration-300' : 'opacity-100'

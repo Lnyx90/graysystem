@@ -7,13 +7,10 @@ import GameStatusBar from '../components/GameStatusBar';
 import GameSideBar from '../components/GameSideBar';
 
 import useGameTime from '../hooks/GameTime';
-import Status from '../hooks/GameStats';
 import { getActionData, goBackToMainMap } from '../hooks/GameMapLocation';
-import { performActions } from '../hooks/GameUpdateStat';
-import '../components/GameInventory';
+
 
 import '../styles/Game.css';
-import GameInventory from '../components/GameInventory';
 
 function Game() {
 	//Player
@@ -55,20 +52,20 @@ function Game() {
 
 			case 'Rest & Eat Snacks':
 			case 'Eat Snacks':
-				updateState('hunger', -20);
+				updateState('hunger', +20);
 				updateState('energy', +10);
 				updateState('hygiene', -2);
 				break;
 
 			case 'Eat Seafood':
-				updateState('hunger', -25);
+				updateState('hunger', +25);
 				updateState('energy', +15);
 				updateState('happiness', +5);
 				break;
 
 			case 'Drink Coffee':
 				updateState('energy', +25);
-				updateState('hunger', -5);
+				updateState('hunger', +5);
 				break;
 
 			case 'Drink Tropical Juice':
@@ -100,7 +97,7 @@ function Game() {
 			case 'Hiking':
 				updateState('energy', -20);
 				updateState('happiness', +15);
-				updateState('hunger', +10);
+				updateState('hunger', -10);
 				break;
 
 			case 'Fishing':
@@ -125,7 +122,7 @@ function Game() {
 				break;
 
 			case 'Cook Food':
-				updateState('hunger', -30);
+				updateState('hunger', +30);
 				updateState('energy', -5);
 				break;
 
@@ -195,6 +192,37 @@ const showBathPopup = () => {
   setTimeout(() => setBathPopup({ show: false, message: "" }), 3000);
 };
 	
+useEffect(() => {
+	const interval = setInterval(() => {
+		setPlayerStatus(prevStatus =>
+			prevStatus.map(stat => {
+				let newValue = stat.value;
+
+				switch (stat.id) {
+					case 'hunger':
+						newValue = Math.max(0, stat.value - 1); 
+						break;
+					case 'energy':
+						newValue = Math.max(0, stat.value - 2);
+						break;
+					case 'happiness':
+						newValue = Math.max(0, stat.value - 1);
+						break;
+					case 'hygiene':
+						newValue = Math.max(0, stat.value - 1);
+						break;
+					default:
+						break;
+				}
+
+				return { ...stat, value: newValue };
+			})
+		);
+	}, 8000);
+
+	return () => clearInterval(interval);
+}, []);
+
 
 	const navigate = useNavigate();
 
@@ -930,7 +958,8 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 									<img
 										className='self-center'
 										style={{ width: playerSize }}
-										src={player.image}
+										src={`/images/characters/${player.base}_${player.direction}.png`}
+										alt="player"
 									/>
 
 									<div className='h-12 mt-2 gap-3 grid grid-cols-3'>
