@@ -24,6 +24,9 @@ function Game() {
 		location.state || {};
 	const [difficulty, setDifficulty] = useState(initialDifficulty || null);
 	const [hearts, setHearts] = useState(initialHearts || 0);
+	const [unlockedItems, setUnlockedItems] = useState([]);
+	const [activityLog, setActivityLog] = useState([]);
+	const [visitedMaps, setVisitedMaps] = useState([]);
 
 	const defaultPlayerStatus = [
 		{ id: 'hunger', value: 50, color: 'bg-red-500' },
@@ -48,12 +51,14 @@ function Game() {
 		);
 	};
 
+	
+
 	//Activites
 	const activityInterval = useRef(null);
 	const [currentActivity, setCurrentActivity] = useState(null);
 	const [activityInProgress, setActivityInProgress] = useState(false);
 
-	const [unlockedItems, setUnlockedItems] = useState([]);
+	
 	const unlockItem = (name) => {
 		setUnlockedItems((prev) => (prev.includes(name) ? prev : [...prev, name]));
 	};
@@ -160,21 +165,21 @@ const showPopup = (type) => {
   'Eat Snacks': { duration: 2000, effects: { hunger: +20, energy: +10, hygiene: -2 } },
   'Eat Seafood': { duration: 3000, effects: { hunger: +25, energy: +15, happiness: +5 } },
 
-  'Buy Fishing Rod': { duration: 1000, effects: { happiness: +10 }, cost: 150 , onStart: () => showPopup('BuyFishingRod') },
+  'Buy Fishing Rod': { duration: 1000, effects: { happiness: +10 }, cost: 150 , onStart: () => showPopup('BuyFishingRod'),cost: 150, unlock: 'Fishing Rod' },
   'Become Cashier': { duration: 2000, effects: { happiness: +10, energy: -3 }, earnings: 1000 },
 
   'Write Travel Journal': { duration: 2000, effects: { happiness: +10 } },
   'Hiking Journaling': { duration: 2000, effects: { happiness: +10 },  onStart: () => showPopup('Journal') },
 
-  'Buy Bucket': { duration: 1000, effects: { happiness: +10, energy: -3 }, cost: 100 },
-  'Buy Bait': { duration: 1000, effects: { happiness: +10, energy: -3 }, cost: 50 },
-  'Buy Sandcastle Bucket': { duration: 1000, effects: { happiness: +10, energy: -3 }, cost: 120 },
-  'Buy Sandals': { duration: 1000, effects: { happiness: +10, energy: -3 }, cost: 200,  onStart: () => showPopup('Sandal') },
+  'Buy Bucket': { duration: 1000, effects: { happiness: +10, energy: -3 }, cost: 100,unlock: 'Bucket' },
+  'Buy Bait': { duration: 1000, effects: { happiness: +10, energy: -3 }, cost: 50,unlock: 'Bait' },
+  'Buy Sandcastle Bucket': { duration: 1000, effects: { happiness: +10, energy: -3 }, cost: 120,unlock: 'Sand Bucket' },
+  'Buy Sandals': { duration: 1000, effects: { happiness: +10, energy: -3 }, cost: 200,  onStart: () => showPopup('Sandal'), unlock: 'Sandal' },
   'Talk to Fellow Campers': { duration: 2000, effects: { happiness: +15, energy: -3 } },
 
   'Buy Souvenir': { duration: 1000, effects: { happiness: +10, energy: -2 }, cost: 80 },
-  'Buy Magnifying Glass': { duration: 1000, effects: { happiness: +15, energy: -5 }, cost: 250 },
-  'Buy Journal': { duration: 1000, effects: { happiness: +15, energy: -5 }, cost: 180 },
+  'Buy Magnifying Glass': { duration: 1000, effects: { happiness: +15, energy: -5 }, cost: 250, unlock: 'Magnifying Glass' },
+  'Buy Journal': { duration: 1000, effects: { happiness: +15, energy: -5 }, cost: 180 ,unlock: 'Journal'},
   'Buy Drink': { duration: 1000, effects: { happiness: +10, energy: -5 }, cost: 50 },
   'Buy Binoculars': { duration: 1000, effects: { happiness: +15, energy: -5 }, cost: 350 },
 
@@ -183,7 +188,7 @@ const showPopup = (type) => {
   'Rent a Boat': { duration: 3000, effects: { happiness: +20, energy: -10 }, onStart: () => showPopup('Rentboat') },
   'Become a Tour Guide': { duration: 3000, effects: { happiness: +25, energy: -15 }, earnings: 5000 },
 
-  'Collect Firewood': { duration: 2000, effects: { energy: -15 },onStart: () => showPopup('Wood')},
+  'Collect Firewood': { duration: 2000, effects: { energy: -15 },onStart: () => showPopup('Wood'),unlock: 'Wood'},
   'Build Campfire': { duration: 2000, effects: { energy: -15, happiness: +10 } },
   'Build a Campfire': { duration: 2000, effects: { energy: -15, happiness: +10 } },
   'Set Up Tent': { duration: 2000, effects: { energy: -10, hygiene: -3 } },
@@ -348,6 +353,21 @@ useEffect(() => {
 		setCurrentActivity(null);
 	};
 
+	const calculateLifeSatisfactionScore = ({ stats, activities, items, areas }) => {
+    let score = 0;
+    const statTotal = stats.reduce((sum, stat) => sum + stat.value, 0);
+    score += (statTotal / 400) * 40;
+    const activityCount = activities.length;
+    const uniqueActivities = new Set(activities).size;
+    score += Math.min(activityCount * 1, 30);
+    score += Math.min(uniqueActivities * 2, 20);
+    const uniqueItems = new Set(items).size;
+    score += Math.min(uniqueItems * 2, 20);
+    const areaCount = new Set(areas).size;
+    score += Math.min(areaCount * 5, 20);
+    return Math.round(score);
+  };
+
 	const performActions = (action) => {
 		const label = typeof action === 'string' ? action : action.label;
 		const timedAction = timedActions[label];
@@ -356,6 +376,7 @@ useEffect(() => {
 			if (timedAction.unlock) {
 				unlockItem(timedAction.unlock);
 			}
+			setActivityLog((prev) => [...prev, label]);
 			startTimedActivity({ ...timedAction, label });
 		}
 	};
@@ -920,6 +941,11 @@ useEffect(() => {
 			}
 		}
 	}, [playerPosition, currentMap]);
+
+	
+	
+
+
 
 	return (
 		<div
