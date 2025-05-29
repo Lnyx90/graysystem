@@ -79,11 +79,11 @@ function GameBackpack({ unlockedItems }) {
 										alt={currentItem.name}
 										className='w-14 sm:w-16 md:w-20 h-auto mx-auto mb-1'
 									/>
-									<span className='text-[3vw] sm:text-[2vw] md:text-[1.3vw] text-black'>
+									<span className='text-[1.7vw] sm:text-[1.5vw] md:text-[1vw] text-black'>
 										{currentItem.name}
 									</span>
 									{!isUnlocked && (
-										<div className='text-[2vw] sm:text-[1.5vw] text-red-500 mt-1'>
+										<div className='text-[1.5vw] sm:text-[1vw] text-red-500 mt-1'>
 											Locked
 										</div>
 									)}
