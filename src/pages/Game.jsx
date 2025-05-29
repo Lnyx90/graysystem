@@ -697,7 +697,7 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 				playerPosition.x === 2580 &&
 				playerPosition.y === 620
 			) {
-				setActions(['Buy Sandal', 'Buy Fishing Rod', 'Buy Bait']);
+				setActions(['Buy Bucket', 'Buy Fishing Rod', 'Buy Bait']);
 				setLocationText('Welcome to Bites Shop');
 
 			} else if (playerPosition.x === 3220 && playerPosition.y === 1500) {
@@ -794,8 +794,8 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 				playerPosition.x <= 1380 &&
 				playerPosition.y === 1100
 			) {
-				setActions(['Buy Sandcastle Bucket', 'Drink Tropical Juice', 'Chit Chat']);
-				setLocationText(['You are near a Seaside Restaurant']);
+				setActions(['Buy Sandcastle Bucket', 'Drink Tropical Juice', 'Buy Sandals']);
+				setLocationText(['You are near a Seaside Shop']);
 			} else if (
 				playerPosition.x >= 2619 &&
 				playerPosition.x <= 4659 &&
