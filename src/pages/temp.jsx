@@ -18,6 +18,21 @@ function Game() {
 	const playerStatus = Status.player;
 	const [playerSize, setPlayerSize] = useState(65);
 
+	//Movement
+	const moveIntervalRef = useRef(null);
+	function startMoving(direction) {
+		if (moveIntervalRef.current) return;
+
+		moveIntervalRef.current = setInterval(() => {
+			movePlayer(direction);
+		}, 25);
+	}
+
+	function stopMoving() {
+		clearInterval(moveIntervalRef.current);
+		moveIntervalRef.current = null;
+	}
+
 	//Date
 	const { gameTime, formattedDate, formattedTime, greeting } = useGameTime(10);
 
@@ -28,6 +43,12 @@ function Game() {
 	};
 
 	//Money
+	const [money, setMoney] = useState(1000);
+
+	const rupiah = new Intl.NumberFormat('id-ID', {
+		style: 'currency',
+		currency: 'IDR',
+	}).format(money);
 
 	//Position, Step & Location
 	const [locationText, setLocationText] = useState('');
@@ -64,11 +85,11 @@ function Game() {
 	const width = window.innerWidth;
 
 	const mapImages = {
-		default: '/images/background/map.png',
-		lake: '/images/background/lake.jpg',
-		beach: '/images/background/beach.gif',
-		mountain: '/images/background/mountain.jpeg',
-		temple: '/images/background/temple.jpg',
+		default: '/images/background/GameDefaultMap.png',
+		lake: '/images/background/GameLakeMap.jpg',
+		beach: '/images/background/GameBeach.gif',
+		mountain: '/images/background/GameMountainMap.jpeg',
+		temple: '/images/background/GameTempleMap.jpg',
 	};
 
 	if (width >= 1440) {
@@ -193,6 +214,23 @@ function Game() {
 		});
 	}, []);
 
+	function movePlayer(direction) {
+		setPlayerPosition((prev) => {
+			let { x, y } = prev;
+			const step = 20;
+
+			if (direction === 'right') x += step;
+			if (direction === 'left') x -= step;
+			if (direction === 'up') y -= step;
+			if (direction === 'down') y += step;
+
+			x = Math.max(minX, Math.min(x, maxX));
+			y = Math.max(minY, Math.min(y, maxY));
+
+			return { x, y };
+		});
+	}
+
 	useEffect(() => {
 		if (!showWelcomePopup) {
 			const handleKeyDown = (e) => {
@@ -200,10 +238,10 @@ function Game() {
 					let { x, y } = prev;
 					const step = 20;
 
-					if (e.key === 'ArrowRight') x += step;
-					if (e.key === 'ArrowLeft') x -= step;
-					if (e.key === 'ArrowUp') y -= step;
-					if (e.key === 'ArrowDown') y += step;
+					if (e.key === 'ArrowRight') movePlayer('right');
+					if (e.key === 'ArrowLeft') movePlayer('left');
+					if (e.key === 'ArrowUp') movePlayer('up');
+					if (e.key === 'ArrowDown') movePlayer('down');
 
 					x = Math.max(minX, Math.min(x, maxX));
 					y = Math.max(minY, Math.min(y, maxY));
@@ -355,7 +393,6 @@ function Game() {
 
 	useEffect(() => {
 		if (currentMap === 'default') {
-			// Lake entry zone
 			if (
 				playerPosition.x >= 3540 &&
 				playerPosition.x <= 4790 &&
@@ -366,50 +403,138 @@ function Game() {
 				setPlayerPosition({ x: 100, y: 100 });
 				setActions([]);
 				setLocationText('Welcome to Lake Toba');
-			}
-			// Beach entry zone
-			else if (
-				playerPosition.x >= 510 &&
-				playerPosition.x <= 610 &&
-				playerPosition.y >= 900 &&
-				playerPosition.y <= 1170
+			} else if (
+				playerPosition.x >= 0 &&
+				playerPosition.x <= 1300 &&
+				playerPosition.y >= 1640 &&
+				playerPosition.y <= 2350
 			) {
 				setCurrentMap('beach');
 				setPlayerPosition({ x: 100, y: 100 });
 				setActions([]);
 				setLocationText('Welcome to Kuta Beach');
-			}
-			//Mountain entry zone
-			else if (
-				playerPosition.x >= 490 &&
-				playerPosition.x <= 510 &&
-				playerPosition.y >= 390 &&
-				playerPosition.y <= 410
+			} else if (
+				playerPosition.x >= 400 &&
+				playerPosition.x <= 1700 &&
+				playerPosition.y >= 0 &&
+				playerPosition.y <= 760
 			) {
 				setCurrentMap('mountain');
 				setPlayerPosition({ x: 100, y: 100 });
 				setActions([]);
 				setLocationText('Welcome to the Mountain');
-			}
-			// Temple entry zone
-			else if (
-				playerPosition.x >= 1440 &&
-				playerPosition.x <= 1460 &&
-				playerPosition.y >= 340 &&
-				playerPosition.y <= 360
+			} else if (
+				playerPosition.x >= 3060 &&
+				playerPosition.x <= 3420 &&
+				playerPosition.y >= 780 &&
+				playerPosition.y <= 1000
 			) {
 				setCurrentMap('temple');
 				setPlayerPosition({ x: 100, y: 100 });
 				setActions([]);
 				setLocationText('Welcome to the Borobudur Temple');
 			}
-		}
-	}, [playerPosition, currentMap]);
+		} else if (currentMap === 'lake') {
+			if (
+				playerPosition.x >= 740 &&
+				playerPosition.x <= 900 &&
+				playerPosition.y === 260
+			) {
+				setCurrentMap('home');
+				setPlayerPosition({ x: 100, y: 100 });
+				setActions([]);
+				setLocationText('Welcome Home');
+			} else if (
+				playerPosition.x >= 2460 &&
+				playerPosition.x <= 2700 &&
+				playerPosition.y === 540
+			) {
+				setActions(["Eat Snacks","Drink Coffee","Write Travel Journal"]);
+				setLocationText("Welcome to Bites Shop");
+			} else if (playerPosition.x === 3260 && playerPosition.y === 1530) {
+				setActions(['Rent a Boat', 'Rent speedboat']);
+				setLocationText('Welcome to Dockside shop');
+			} else if (
+				playerPosition.x >= 2700 &&
+				playerPosition.x <= 2860 &&
+				playerPosition.y >= 2050 &&
+				playerPosition.y <= 2410
+			) {
+				setActions(['Sightseeing', 'Fishing', 'Take a Picture']);
+				setLocationText(['You are at fishing dock']);
+			} else {
+				setActions([]);
+			}
+		} else if (currentMap === 'temple') {
+			if (
+				playerPosition.x >= 1740 &&
+				playerPosition.x <= 2180 &&
+				playerPosition.y === 2180
+			) {
+				setActions([
+					'Buy Souvenir',
+					'Rent a Traditional Outfit',
+					'Take a Picture',
+				]);
+				setLocationText(['You are near a shop']);
+			} else if (
+				playerPosition.x >= 3940 &&
+				playerPosition.x <= 4220 &&
+				playerPosition.y === 940
+			) {
+				setActions(['Visit Museum']);
+				setLocationText(['You are at the temple']);
+			} else if (
+				playerPosition.x >= 3940 &&
+				playerPosition.x <= 4220 &&
+				playerPosition.y === 940
+			) {
+				setActions([
+					'Meditate',
+					'Observing Borobudur',
+					'Fly a Lanttern',
+					'Attend a Ceremony',
+				]);
+			}else{
+				setActions([]);
+			}
+		}else if (currentMap === 'beach') {
+			if (
+				playerPosition.x >= 1299 &&
+				playerPosition.x <= 1380 &&
+				playerPosition.y === 1100
+			) {
+				setActions([
+					'Eat Seafood',
+					'Drink Tropical Juice',
+					'Chit Chat',
+				]);
+				setLocationText(['You are near a Seaside Restaurant']);
+			} else if (
+				playerPosition.x >= 2619 &&
+				playerPosition.x <= 4659 &&
+				playerPosition.y === 1540
+			) {
+				setActions(['Take Picture','Learn Coral Ecosystem','Observe Small Marine Life']);
+				setLocationText(['You are at the Beach']);
+			} else if (
+				playerPosition.x >= 4059 &&
+				playerPosition.x <= 4139 &&
+				playerPosition.y <= 2020 &&
+				playerPosition.y >= 1860
+			) {
+				setActions([
+					'Tanning',
+					'Build Sandcastles',
+					'Seashell Hunt',
+					'Sightseeing',
+				]);
+			}else{
+				setActions([]);
+			}
+		}}, [playerPosition, currentMap]);
 
 	//Collision
-
-	//Movement
-	const [position, setPosition] = useState({ x: 0, y: 0 });
 
 	return (
 		<div
@@ -432,6 +557,74 @@ function Game() {
 						X: {playerPosition.x}, Y: {playerPosition.y}
 					</div>
 
+					<div className='w-fit h-fit m-2 mt-12 p-2 text-[6px] md:text-[10px] rounded-lg fixed bg-white z-10'>
+						{rupiah}
+					</div>
+
+					<div className=' m-2 mt-68 p-2 rounded-lg fixed grid grid-cols-3 grid-rows-3 z-10'>
+						<div className='col-span-3 flex justify-center items-center '>
+							<button
+								onMouseDown={() => startMoving('up')}
+								onMouseUp={stopMoving}
+								onMouseLeave={stopMoving}
+								onTouchStart={() => startMoving('up')}
+								onTouchEnd={stopMoving}
+							>
+								<img
+									className='w-4 md:w-6 lg:w-8	'
+									src='/images/symbol/top.png'
+								/>
+							</button>
+						</div>
+
+						<div className='flex justify-center items-center -rotate-90'>
+							<button
+								onMouseDown={() => startMoving('left')}
+								onMouseUp={stopMoving}
+								onMouseLeave={stopMoving}
+								onTouchStart={() => startMoving('left')}
+								onTouchEnd={stopMoving}
+							>
+								<img
+									className='w-4 md:w-6 lg:w-8'
+									src='/images/symbol/top.png'
+								/>
+							</button>
+						</div>
+
+						<div></div>
+
+						<div className='flex justify-center items-center rotate-90'>
+							<button
+								onMouseDown={() => startMoving('right')}
+								onMouseUp={stopMoving}
+								onMouseLeave={stopMoving}
+								onTouchStart={() => startMoving('right')}
+								onTouchEnd={stopMoving}
+							>
+								<img
+									className='w-4 md:w-6 lg:w-8'
+									src='/images/symbol/top.png'
+								/>
+							</button>
+						</div>
+
+						<div className='col-span-3 flex justify-center items-center rotate-180'>
+							<button
+								onMouseDown={() => startMoving('down')}
+								onMouseUp={stopMoving}
+								onMouseLeave={stopMoving}
+								onTouchStart={() => startMoving('down')}
+								onTouchEnd={stopMoving}
+							>
+								<img
+									className='w-4 md:w-6 lg:w-8'
+									src='/images/symbol/top.png'
+								/>
+							</button>
+						</div>
+					</div>
+
 					<div className='w-full h-full rounded-lg relative overflow-hidden'>
 						<div
 							id='map'
@@ -439,18 +632,7 @@ function Game() {
 							style={{
 								width: `${mapWidth}px`,
 								height: `${mapHeight}px`,
-								backgroundImage:
-									currentMap === 'default'
-										? "url('/images/background/map.png')"
-										: currentMap === 'lake'
-										? "url('/images/background/lake.jpg')"
-										: currentMap === 'beach'
-										? "url('/images/background/beach.gif')"
-										: currentMap === 'temple'
-										? "url('/images/background/temple.jpg')"
-										: currentMap === 'mountain'
-										? "url('/images/background/mountain.jpeg')"
-										: 'none',
+								backgroundImage: `url(${mapImages[currentMap]})`,
 								transform: `translate(${-offsetX}px, ${-offsetY}px)`,
 								transition: 'transform 0.1s ease-out',
 							}}

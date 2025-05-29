@@ -8,7 +8,9 @@ import GameSideBar from '../components/GameSideBar';
 import useGameTime from '../hooks/GameTime';
 import Status from '../hooks/GameStats';
 import { getActionData, goBackToMainMap } from '../hooks/GameMapLocation';
+import { performActions } from '../hooks/GameUpdateStat';
 import '../components/GameInventory';
+
 import '../styles/Game.css';
 import GameInventory from '../components/GameInventory';
 
@@ -16,8 +18,151 @@ function Game() {
 	//Player
 	const [player, setPlayer] = useState({ name: '', image: '' });
 	const [imageLoaded, setImageLoaded] = useState(false);
-	const playerStatus = Status.player;
 	const [playerSize, setPlayerSize] = useState(65);
+
+	const [playerStatus, setPlayerStatus] = useState([
+		{ id: 'hunger', value: 50, color: 'bg-red-500' },
+		{ id: 'energy', value: 50, color: 'bg-yellow-300' },
+		{ id: 'hygiene', value: 50, color: 'bg-blue-400' },
+		{ id: 'happiness', value: 50, color: 'bg-pink-400' },
+	]);
+
+	const updateState = (key, delta) => {
+		setPlayerStatus((prev) =>
+			prev.map((stat) =>
+				stat.id === key
+					? { ...stat, value: Math.max(0, Math.min(100, stat.value + delta)) }
+					: stat
+			)
+		);
+	};
+
+	const performActions = (action) => {
+		switch (typeof action === 'string' ? action : action.label) {
+			case 'Enjoy the View':
+			case 'Capture the Moment':
+			case 'Take a Picture':
+			case 'Sightseeing':
+			case 'Observing Borobudur':
+			case 'Fly a Lantern':
+			case 'Attend a Ceremony':
+				updateState('happiness', +15);
+				updateState('energy', -5);
+				break;
+
+			case 'Rest & Eat Snacks':
+			case 'Eat Snacks':
+				updateState('hunger', -20);
+				updateState('energy', +10);
+				updateState('hygiene', -2);
+				break;
+
+			case 'Eat Seafood':
+				updateState('hunger', -25);
+				updateState('energy', +15);
+				updateState('happiness', +5);
+				break;
+
+			case 'Drink Coffee':
+				updateState('energy', +25);
+				updateState('hunger', -5);
+				break;
+
+			case 'Drink Tropical Juice':
+				updateState('energy', +20);
+				updateState('hygiene', +2);
+				break;
+
+			case 'Write Travel Journal':
+			case 'Hiking Journaling':
+				updateState('happiness', +10);
+				break;
+
+			case 'Chit Chat':
+			case 'Talk to Fellow Campers':
+				updateState('happiness', +15);
+				updateState('energy', -3);
+				break;
+
+			case 'Buy Souvenir':
+				updateState('happiness', +10);
+				updateState('energy', -2);
+				break;
+
+			case 'Rent a Traditional Outfit':
+				updateState('happiness', +15);
+				updateState('energy', -5);
+				break;
+
+			case 'Hiking':
+				updateState('energy', -20);
+				updateState('happiness', +15);
+				updateState('hunger', +10);
+				break;
+
+			case 'Fishing':
+				updateState('hunger', -15);
+				updateState('happiness', +10);
+				updateState('energy', -10);
+				break;
+
+			case 'Collect Firewood':
+				updateState('energy', -15);
+				break;
+
+			case 'Build Campfire':
+			case 'Build a Campfire':
+				updateState('energy', -15);
+				updateState('happiness', +10);
+				break;
+
+			case 'Set Up Tent':
+				updateState('energy', -10);
+				updateState('hygiene', -3);
+				break;
+
+			case 'Cook Food':
+				updateState('hunger', -30);
+				updateState('energy', -5);
+				break;
+
+			case 'Observe Nature':
+			case 'Learn Coral Ecosystem':
+			case 'Observe Small Marine Life':
+				updateState('happiness', +20);
+				updateState('energy', -5);
+				updateState('hygiene', +5);
+				break;
+
+			case 'Gather Spring Water':
+				updateState('hygiene', +15);
+				updateState('energy', -3);
+				break;
+
+			case 'Tanning':
+				updateState('happiness', +10);
+				updateState('hygiene', -5);
+				break;
+
+			case 'Build Sandcastles':
+				updateState('happiness', +12);
+				updateState('energy', -5);
+				break;
+
+			case 'Seashell Hunt':
+				updateState('happiness', +15);
+				updateState('energy', -7);
+				break;
+
+			case 'Visit Museum':
+				updateState('happiness', +8);
+				updateState('energy', -5);
+				break;
+
+			default:
+				break;
+		}
+	};
 
 	//Movement
 	const moveIntervalRef = useRef(null);
@@ -442,6 +587,7 @@ function Game() {
 				setPlayerPosition({ x: 100, y: 100 });
 				setActions([]);
 				setLocationText('Welcome to the Borobudur Temple');
+			} else if (playerPosition.x === 2500 && playerPosition.y === 1500) {
 			}
 		} else if (currentMap === 'lake') {
 			if (
@@ -458,8 +604,12 @@ function Game() {
 				playerPosition.x <= 2700 &&
 				playerPosition.y === 540
 			) {
-				setActions(["Eat Snacks","Drink Coffee","Write Travel Journal"]);
-				setLocationText("Welcome to Bites Shop");
+				setActions([
+					{ id: 'eat-snacks', label: 'Eat Snacks' },
+					{ id: 'drink-coffee', label: 'Drink Coffee' },
+					{ id: 'write-journal', label: 'Write Journal' },
+				]);
+				setLocationText('Welcome to Bites Shop');
 			} else if (playerPosition.x === 3260 && playerPosition.y === 1530) {
 				setActions(['Rent a Boat', 'Rent speedboat']);
 				setLocationText('Welcome to Dockside shop');
@@ -545,27 +695,27 @@ function Game() {
 					'Fly a Lanttern',
 					'Attend a Ceremony',
 				]);
-			}else{
+			} else {
 				setActions([]);
 			}
-		}else if (currentMap === 'beach') {
+		} else if (currentMap === 'beach') {
 			if (
 				playerPosition.x >= 1299 &&
 				playerPosition.x <= 1380 &&
 				playerPosition.y === 1100
 			) {
-				setActions([
-					'Eat Seafood',
-					'Drink Tropical Juice',
-					'Chit Chat',
-				]);
+				setActions(['Eat Seafood', 'Drink Tropical Juice', 'Chit Chat']);
 				setLocationText(['You are near a Seaside Restaurant']);
 			} else if (
 				playerPosition.x >= 2619 &&
 				playerPosition.x <= 4659 &&
 				playerPosition.y === 1540
 			) {
-				setActions(['Take Picture','Learn Coral Ecosystem','Observe Small Marine Life']);
+				setActions([
+					'Take Picture',
+					'Learn Coral Ecosystem',
+					'Observe Small Marine Life',
+				]);
 				setLocationText(['You are at the Beach']);
 			} else if (
 				playerPosition.x >= 4059 &&
@@ -579,7 +729,7 @@ function Game() {
 					'Seashell Hunt',
 					'Sightseeing',
 				]);
-			}else{
+			} else {
 				setActions([]);
 			}
 		}
@@ -749,6 +899,7 @@ else if (currentMap === 'home') {
 					setPlayerPosition={setPlayerPosition}
 					setActions={setActions}
 					setLocationText={setLocationText}
+					performActions={performActions}
 				/>
 			</div>
 			<GameInventory />

@@ -11,6 +11,7 @@ function GameSideBar(props) {
 		setPlayerPosition,
 		setActions,
 		setLocationText,
+		performActions,
 	} = props;
 
 	function handleBackToMainMap() {
@@ -75,9 +76,12 @@ function GameSideBar(props) {
 					) : (
 						actionData.map(function (action) {
 							return (
-								<div className='flex justify-between items-center'>
+								<div
+									key={action.id}
+									className='flex justify-between items-center'
+								>
 									<button
-										key={action.key}
+										onClick={() => performActions(action.label || action)}
 										className='h-fit w-9/10 p-1 mx-auto text-white text-[7px] md:text-xs lg:text-base rounded-lg bg-blue-500 hover:bg-blue-700'
 									>
 										{action.label}
