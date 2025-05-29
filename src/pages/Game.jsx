@@ -1,4 +1,4 @@
-import React, { useEffect, useImperativeHandle, useState, useRef} from 'react';
+import React, { useEffect, useImperativeHandle, useState, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import GameTitleBar from '../components/GameTitleBar';
@@ -14,10 +14,15 @@ function Game() {
 	//Player
 	const location = useLocation();
 	const navigate = useNavigate();
-	const [player, setPlayer] = useState({ name: '', base: '', direction: 'down' });
+	const [player, setPlayer] = useState({
+		name: '',
+		base: '',
+		direction: 'down',
+	});
 	const [imageLoaded, setImageLoaded] = useState(false);
 	const [playerSize, setPlayerSize] = useState(65);
-	const { difficulty: initialDifficulty, hearts: initialHearts } = location.state || {};
+	const { difficulty: initialDifficulty, hearts: initialHearts } =
+		location.state || {};
 	const [difficulty, setDifficulty] = useState(initialDifficulty || null);
 	const [hearts, setHearts] = useState(initialHearts || 0);
 
@@ -25,7 +30,7 @@ function Game() {
 		{ id: 'hunger', value: 50, color: 'bg-red-500' },
 		{ id: 'energy', value: 50, color: 'bg-yellow-300' },
 		{ id: 'hygiene', value: 50, color: 'bg-blue-400' },
-		{ id: 'happiness', value: 50, color: 'bg-pink-400' },
+		{ id: 'happiness', value: 50, color: 'bg-pink-400' },
 	];
 	const [playerStatus, setPlayerStatus] = useState([
 		{ id: 'hunger', value: 50, color: 'bg-red-500' },
@@ -44,248 +49,351 @@ function Game() {
 		);
 	};
 
-
-
-
-
-//Activites
-	const activityInterval = useRef(null); 
+	//Activites
+	const activityInterval = useRef(null);
 	const [currentActivity, setCurrentActivity] = useState(null);
 	const [activityInProgress, setActivityInProgress] = useState(false);
 
 	const [unlockedItems, setUnlockedItems] = useState([]);
-	const unlockItem = (itemName) => {
-		setUnlockedItems((prev) =>
-			prev.includes(itemName) ? prev : [...prev, itemName]
-		);
+	const unlockItem = (name) => {
+		setUnlockedItems((prev) => (prev.includes(name) ? prev : [...prev, name]));
 	};
 
 	//popup
 	const [bathPopup, setBathPopup] = useState({
-  show: false,
-  message: "Bath Time!"
+		show: false,
+		message: 'Bath Time!',
 	});
 
 	const showBathPopup = () => {
-	setBathPopup({ show: true, message: "Bath Time!" });
-	setTimeout(() => setBathPopup({ show: false, message: "" }), 3000);
+		setBathPopup({ show: true, message: 'Bath Time!' });
+		setTimeout(() => setBathPopup({ show: false, message: '' }), 3000);
 	};
 
 	const timedActions = {
-  'Enjoy the View': { duration: 2000, effects: { happiness: +15, energy: -5 } },
-  'Capture the Moment': { duration: 2000, effects: { happiness: +15, energy: -5 } },
-  'Take a Picture': { duration: 2000, effects: { happiness: +15, energy: -5 } },
-  'Sightseeing': { duration: 2000, effects: { happiness: +15, energy: -5 } },
-  'Observing Borobudur': { duration: 2000, effects: { happiness: +15, energy: -5 } },
-  'Fly a Lantern': { duration: 2000, effects: { happiness: +15, energy: -5 } },
-  'Attend a Ceremony': { duration: 2000, effects: { happiness: +15, energy: -5 } },
+		'Enjoy the View': {
+			duration: 2000,
+			effects: { happiness: +15, energy: -5 },
+		},
+		'Capture the Moment': {
+			duration: 2000,
+			effects: { happiness: +15, energy: -5 },
+		},
+		'Take a Picture': {
+			duration: 2000,
+			effects: { happiness: +15, energy: -5 },
+		},
+		Sightseeing: { duration: 2000, effects: { happiness: +15, energy: -5 } },
+		'Observing Borobudur': {
+			duration: 2000,
+			effects: { happiness: +15, energy: -5 },
+		},
+		'Fly a Lantern': {
+			duration: 2000,
+			effects: { happiness: +15, energy: -5 },
+		},
+		'Attend a Ceremony': {
+			duration: 2000,
+			effects: { happiness: +15, energy: -5 },
+		},
+		'Rest & Eat Snacks': {
+			duration: 2000,
+			effects: { hunger: +20, energy: +10, hygiene: -2 },
+		},
+		'Eat Snacks': {
+			duration: 2000,
+			effects: { hunger: +20, energy: +10, hygiene: -2 },
+		},
+		'Eat Seafood': {
+			duration: 3000,
+			effects: { hunger: +25, energy: +15, happiness: +5 },
+		},
+		'Buy Fishing Rod': {
+			duration: 1000,
+			effects: { happiness: +10 },
+			cost: 150,
+			unlock: 'Fishing Rod',
+		},
+		'Become Cashier': {
+			duration: 2000,
+			effects: { happiness: +10, energy: -3 },
+			earnings: 1000,
+		},
+		'Write Travel Journal': { duration: 2000, effects: { happiness: +10 } },
+		'Hiking Journaling': { duration: 2000, effects: { happiness: +10 } },
+		'Buy Bucket': {
+			duration: 1000,
+			effects: { happiness: +10, energy: -3 },
+			cost: 100,
+			unlock: 'Bucket',
+		},
+		'Buy Bait': {
+			duration: 1000,
+			effects: { happiness: +10, energy: -3 },
+			cost: 50,
+			unlock: 'Bait',
+		},
+		'Buy Sandcastle Bucket': {
+			duration: 1000,
+			effects: { happiness: +10, energy: -3 },
+			cost: 120,
+			unlock: 'Sand Bucket',
+		},
+		'Buy Sandals': {
+			duration: 1000,
+			effects: { happiness: +10, energy: -3 },
+			cost: 200,
+			unlock: 'Sandal',
+		},
+		'Talk to Fellow Campers': {
+			duration: 2000,
+			effects: { happiness: +15, energy: -3 },
+		},
+		'Buy Souvenir': {
+			duration: 1000,
+			effects: { happiness: +10, energy: -2 },
+			cost: 80,
+		},
+		'Buy Magnifying Glass': {
+			duration: 1000,
+			effects: { happiness: +15, energy: -5 },
+			cost: 250,
+			unlock: 'Magnifying Glass',
+		},
+		'Buy Journal': {
+			duration: 1000,
+			effects: { happiness: +15, energy: -5 },
+			cost: 180,
+			unlock: 'Journal',
+		},
+		'Buy Drink': {
+			duration: 1000,
+			effects: { happiness: +10, energy: -5 },
+			cost: 50,
+		},
+		'Buy Binoculars': {
+			duration: 1000,
+			effects: { happiness: +15, energy: -5 },
+			cost: 350,
+		},
+		Hiking: {
+			duration: 3000,
+			effects: { energy: -20, happiness: +15, hunger: -10 },
+		},
+		Fishing: {
+			duration: 3000,
+			effects: { hunger: -15, happiness: +10, energy: -10 },
+		},
+		'Rent a Boat': { duration: 3000, effects: { happiness: +20, energy: -10 } },
+		'Become a Tour Guide': {
+			duration: 3000,
+			effects: { happiness: +25, energy: -15 },
+			earnings: 5000,
+		},
+		'Collect Firewood': {
+			duration: 2000,
+			effects: { energy: -15 },
+			unlock: 'Wood',
+		},
+		'Build Campfire': {
+			duration: 2000,
+			effects: { energy: -15, happiness: +10 },
+		},
+		'Build a Campfire': {
+			duration: 2000,
+			effects: { energy: -15, happiness: +10 },
+		},
+		'Set Up Tent': { duration: 2000, effects: { energy: -10, hygiene: -3 } },
+		'Cook Food': { duration: 3000, effects: { hunger: +30, energy: -5 } },
+		'Observe Nature': {
+			duration: 2000,
+			effects: { happiness: +20, energy: -5, hygiene: +5 },
+		},
+		'Learn Coral Ecosystem': {
+			duration: 2000,
+			effects: { happiness: +20, energy: -5, hygiene: +5 },
+		},
+		'Observe Small Marine Life': {
+			duration: 2000,
+			effects: { happiness: +20, energy: -5, hygiene: +5 },
+		},
+		'Gather Spring Water': {
+			duration: 2000,
+			effects: { hygiene: +15, energy: -3 },
+		},
+		Tanning: { duration: 2000, effects: { happiness: +10, hygiene: -5 } },
+		'Build Sandcastles': {
+			duration: 2000,
+			effects: { happiness: +12, energy: -5 },
+		},
+		'Seashell Hunt': {
+			duration: 2000,
+			effects: { happiness: +15, energy: -7 },
+		},
+		'Visit Museum': { duration: 2000, effects: { happiness: +8, energy: -5 } },
+		Eat: { duration: 3000, effects: { hunger: +30, energy: +10, hygiene: -5 } },
+		Sleep: {
+			duration: 4000,
+			effects: { energy: +50, hygiene: -10, happiness: +10 },
+		},
+		Bath: { duration: 2000, effects: { hygiene: +30 } },
+	};
 
-  'Rest & Eat Snacks': { duration: 2000, effects: { hunger: +20, energy: +10, hygiene: -2 } },
-  'Eat Snacks': { duration: 2000, effects: { hunger: +20, energy: +10, hygiene: -2 } },
-  'Eat Seafood': { duration: 3000, effects: { hunger: +25, energy: +15, happiness: +5 } },
+	useEffect(() => {
+		const interval = setInterval(() => {
+			setPlayerStatus((prevStatus) =>
+				prevStatus.map((stat) => {
+					let newValue = stat.value;
 
-  'Buy Fishing Rod': { duration: 1000, effects: { happiness: +10 }, cost: 150 },
-  'Become Cashier': { duration: 2000, effects: { happiness: +10, energy: -3 }, earnings: 1000 },
+					switch (stat.id) {
+						case 'hunger':
+							newValue = Math.max(0, stat.value - 1);
+							break;
+						case 'energy':
+							newValue = Math.max(0, stat.value - 2);
+							break;
+						case 'happiness':
+							newValue = Math.max(0, stat.value - 1);
+							break;
+						case 'hygiene':
+							newValue = Math.max(0, stat.value - 1);
+							break;
+						default:
+							break;
+					}
 
-  'Write Travel Journal': { duration: 2000, effects: { happiness: +10 } },
-  'Hiking Journaling': { duration: 2000, effects: { happiness: +10 } },
+					return { ...stat, value: newValue };
+				})
+			);
+		}, 8000);
 
-  'Buy Bucket': { duration: 1000, effects: { happiness: +10, energy: -3 }, cost: 100 },
-  'Buy Bait': { duration: 1000, effects: { happiness: +10, energy: -3 }, cost: 50 },
-  'Buy Sandcastle Bucket': { duration: 1000, effects: { happiness: +10, energy: -3 }, cost: 120 },
-  'Buy Sandals': { duration: 1000, effects: { happiness: +10, energy: -3 }, cost: 200 },
-  'Talk to Fellow Campers': { duration: 2000, effects: { happiness: +15, energy: -3 } },
+		return () => clearInterval(interval);
+	}, []);
 
-  'Buy Souvenir': { duration: 1000, effects: { happiness: +10, energy: -2 }, cost: 80 },
-  'Buy Magnifying Glass': { duration: 1000, effects: { happiness: +15, energy: -5 }, cost: 250 },
-  'Buy Journal': { duration: 1000, effects: { happiness: +15, energy: -5 }, cost: 180 },
-  'Buy Drink': { duration: 1000, effects: { happiness: +10, energy: -5 }, cost: 50 },
-  'Buy Binoculars': { duration: 1000, effects: { happiness: +15, energy: -5 }, cost: 350 },
+	const [deathPopup, setDeathPopup] = useState({ show: false, message: '' });
+	const [isDead, setIsDead] = useState(false);
 
-  'Hiking': { duration: 3000, effects: { energy: -20, happiness: +15, hunger: -10 } },
-  'Fishing': { duration: 3000, effects: { hunger: -15, happiness: +10, energy: -10 } },
-  'Rent a Boat': { duration: 3000, effects: { happiness: +20, energy: -10 } },
-  'Become a Tour Guide': { duration: 3000, effects: { happiness: +25, energy: -15 }, earnings: 5000 },
+	useEffect(() => {
+		if (initialDifficulty && initialHearts) {
+			setDifficulty(initialDifficulty);
+			setHearts(initialHearts);
+		}
+	}, [initialDifficulty, initialHearts]);
 
-  'Collect Firewood': { duration: 2000, effects: { energy: -15 } },
-  'Build Campfire': { duration: 2000, effects: { energy: -15, happiness: +10 } },
-  'Build a Campfire': { duration: 2000, effects: { energy: -15, happiness: +10 } },
-  'Set Up Tent': { duration: 2000, effects: { energy: -10, hygiene: -3 } },
+	useEffect(() => {
+		console.log('Checking death:', playerStatus, hearts);
+		if (!difficulty || isDead) return;
 
-  'Cook Food': { duration: 3000, effects: { hunger: +30, energy: -5 } },
-  'Observe Nature': { duration: 2000, effects: { happiness: +20, energy: -5, hygiene: +5 } },
-  'Learn Coral Ecosystem': { duration: 2000, effects: { happiness: +20, energy: -5, hygiene: +5 } },
-  'Observe Small Marine Life': { duration: 2000, effects: { happiness: +20, energy: -5, hygiene: +5 } },
+		const dead = playerStatus.some((stat) => stat.value === 0);
+		if (!dead) return;
 
-  'Gather Spring Water': { duration: 2000, effects: { hygiene: +15, energy: -3 } },
-  'Tanning': { duration: 2000, effects: { happiness: +10, hygiene: -5 } },
-  'Build Sandcastles': { duration: 2000, effects: { happiness: +12, energy: -5 } },
-  'Seashell Hunt': { duration: 2000, effects: { happiness: +15, energy: -7 } },
-  'Visit Museum': { duration: 2000, effects: { happiness: +8, energy: -5 } },
+		setIsDead(true);
 
-  'Eat': { duration: 3000, effects: { hunger: +30, energy: +10, hygiene: -5 } },
-  'Sleep': { duration: 4000, effects: { energy: +50, hygiene: -10, happiness: +10 } },
-  'Bath': { duration: 2000, effects: { hygiene: +30 } },
-};
-	
-useEffect(() => {
-	const interval = setInterval(() => {
-		setPlayerStatus(prevStatus =>
-			prevStatus.map(stat => {
-				let newValue = stat.value;
-
-				switch (stat.id) {
-					case 'hunger':
-						newValue = Math.max(0, stat.value - 1); 
-						break;
-					case 'energy':
-						newValue = Math.max(0, stat.value - 2);
-						break;
-					case 'happiness':
-						newValue = Math.max(0, stat.value - 1);
-						break;
-					case 'hygiene':
-						newValue = Math.max(0, stat.value - 1);
-						break;
-					default:
-						break;
-				}
-
-				return { ...stat, value: newValue };
-			})
-		);
-	}, 8000);
-
-	return () => clearInterval(interval);
-}, []);
-
- const [deathPopup, setDeathPopup] = useState({ show: false, message: '' });
-  const [isDead, setIsDead] = useState(false);
-
-  useEffect(() => {
-  if (initialDifficulty && initialHearts) {
-    setDifficulty(initialDifficulty);
-    setHearts(initialHearts);
-  }
-}, [initialDifficulty, initialHearts]);
-
-  useEffect(() => {
-    console.log('Checking death:', playerStatus, hearts);
-    if (!difficulty || isDead) return;
-
-    const dead = playerStatus.some(stat => stat.value === 0);
-    if (!dead) return;
-
-    setIsDead(true);
-
-    if (hearts > 1) {
-      const newHearts = hearts - 1;
-      setHearts(newHearts);
-      setDeathPopup({
-        show: true,
-        message: `You died!      ❤️ Remaining hearts: ${newHearts}`,
-      }); 
-	  setTimeout(() => {
-      setPlayerStatus(defaultPlayerStatus);
-      setIsDead(false);
-    }, 2000); 
-    } else {
-      setDeathPopup({
-        show: true,
-        message: 'You died!    💀 No more hearts left.      Game Over!',
-      });
-      setTimeout(() => {
-        navigate('/dead');
-      }, 2000);
-    }
-  }, [playerStatus, hearts, difficulty, isDead, navigate]);
-
+		if (hearts > 1) {
+			const newHearts = hearts - 1;
+			setHearts(newHearts);
+			setDeathPopup({
+				show: true,
+				message: `You died!      ❤️ Remaining hearts: ${newHearts}`,
+			});
+			setTimeout(() => {
+				setPlayerStatus(defaultPlayerStatus);
+				setIsDead(false);
+			}, 2000);
+		} else {
+			setDeathPopup({
+				show: true,
+				message: 'You died!    💀 No more hearts left.      Game Over!',
+			});
+			setTimeout(() => {
+				navigate('/dead');
+			}, 2000);
+		}
+	}, [playerStatus, hearts, difficulty, isDead, navigate]);
 
 	const startTimedActivity = (activity) => {
-	if (activityInProgress) return;
+		if (activityInProgress) return;
 
+		if (activity.cost && money < activity.cost) {
+			showActionPopup('Not enough money!');
+			return;
+		}
 
-	if (activity.cost && money < activity.cost) {
-		showActionPopup("Not enough money!");
-		return;
-	}
+		const duration = activity.duration;
+		const steps = 10;
+		const intervalTime = duration / steps;
+		const deltaPerStep = {};
 
-	const duration = activity.duration;
-	const steps = 10;
-	const intervalTime = duration / steps;
-	const deltaPerStep = {};
+		if (activity.onStart) {
+			activity.onStart();
+		}
 
-	if (activity.onStart) {
-		activity.onStart();
-	}
-
-
-	Object.entries(activity.effects).forEach(([stat, totalDelta]) => {
-		deltaPerStep[stat] = totalDelta / steps;
-	});
-
-	let stepCount = 0;
-	setCurrentActivity(activity);
-	setActivityInProgress(true);
-
-	
-	if (activity.cost) {
-		setMoney((prev) => prev - activity.cost);
-		showActionPopup(`Purchased for ${rupiah(activity.cost)}`);
-	}
-
-	const intervalId = setInterval(() => {
-		Object.entries(deltaPerStep).forEach(([key, delta]) => {
-			updateStats(key, delta); 
+		Object.entries(activity.effects).forEach(([stat, totalDelta]) => {
+			deltaPerStep[stat] = totalDelta / steps;
 		});
 
-		stepCount++;
+		let stepCount = 0;
+		setCurrentActivity(activity);
+		setActivityInProgress(true);
 
-		if (stepCount >= steps) {
-			clearInterval(intervalId);
-			activityInterval.current = null;
-			setActivityInProgress(false);
-			setCurrentActivity(null);
-
-			
-			if (activity.earnings) {
-				setMoney((prev) => prev + activity.earnings);
-				showActionPopup(`Earned ${rupiah(activity.earnings)}!`);
-			}
+		if (activity.cost) {
+			setMoney((prev) => prev - activity.cost);
+			showActionPopup(`Purchased for ${rupiah(activity.cost)}`);
 		}
-	}, intervalTime);
 
-	activityInterval.current = intervalId;
-};
+		const intervalId = setInterval(() => {
+			Object.entries(deltaPerStep).forEach(([key, delta]) => {
+				updateStats(key, delta);
+			});
 
-const fastForward = () => {
-  if (!currentActivity) return;
-  
-  if (activityInterval.current) {
-    clearInterval(activityInterval.current);
-    activityInterval.current = null;
-  }
+			stepCount++;
 
-  setBathPopup({ show: false, message: "" });
-  setActionPopup({ show: false, message: "" });
+			if (stepCount >= steps) {
+				clearInterval(intervalId);
+				activityInterval.current = null;
+				setActivityInProgress(false);
+				setCurrentActivity(null);
 
+				if (activity.earnings) {
+					setMoney((prev) => prev + activity.earnings);
+					showActionPopup(`Earned ${rupiah(activity.earnings)}!`);
+				}
+			}
+		}, intervalTime);
 
-  Object.entries(currentActivity.effects).forEach(([key, delta]) => {
-    updateStats(key, delta);
-  });
+		activityInterval.current = intervalId;
+	};
 
-  setActivityInProgress(false);
-  setCurrentActivity(null);
-};
+	const fastForward = () => {
+		if (!currentActivity) return;
 
-const performActions = (action) => {
-	const label = typeof action === 'string' ? action : action.label;
+		if (activityInterval.current) {
+			clearInterval(activityInterval.current);
+			activityInterval.current = null;
+		}
 
-	if (timedActions[label]) {
-		startTimedActivity({ ...timedActions[label], label });
-		return;
-	}
-};
+		setBathPopup({ show: false, message: '' });
+		setActionPopup({ show: false, message: '' });
+
+		Object.entries(currentActivity.effects).forEach(([key, delta]) => {
+			updateStats(key, delta);
+		});
+
+		setActivityInProgress(false);
+		setCurrentActivity(null);
+	};
+
+	const performActions = (action) => {
+		const label = typeof action === 'string' ? action : action.label;
+		const timedAction = timedActions[label];
+
+		if (timedAction) {
+			if (timedAction.unlock) {
+				unlockItem(timedAction.unlock);
+			}
+			startTimedActivity({ ...timedAction, label });
+		}
+	};
 
 	//Movement
 	const moveIntervalRef = useRef(null);
@@ -326,11 +434,11 @@ const performActions = (action) => {
 	//Actions
 	const [actions, setActions] = useState([]);
 	const actionData = getActionData(actions);
-const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
-	const showActionPopup = (message) => { 
-  setActionPopup({ show: true, message });
-  setTimeout(() => setActionPopup({ show: false, message: '' }), 3000);
-	}
+	const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
+	const showActionPopup = (message) => {
+		setActionPopup({ show: true, message });
+		setTimeout(() => setActionPopup({ show: false, message: '' }), 3000);
+	};
 
 	//Map
 	let [currentMap, setCurrentMap] = useState('default');
@@ -724,10 +832,7 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 			) {
 				setActions(['Eat', 'Sleep', 'Bath']);
 				setLocationText('Welcome Home');
-			} else if (
-				playerPosition.x === 2580 &&
-				playerPosition.y === 620
-			) {
+			} else if (playerPosition.x === 2580 && playerPosition.y === 620) {
 				setActions(['Buy Bucket', 'Buy Fishing Rod', 'Buy Bait']);
 				setLocationText('Welcome to Bites Shop');
 			} else if (playerPosition.x === 3220 && playerPosition.y === 1500) {
@@ -790,11 +895,7 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 				playerPosition.x <= 2180 &&
 				playerPosition.y === 2180
 			) {
-				setActions([
-					'Buy Magnifying Glass',
-					'Buy Journal',
-					'Buy Drink',
-				]);
+				setActions(['Buy Magnifying Glass', 'Buy Journal', 'Buy Drink']);
 				setLocationText(['You are near a shop']);
 			} else if (
 				playerPosition.x >= 3940 &&
@@ -865,16 +966,16 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 				showWelcomePopup={showWelcomePopup}
 				closePopUp={closePopUp}
 			/>
-			
+
 			{actionPopup.show && (
 				<div className='fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-white text-black px-4 py-2 rounded-lg shadow-lg z-50 animate-fade'>
 					{actionPopup.message}
 				</div>
 			)}
-			
+
 			{bathPopup.show && (
-				 <div className='fixed inset-0 z-50 flex items-center justify-center pointer-events-none'>
-    			<div className='animate-popup bg-white bg-opacity-90 p-4 rounded-lg shadow-xl border-2 border-blue-300 max-w-xs text-center pointer-events-auto'>
+				<div className='fixed inset-0 z-50 flex items-center justify-center pointer-events-none'>
+					<div className='animate-popup bg-white bg-opacity-90 p-4 rounded-lg shadow-xl border-2 border-blue-300 max-w-xs text-center pointer-events-auto'>
 						<img
 							src='/images/symbol/bath.gif'
 							alt='Bathing'
@@ -886,12 +987,15 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 						<p className='text-sm text-gray-700'>
 							You feel clean and refreshed!
 						</p>
-						 
 					</div>
 				</div>
 			)}
 
-			<GameTitleBar formattedDate={formattedDate} />
+			<GameTitleBar
+				formattedDate={formattedDate}
+				unlockedItems={unlockedItems}
+				unlockItem={unlockItem}
+			/>
 
 			<GameStatusBar status={playerStatus} />
 
@@ -982,7 +1086,6 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 							}}
 						>
 							<div
-							
 								style={{
 									width: playerSize,
 									left: playerPosition.x,
@@ -1003,7 +1106,7 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 										className='self-center'
 										style={{ width: playerSize }}
 										src={`/images/characters/${player.base}_${player.direction}.png`}
-										alt="player"
+										alt='player'
 									/>
 								</div>
 							</div>
@@ -1028,19 +1131,19 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 				/>
 			</div>
 			{deathPopup.show && (
-			<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-				<div className="bg-white rounded-lg p-6 max-w-xs text-center shadow-lg">
-				<p className="text-lg font-semibold mb-2">{deathPopup.message}</p>
-				{hearts > 0 && (
-					<button
-					onClick={() => setDeathPopup({ show: false, message: '' })}
-					className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-					>
-					Continue
-					</button>
-				)}
+				<div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50'>
+					<div className='bg-white rounded-lg p-6 max-w-xs text-center shadow-lg'>
+						<p className='text-lg font-semibold mb-2'>{deathPopup.message}</p>
+						{hearts > 0 && (
+							<button
+								onClick={() => setDeathPopup({ show: false, message: '' })}
+								className='mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600'
+							>
+								Continue
+							</button>
+						)}
+					</div>
 				</div>
-			</div>
 			)}
 		</div>
 	);
