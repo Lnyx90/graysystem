@@ -165,14 +165,36 @@ function Game() {
 				 case 'Eat':
         showActionPopup('Delicious meal! Hunger satisfied.');
         updateState('hunger', +30);
-        updateState('energy', +15);
+        updateState('energy', +10);
         updateState('hygiene', -5);
         return;
+	  case 'Sleep':
+		showActionPopup('Rested well! Energy restored.');
+		updateState('energy', +50);
+		updateState('hygiene', -10);
+		updateState('happiness', +10);
+		return;
+	  case 'Bath':
+  showBathPopup();
+  updateState('hygiene', +30);
+  return;
+	 
 
 			default:
 				break;
 		}
 	};
+
+	const [bathPopup, setBathPopup] = useState({
+  show: false,
+  message: "Bath Time!"
+});
+
+const showBathPopup = () => {
+  setBathPopup({ show: true, message: "Bath Time!" });
+  setTimeout(() => setBathPopup({ show: false, message: "" }), 3000);
+};
+	
 
 	const navigate = useNavigate();
 
@@ -231,7 +253,7 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 	const showActionPopup = (message) => { 
   setActionPopup({ show: true, message });
   setTimeout(() => setActionPopup({ show: false, message: '' }), 3000);
-};
+	}
 
 
 
@@ -267,7 +289,6 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 		beach: '/images/background/GameBeach.gif',
 		mountain: '/images/background/GameMountainMap.jpeg',
 		temple: '/images/background/GameTempleMap.jpg',
-		home: '/images/background/GameHomeMap.jpeg',
 	};
 
 	if (width >= 1440) {
@@ -629,9 +650,7 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 				playerPosition.x <= 900 &&
 				playerPosition.y === 260
 			) {
-				setCurrentMap('home');
-				setPlayerPosition({ x: 100, y: 100 });
-				setActions([]);
+				setActions(['Eat', 'Sleep', 'Bath']);
 				setLocationText('Welcome Home');
 			} else if (
 				playerPosition.x === 2580 &&
@@ -762,34 +781,7 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 			} else {
 				setActions([]);
 			}
-		} 
-
-else if (currentMap === 'home') {
-  if (
-    playerPosition.x > 1850 && playerPosition.x < 1950 &&
-    playerPosition.y > 250 && playerPosition.y < 350
-  ) {
-    setActions(['Sleep']);
-    setLocationText(['This looks like a good place to rest']);
-  } else if (
-       playerPosition.x > 2750 && playerPosition.x < 2850 &&
-    playerPosition.y > 900 &&playerPosition.y < 1000
-  ) {
-		setActions(['Eat']);
-		setLocationText('You are in the kitchen');
-	  }
-  } else if (
-    playerPosition.x > 1650 && playerPosition.x < 1750 &&
-    playerPosition.y > 1100 && playerPosition.y < 1200
-  ) {
-    setActions(['Bath']);
-    setLocationText(['Time to freshen up']);
-  } else {
-    setActions([]);
-    setLocationText(['You are at home']);
-  }
-
-
+		}
 
 
 	}, [playerPosition, currentMap]);
@@ -810,6 +802,20 @@ else if (currentMap === 'home') {
 					{actionPopup.message}
 				</div>
 				)}
+				{/* Add this to your JSX */}
+{bathPopup.show && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="animate-popup bg-white bg-opacity-90 p-4 rounded-lg shadow-xl border-2 border-blue-300 max-w-xs text-center">
+      <img 
+        src="/images/symbol/bath.gif" 
+        alt="Bathing" 
+        className="w-48 h-48 mx-auto mb-2"
+      />
+      <p className="text-lg font-bold text-blue-600">{bathPopup.message}</p>
+      <p className="text-sm text-gray-700">You feel clean and refreshed!</p>
+    </div>
+  </div>
+)}
 
 
 
