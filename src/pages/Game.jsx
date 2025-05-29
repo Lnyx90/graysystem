@@ -609,17 +609,13 @@ function Game() {
 				setActions([]);
 				setLocationText('Welcome Home');
 			} else if (
-				playerPosition.x >= 2460 &&
-				playerPosition.x <= 2700 &&
-				playerPosition.y === 540
+				playerPosition.x === 2580 &&
+				playerPosition.y === 620
 			) {
-				setActions([
-					{ id: 'eat-snacks', label: 'Eat Snacks' },
-					{ id: 'drink-coffee', label: 'Drink Coffee' },
-					{ id: 'write-journal', label: 'Write Journal' },
-				]);
+				setActions(['Eat Snacks','drink-coffee', 'write-journal']);
 				setLocationText('Welcome to Bites Shop');
-			} else if (playerPosition.x === 3260 && playerPosition.y === 1530) {
+
+			} else if (playerPosition.x === 3220 && playerPosition.y === 1500) {
 				setActions(['Rent a Boat', 'Rent speedboat']);
 				setLocationText('Welcome to Dockside shop');
 			} else if (
