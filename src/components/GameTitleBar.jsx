@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-
+import GameBackpack from './GameBackpack';
 import IdentityCard from './GameIdentityCard';
-import GameBackpack from './GameBackup';
 
 function GameTitleBar({ formattedDate }) {
 	const [showCard, setShowCard] = useState(false);
@@ -16,6 +15,7 @@ function GameTitleBar({ formattedDate }) {
 				<span className='text-[9px] md:text-sm lg:text-base'>
 					Archipelago Adventure
 				</span>
+
 				<div className='flex md:mx-10 gap-2'>
 					<button
 						onClick={() => setShowCard(true)}
