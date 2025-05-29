@@ -29,16 +29,16 @@ function GameSideBar(props) {
 
   return (
     <div className="md:row-span-4 p-1 text-center rounded-lg bg-white">
-      <div className="grid grid-cols-2 gap-4 md:space-y-0 md:flex md:flex-col flex-wrap md:gap-y-2">
+      <div className="grid grid-cols-2 gap-3 md:space-y-0 md:flex md:flex-col flex-wrap md:gap-y-2">
         <div className="flex flex-col gap-1 md:gap-2 lg:gap-3">
-          <div className="text-[6px] md:text-sm lg:text-base">
+          <div className="text-[5px] md:text-xs lg:text-sm">
             {currentMap === 'default' ? "You're Lost!" : locationText}
           </div>
 
           <div className="flex items-center justify-center">
             <img
               src="/images/symbol/time.png"
-              className="w-6 md:w-8"
+              className="w-3 md:w-8"
               alt="Time Icon"
             />
             <span className="text-[6px] md:text-[10px] lg:text-[15px]">
@@ -46,19 +46,34 @@ function GameSideBar(props) {
             </span>
           </div>
 
-          <span className="text-[6px] md:text-sm lg:text-base">{greeting}</span>
+         {currentMap !== 'default' && (
+        <div className="w-full text-center">
+          <span className="block text-[5px] md:text-xs lg:text-sm">{greeting}</span>
 
-          {currentMap !== 'default' && (
-            <div>
+          <button
+            onClick={handleBackToMainMap}
+            className="mt-1 text-[4px] md:text-xs lg:text-sm px-2 py-1 w-2/3 bg-red-500 hover:bg-red-700 text-white rounded-md"
+          >
+            Back
+          </button>
+
+          {activityInProgress && (
+            <div className="mt-1">
+              <div className="text-[5px] md:text-xs lg:text-sm font-semibold animate-pulse ">
+                Doing: <br />{currentActivity?.label}
+              </div>
               <button
-                onClick={handleBackToMainMap}
-                className="h-fit w-fit p-2 text-white text-[7px] md:text-sm lg:text-base rounded-lg bg-red-500 hover:bg-red-700"
+                onClick={fastForward}
+                className="mt-1 text-[4px] md:text-xs lg:text-sm px-2 py-1 w-2/3 bg-red-500 hover:bg-red-700 text-white rounded-md"
               >
-                Back
+                Fast Forward
               </button>
             </div>
           )}
         </div>
+      )}
+        </div>
+        
 
         {currentMap === 'home' && (
           <button
@@ -81,10 +96,10 @@ function GameSideBar(props) {
             </div>
           ) : (
             actionData.map((action) => (
-              <div key={action.id} className="flex justify-between items-center">
+              <div key={action.id} className="mt-1 lg:mt-2 md:mt-3 flex justify-between items-center">
                 <button
                   onClick={() => performActions(action.label || action)}
-                  className="h-fit w-9/10 p-1 mx-auto text-white text-[7px] md:text-xs lg:text-base rounded-lg bg-blue-500 hover:bg-blue-700"
+                  className="h-fit w-9/10 p-1 mx-auto text-white  text-[5px] md:text-xs lg:text-sm rounded-lg bg-blue-500 hover:bg-blue-700"
                 >
                   {action.label}
                 </button>
@@ -92,20 +107,6 @@ function GameSideBar(props) {
             ))
           )}
 
-       
-          {activityInProgress && (
-            <div className="text-center mt-2">
-              <div className="text-xs md:text-sm font-semibold mb-1 animate-pulse">
-                Doing: {currentActivity?.label}
-              </div>
-              <button
-                onClick={fastForward}
-                className="px-3 py-1 text-xs bg-red-500 hover:bg-red-700 text-white rounded-md"
-              >
-                Fast Forward
-              </button>
-            </div>
-          )}
         </div>
       </div>
     </div>
