@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export default function useGameTime(timeSpeedMultiplier = 10) {
+export default function useGameTime(timeSpeedMultiplier = 60) {
   const [gameTime, setGameTime] = useState(new Date());
   const [greeting, setGreeting] = useState('');
   const [formattedDate, setFormattedDate] = useState('');
