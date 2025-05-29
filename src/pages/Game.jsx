@@ -10,7 +10,6 @@ import useGameTime from '../hooks/GameTime';
 import { getActionData, goBackToMainMap } from '../hooks/GameMapLocation';
 import '../styles/Game.css';
 
-//
 function Game() {
 	//Player
 	const location = useLocation();
