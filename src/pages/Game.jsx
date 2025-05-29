@@ -97,6 +97,7 @@ function Game() {
 		beach: '/images/background/GameBeach.gif',
 		mountain: '/images/background/GameMountainMap.jpeg',
 		temple: '/images/background/GameTempleMap.jpg',
+		home: '/images/background/GameHomeMap.jpeg',
 	};
 
 	if (width >= 1440) {
@@ -410,6 +411,7 @@ function Game() {
 				setPlayerPosition({ x: 100, y: 100 });
 				setActions([]);
 				setLocationText('Welcome to Lake Toba');
+
 			} else if (
 				playerPosition.x >= 0 &&
 				playerPosition.x <= 1300 &&
@@ -580,9 +582,36 @@ function Game() {
 			}else{
 				setActions([]);
 			}
-		}}, [playerPosition, currentMap]);
+		}
+else if (currentMap === 'home') {
+  if (
+    playerPosition.x > 1850 && playerPosition.x < 1950 &&
+    playerPosition.y > 250 && playerPosition.y < 350
+  ) {
+    setActions(['Sleep']);
+    setLocationText(['This looks like a good place to rest']);
+  } else if (
+       playerPosition.x === 2740 &&
+    playerPosition.y === 940
+  ) {
+    setActions(['Eat']);
+    setLocationText(['You are near the kitchen']);
+  } else if (
+    playerPosition.x > 1650 && playerPosition.x < 1750 &&
+    playerPosition.y > 1100 && playerPosition.y < 1200
+  ) {
+    setActions(['Bath']);
+    setLocationText(['Time to freshen up']);
+  } else {
+    setActions([]);
+    setLocationText(['You are at home']);
+  }
+}
 
-	//Collision
+
+	}, [playerPosition, currentMap]);
+
+
 
 	return (
 		<div
@@ -707,6 +736,8 @@ function Game() {
 						</div>
 					</div>
 				</div>
+
+				
 
 				<GameSideBar
 					currentMap={currentMap}

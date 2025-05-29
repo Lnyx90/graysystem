@@ -53,6 +53,20 @@ function GameSideBar(props) {
 					)}
 				</div>
 
+				{currentMap === 'home' && (
+						<button
+							onClick={() => {
+							setCurrentMap('lake');
+							setPosition({ x: 1050, y: 200 }); // Adjust coordinates as needed
+							setActions([]);
+							setLocationText('Welcome to Lake Toba');
+							}}
+							className='w-full mt-2 bg-green-500 hover:bg-green-700 text-white rounded-lg py-2 text-xs sm:text-sm'
+						>
+							Back to Lake Map
+						</button>
+						)}
+
 				<div className='flex flex-col gap-2'>
 					{actionData.length === 0 ? (
 						<div className='text-gray-600 text-[6px] md:text-sm lg:text-base'>
