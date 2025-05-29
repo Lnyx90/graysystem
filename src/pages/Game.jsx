@@ -4,7 +4,7 @@ import GameTitleBar from '../components/GameTitleBar';
 import GameWelcomePopup from '../components/GameWelcomePopup';
 import GameStatusBar from '../components/GameStatusBar';
 import GameSideBar from '../components/GameSideBar';
-
+import GameBackpack from '../components/GameBackpack';
 import useGameTime from '../hooks/GameTime';
 import Status from '../hooks/GameStats';
 import { getActionData, goBackToMainMap } from '../hooks/GameMapLocation';
@@ -911,6 +911,7 @@ else if (currentMap === 'home') {
 					performActions={performActions}
 				/>
 			</div>
+			
 			<GameInventory />
 		</div>
 	);

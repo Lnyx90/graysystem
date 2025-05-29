@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import GameBackpack from './GameBackpack';
 import IdentityCard from './GameIdentityCard';
 
 function GameTitleBar({ formattedDate }) {
@@ -15,12 +15,15 @@ function GameTitleBar({ formattedDate }) {
 				<span className='text-[9px] md:text-sm lg:text-base'>
 					Archipelago Adventure
 				</span>
-				<button
+				<div className='flex items-center justify-center ml-2'>
+					<button
 					onClick={() => setShowCard(true)}
-					className='md:mx-10 text-[9px] md:text-sm lg:text-base'
+					className='md:mx-10 text-[9px] md:text-sm lg:text-base mr-0'
 				>
 					Level <span>1</span>
 				</button>
+				<GameBackpack />
+				</div>
 				<div className='flex items-center'>
 					<img
 						src='/images/symbol/calendar.png'
