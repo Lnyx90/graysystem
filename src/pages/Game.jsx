@@ -128,11 +128,6 @@ function Game() {
 	'Sleep': { duration: 7000, effects: { energy: +50, hygiene: -10, happiness: +10  } },
 	'Bath': { duration: 4000, effects: { hygiene: +30 } ,onStart: showBathPopup},
 };
-
-const showBathPopup = () => {
-  setBathPopup({ show: true, message: "Bath Time!" });
-  setTimeout(() => setBathPopup({ show: false, message: "" }), 3000);
-};
 	
 useEffect(() => {
 	const interval = setInterval(() => {
@@ -164,9 +159,6 @@ useEffect(() => {
 
 	return () => clearInterval(interval);
 }, []);
-
-
-	const navigate = useNavigate();
 
  const [deathPopup, setDeathPopup] = useState({ show: false, message: '' });
   const [isDead, setIsDead] = useState(false);
