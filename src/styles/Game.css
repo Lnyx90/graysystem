@@ -17,6 +17,7 @@ body {
 #bodyBackground{
     background-image: url('/images/background/GameBackground.gif');
 }
+
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
