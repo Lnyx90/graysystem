@@ -1086,6 +1086,7 @@ function Game() {
 							}}
 						>
 							<div
+								className='text-center'
 								style={{
 									width: playerSize,
 									left: playerPosition.x,
@@ -1100,15 +1101,12 @@ function Game() {
 										'opacity 0.7s ease-out, transform 0.7s ease-out, left 0.1s, top 0.1s',
 								}}
 							>
-								<div className='flex flex-col'>
-									<p>{player.name}</p>
-									<img
-										className='self-center'
-										style={{ width: playerSize }}
-										src={`/images/characters/${player.base}_${player.direction}.png`}
-										alt='player'
-									/>
-								</div>
+								<p>{player.name}</p>
+								<img
+									className='self-center'
+									src={`/images/characters/${player.base}_${player.direction}.png`}
+									alt='player'
+								/>
 							</div>
 						</div>
 					</div>
