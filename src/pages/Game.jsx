@@ -1,4 +1,5 @@
-import React, { useEffect, useImperativeHandle, useState, useRef } from 'react';
+import React, { useEffect, useImperativeHandle, useState, useRef} from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import GameTitleBar from '../components/GameTitleBar';
 import GameWelcomePopup from '../components/GameWelcomePopup';
@@ -173,7 +174,13 @@ function Game() {
 		}
 	};
 
-	
+	const navigate = useNavigate();
+
+	React.useEffect(() => {
+		if (playerStatus.some((stat) => stat.value === 0)) {
+			navigate('/dead');
+		}
+	}, [playerStatus, navigate]);
 
 	//Movement
 	const moveIntervalRef = useRef(null);
@@ -191,10 +198,10 @@ function Game() {
 	}
 
 	const inventoryItems = [
-    { id: 1, name: 'Item 1', icon: '1' }, 
-    { id: 2, name: 'Item 2', icon: '2' },
-    { id: 3, name: 'Item 3', icon: '3' },
-  ];
+		{ id: 1, name: 'Item 1', icon: '1' },
+		{ id: 2, name: 'Item 2', icon: '2' },
+		{ id: 3, name: 'Item 3', icon: '3' },
+	];
 
 	//Date
 	const { gameTime, formattedDate, formattedTime, greeting } = useGameTime(10);
@@ -454,8 +461,8 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 
 				setPlayerSize(60);
 
-				setMinX(0);
-				setMinY(0);
+				setMinX(10);
+				setMinY(10);
 
 				setMaxX(4790);
 				setMaxY(2610);
@@ -474,8 +481,8 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 
 				setPlayerSize(60);
 
-				setMinX(0);
-				setMinY(0);
+				setMinX(10);
+				setMinY(10);
 
 				setMaxX(4310);
 				setMaxY(2500);
@@ -493,8 +500,8 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 				setVWHeight(-600);
 				setPlayerSize(60);
 
-				setMinX(0);
-				setMinY(0);
+				setMinX(10);
+				setMinY(10);
 
 				setMaxX(4110);
 				setMaxY(2490);
@@ -513,8 +520,8 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 
 				setPlayerSize(60);
 
-				setMinX(0);
-				setMinY(0);
+				setMinX(10);
+				setMinY(10);
 
 				setMaxX(4670);
 				setMaxY(2590);
@@ -528,12 +535,12 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 				setMapWidth(5000);
 				setMapHeight(3000);
 
-				setVWWidth(-4400);
+				setVWWidth(-4550);
 				setVWHeight(-2500);
 				setPlayerSize(60);
 
-				setMinX(0);
-				setMinY(0);
+				setMinX(10);
+				setMinY(10);
 
 				setMaxX(4570);
 				setMaxY(2580);
@@ -547,13 +554,13 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 				setMapWidth(5000);
 				setMapHeight(3000);
 
-				setVWWidth(-4500);
+				setVWWidth(-4650);
 				setVWHeight(-2500);
 
 				setPlayerSize(60);
 
-				setMinX(0);
-				setMinY(0);
+				setMinX(10);
+				setMinY(10);
 
 				setMaxX(4480);
 				setMaxY(2590);
@@ -584,7 +591,6 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 				setPlayerPosition({ x: 100, y: 100 });
 				setActions([]);
 				setLocationText('Welcome to Lake Toba');
-
 			} else if (
 				playerPosition.x >= 0 &&
 				playerPosition.x <= 1300 &&
@@ -631,7 +637,7 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 				playerPosition.x === 2580 &&
 				playerPosition.y === 620
 			) {
-				setActions(['Eat Snacks','drink-coffee', 'write-journal']);
+				setActions(['Eat Snacks', 'Drink Coffee', 'Write Journal']);
 				setLocationText('Welcome to Bites Shop');
 
 			} else if (playerPosition.x === 3220 && playerPosition.y === 1500) {
@@ -648,48 +654,47 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 			} else {
 				setActions([]);
 			}
-		} 
-		 else if (currentMap === 'mountain') {
+		} else if (currentMap === 'mountain') {
 			if (
-			Math.sqrt((playerPosition.x - 2460) ** 2 + (playerPosition.y - 80) ** 2) < 80
+				Math.sqrt(
+					(playerPosition.x - 2460) ** 2 + (playerPosition.y - 80) ** 2
+				) < 80
 			) {
-			setActions([
-				'Enjoy the View',
-				'Capture the Moment',
-				'Rest & Eat Snacks',
-				'Hiking Journaling'
-			]);
-			setLocationText('You are at the Mountain Peak');
-			}
-
-			else if (
-			Math.sqrt((playerPosition.x - 2460) ** 2 + (playerPosition.y - 1800) ** 2) < 120
+				setActions([
+					'Enjoy the View',
+					'Capture the Moment',
+					'Rest & Eat Snacks',
+					'Hiking Journaling',
+				]);
+				setLocationText('You are at the Mountain Peak');
+			} else if (
+				Math.sqrt(
+					(playerPosition.x - 2460) ** 2 + (playerPosition.y - 1800) ** 2
+				) < 120
 			) {
-			setActions([
-				'Hiking',
-				'Observe Nature',
-				'Collect Firewood',
-				'Gather Spring Water'
-			]);
-			setLocationText('You are on the Mountain Slope');
-			}
-
-			else if (
-			Math.sqrt((playerPosition.x - 3860) ** 2 + (playerPosition.y - 2480) ** 2) < 120
+				setActions([
+					'Hiking',
+					'Observe Nature',
+					'Collect Firewood',
+					'Gather Spring Water',
+				]);
+				setLocationText('You are on the Mountain Slope');
+			} else if (
+				Math.sqrt(
+					(playerPosition.x - 3860) ** 2 + (playerPosition.y - 2480) ** 2
+				) < 120
 			) {
-			setActions([
-				'Set Up Tent',
-				'Cook Food',
-				'Build a Campfire',
-				'Talk to Fellow Campers'
-			]);
-			setLocationText('You are at the Campground');
+				setActions([
+					'Set Up Tent',
+					'Cook Food',
+					'Build a Campfire',
+					'Talk to Fellow Campers',
+				]);
+				setLocationText('You are at the Campground');
+			} else {
+				setActions([]);
 			}
-			else {
-			setActions([]);
-			}
-		} 
-		else if (currentMap === 'temple') {
+		} else if (currentMap === 'temple') {
 			if (
 				playerPosition.x >= 1740 &&
 				playerPosition.x <= 2180 &&
@@ -709,9 +714,10 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 				setActions(['Visit Museum']);
 				setLocationText(['You are at the temple']);
 			} else if (
-				playerPosition.x >= 3940 &&
-				playerPosition.x <= 4220 &&
-				playerPosition.y === 940
+				playerPosition.x >= 2140 &&
+				playerPosition.x <= 2340 &&
+				playerPosition.y >= 880 &&
+				playerPosition.y <= 920
 			) {
 				setActions([
 					'Meditate',
@@ -756,7 +762,8 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 			} else {
 				setActions([]);
 			}
-		}
+		} 
+
 else if (currentMap === 'home') {
   if (
     playerPosition.x > 1850 && playerPosition.x < 1950 &&
@@ -783,9 +790,9 @@ else if (currentMap === 'home') {
   }
 
 
+
+
 	}, [playerPosition, currentMap]);
-
-
 
 	return (
 		<div
@@ -820,7 +827,7 @@ else if (currentMap === 'home') {
 						{rupiah}
 					</div>
 
-					<div className=' m-2 mt-68 p-2 rounded-lg fixed grid grid-cols-3 grid-rows-3 z-10'>
+					<div className='m-2 mt-68 p-2 rounded-lg fixed grid grid-cols-3 grid-rows-3 z-10'>
 						<div className='col-span-3 flex justify-center items-center '>
 							<button
 								onMouseDown={() => startMoving('up')}
@@ -883,7 +890,7 @@ else if (currentMap === 'home') {
 							</button>
 						</div>
 					</div>
-					
+
 					<div className='w-full h-full rounded-lg relative overflow-hidden'>
 						<div
 							id='map'
@@ -899,7 +906,7 @@ else if (currentMap === 'home') {
 							<div
 								className='text-center'
 								style={{
-									width: playerSize,
+									width: playerSize * 3,
 									left: playerPosition.x,
 									top: playerPosition.y,
 									position: 'fixed',
@@ -912,18 +919,24 @@ else if (currentMap === 'home') {
 										'opacity 0.7s ease-out, transform 0.7s ease-out, left 0.1s, top 0.1s',
 								}}
 							>
-								<p>{player.name}</p>
-								<img
-									src={`/images/characters/${player.base}_${player.direction}.png`}
-									alt="player"
-								/>
+								<div className='flex flex-col'>
+									<p>{player.name}</p>
+									<img
+										className='self-center'
+										style={{ width: playerSize }}
+										src={player.image}
+									/>
 
-						</div>
+									<div className='h-12 mt-2 gap-3 grid grid-cols-3'>
+										<div className='border-1 bg-white/30'></div>
+										<div className='border-1 bg-white/30'></div>
+										<div className='border-1 bg-white/30'></div>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
-
-				
 
 				<GameSideBar
 					currentMap={currentMap}
@@ -938,7 +951,6 @@ else if (currentMap === 'home') {
 					performActions={performActions}
 				/>
 			</div>
-			<GameInventory />
 		</div>
 	);
 }
