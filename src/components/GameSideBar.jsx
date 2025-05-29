@@ -67,7 +67,7 @@ function GameSideBar(props) {
 									className='flex justify-between items-center'
 								>
 									<button
-										onClick={() => performActions(action)}
+										onClick={() => performActions(action.label || action)}
 										className='h-fit w-9/10 p-1 mx-auto text-white text-[7px] md:text-xs lg:text-base rounded-lg bg-blue-500 hover:bg-blue-700'
 									>
 										{action.label}

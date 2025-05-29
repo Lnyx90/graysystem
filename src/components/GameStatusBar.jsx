@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { performActions } from '../hooks/GameUpdateStat';
+
 function GameStatusBar({ status }) {
 	return (
 		<div className='w-9/10 h-3/18 md:h-2/18 mx-auto p-3 text-black rounded-lg'>
