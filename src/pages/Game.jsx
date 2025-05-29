@@ -27,7 +27,7 @@ function Game() {
 		{ id: 'happiness', value: 50, color: 'bg-pink-400' },
 	]);
 
-	const updateState = (key, delta) => {
+	const updateStats = (key, delta) => {
 		setPlayerStatus((prev) =>
 			prev.map((stat) =>
 				stat.id === key
@@ -53,142 +53,142 @@ function Game() {
 			case 'Fly a Lantern':
 			case 'Attend a Ceremony':
 			case 'Observe Nature':
-				updateStat('happiness', +15);
-				updateStat('energy', -5);
+				updateStats('happiness', +15);
+				updateStats('energy', -5);
 				break;
 
 			case 'Rest & Eat Snacks':
 			case 'Eat Snacks':
-				updateStat('hunger', -20);
-				updateStat('energy', +10);
-				updateStat('hygiene', -2);
+				updateStats('hunger', -20);
+				updateStats('energy', +10);
+				updateStats('hygiene', -2);
 				break;
 
 			case 'Eat Seafood':
-				updateStat('hunger', -25);
-				updateStat('energy', +15);
-				updateStat('happiness', +5);
+				updateStats('hunger', -25);
+				updateStats('energy', +15);
+				updateStats('happiness', +5);
 				break;
 
 			case 'Drink Coffee':
-				updateStat('energy', +25);
-				updateStat('hunger', -5);
+				updateStats('energy', +25);
+				updateStats('hunger', -5);
 				break;
 
 			case 'Drink Tropical Juice':
-				updateStat('energy', +20);
-				updateStat('hygiene', +2);
+				updateStats('energy', +20);
+				updateStats('hygiene', +2);
 				break;
 
 			case 'Write Travel Journal':
 			case 'Hiking Journaling':
 			case 'Write Journal':
-				updateStat('happiness', +10);
+				updateStats('happiness', +10);
 				break;
 
 			case 'Chit Chat':
 			case 'Talk to Fellow Campers':
-				updateStat('happiness', +15);
-				updateStat('energy', -3);
+				updateStats('happiness', +15);
+				updateStats('energy', -3);
 				break;
 
 			case 'Buy Souvenir':
-				updateStat('happiness', +10);
-				updateStat('energy', -2);
+				updateStats('happiness', +10);
+				updateStats('energy', -2);
 				break;
 
 			case 'Rent a Traditional Outfit':
 			case 'Rent a Boat':
 			case 'Rent speedboat':
-				updateStat('happiness', +15);
-				updateStat('energy', -5);
+				updateStats('happiness', +15);
+				updateStats('energy', -5);
 				break;
 
 			case 'Hiking':
-				updateStat('energy', -20);
-				updateStat('happiness', +15);
-				updateStat('hunger', +10);
+				updateStats('energy', -20);
+				updateStats('happiness', +15);
+				updateStats('hunger', +10);
 				break;
 
 			case 'Fishing':
-				updateStat('hunger', -15);
-				updateStat('happiness', +10);
-				updateStat('energy', -10);
+				updateStats('hunger', -15);
+				updateStats('happiness', +10);
+				updateStats('energy', -10);
 				break;
 
 			case 'Collect Firewood':
-				updateStat('energy', -15);
+				updateStats('energy', -15);
 				break;
 
 			case 'Build Campfire':
 			case 'Build a Campfire':
-				updateStat('energy', -15);
-				updateStat('happiness', +10);
+				updateStats('energy', -15);
+				updateStats('happiness', +10);
 				break;
 
 			case 'Set Up Tent':
-				updateStat('energy', -10);
-				updateStat('hygiene', -3);
+				updateStats('energy', -10);
+				updateStats('hygiene', -3);
 				break;
 
 			case 'Cook Food':
-				updateStat('hunger', -30);
-				updateStat('energy', -5);
+				updateStats('hunger', -30);
+				updateStats('energy', -5);
 				break;
 
 			case 'Observe Nature':
 			case 'Learn Coral Ecosystem':
 			case 'Observe Small Marine Life':
-				updateStat('happiness', +20);
-				updateStat('energy', -5);
+				updateStats('happiness', +20);
+				updateStats('energy', -5);
 				break;
 
 			case 'Gather Spring Water':
-				updateStat('hygiene', +15);
-				updateStat('energy', -3);
+				updateStats('hygiene', +15);
+				updateStats('energy', -3);
 				break;
 
 			case 'Tanning':
-				updateStat('happiness', +10);
-				updateStat('hygiene', -5);
+				updateStats('happiness', +10);
+				updateStats('hygiene', -5);
 				break;
 
 			case 'Build Sandcastles':
-				updateStat('happiness', +12);
-				updateStat('energy', -5);
+				updateStats('happiness', +12);
+				updateStats('energy', -5);
 				break;
 
 			case 'Seashell Hunt':
-				updateStat('happiness', +15);
-				updateStat('energy', -7);
+				updateStats('happiness', +15);
+				updateStats('energy', -7);
 				break;
 
 			case 'Visit Museum':
-				updateStat('happiness', +8);
-				updateStat('energy', -5);
+				updateStats('happiness', +8);
+				updateStats('energy', -5);
 				break;
 
 			case 'Sightseeing':
 			case 'Take a Picture':
 			case 'Talk to Fellow Campers':
 			case 'Meditate':
-				updateStat('happiness', +10);
+				updateStats('happiness', +10);
 
 			case 'Eat':
 				showActionPopup('Delicious meal! Hunger satisfied.');
-				updateState('hunger', +30);
-				updateState('energy', +10);
-				updateState('hygiene', -5);
+				updateStats('hunger', +30);
+				updateStats('energy', +10);
+				updateStats('hygiene', -5);
 				return;
 			case 'Sleep':
 				showActionPopup('Rested well! Energy restored.');
-				updateState('energy', +50);
-				updateState('hygiene', -10);
-				updateState('happiness', +10);
+				updateStats('energy', +50);
+				updateStats('hygiene', -10);
+				updateStats('happiness', +10);
 				return;
 			case 'Bath':
 				showBathPopup();
-				updateState('hygiene', +30);
+				updateStats('hygiene', +30);
 				return;
 
 			default:
