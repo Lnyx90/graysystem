@@ -17,7 +17,8 @@ import GameInventory from '../components/GameInventory';
 
 function Game() {
 	//Player
-	const [player, setPlayer] = useState({ name: '', image: '' });
+
+	const [player, setPlayer] = useState({ name: '', base: '', direction: 'down' });
 	const [imageLoaded, setImageLoaded] = useState(false);
 	const [playerSize, setPlayerSize] = useState(65);
 
@@ -366,32 +367,40 @@ function Game() {
 
 	//UseEffects
 	useEffect(() => {
-		const storedName = localStorage.getItem('playerName');
-		const storedImage = localStorage.getItem('PlayerImage');
-		document.body.style.backgroundImage = "url('/images/background/newbg.gif')";
+	const storedName = localStorage.getItem('playerName');
+	const storedBase = localStorage.getItem('PlayerImageBase'); 
 
-		setPlayer({
-			name: storedName || 'Player',
-			image: storedImage || '/images/symbol/wayang1.png',
-		});
-	}, []);
+	document.body.style.backgroundImage = "url('/images/background/newbg.gif')";
+
+	setPlayer({
+		name: storedName || 'Player',
+		base: storedBase || 'char1',
+		direction: 'down',
+	});
+}, []);
 
 	function movePlayer(direction) {
-		setPlayerPosition((prev) => {
-			let { x, y } = prev;
-			const step = 20;
+	setPlayer(prev => ({
+		...prev,
+		direction,
+	}));
 
-			if (direction === 'right') x += step;
-			if (direction === 'left') x -= step;
-			if (direction === 'up') y -= step;
-			if (direction === 'down') y += step;
+	setPlayerPosition((prev) => {
+		let { x, y } = prev;
+		const step = 20;
 
-			x = Math.max(minX, Math.min(x, maxX));
-			y = Math.max(minY, Math.min(y, maxY));
+		if (direction === 'right') x += step;
+		if (direction === 'left') x -= step;
+		if (direction === 'up') y -= step;
+		if (direction === 'down') y += step;
 
-			return { x, y };
-		});
-	}
+		x = Math.max(minX, Math.min(x, maxX));
+		y = Math.max(minY, Math.min(y, maxY));
+
+		return { x, y };
+	});
+}
+
 
 	useEffect(() => {
 		if (!showWelcomePopup) {
@@ -608,13 +617,13 @@ function Game() {
 				setActions([]);
 				setLocationText('Welcome Home');
 			} else if (
-				playerPosition.x >= 2460 &&
-				playerPosition.x <= 2700 &&
-				playerPosition.y === 540
+				playerPosition.x === 2580 &&
+				playerPosition.y === 620
 			) {
 				setActions(['Eat Snacks', 'Drink Coffee', 'Write Journal']);
 				setLocationText('Welcome to Bites Shop');
-			} else if (playerPosition.x === 3260 && playerPosition.y === 1530) {
+
+			} else if (playerPosition.x === 3220 && playerPosition.y === 1500) {
 				setActions(['Rent a Boat', 'Rent speedboat']);
 				setLocationText('Welcome to Dockside shop');
 			} else if (

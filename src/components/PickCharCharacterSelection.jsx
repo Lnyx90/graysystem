@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function CharacterSelection({ characters, currentIndex, isFading, onPrev, onNext }) {
   return (
     <div className="flex items-center space-x-4 sm:space-x-6 mb-6">
@@ -11,7 +9,7 @@ export default function CharacterSelection({ characters, currentIndex, isFading,
       </button>
 
       <img
-        src={characters[currentIndex]}
+        src={`/images/characters/${characters[currentIndex]}_down.png`}
         alt="Character"
         className={`w-24 sm:w-32 md:w-40 h-auto floating character-float ${
           isFading ? 'opacity-0 transition-opacity duration-300' : 'opacity-100'

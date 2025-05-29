@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import PickCharAudio from '../hooks/PickCharAudio';
@@ -19,11 +19,7 @@ function PickChar() {
 
 	const { bgMusicRef, clickSoundRef, playClickSound } = PickCharAudio();
 
-	const characters = [
-		'/images/characters/Wayang1.png',
-		'/images/characters/Wayang2.png',
-		'/images/characters/Wayang3.png',
-	];
+	const characters = ['char1', 'char2', 'char3'];
 
 	useEffect(() => {
 		if (showNotification) {
@@ -68,7 +64,7 @@ function PickChar() {
 
 	const handleLevelSelect = (level) => {
 		playClickSound();
-		localStorage.setItem('PlayerImage', characters[currentIndex]);
+		localStorage.setItem('PlayerImageBase', characters[currentIndex]);
 		localStorage.setItem('playerName', playerName);
 		localStorage.setItem('gameLevel', level);
 		navigate('/game');
@@ -76,17 +72,17 @@ function PickChar() {
 
 	return (
 		<div
-			className='w-screen h-screen bg-cover bg-center flex items-center justify-center relative'
+			className="w-screen h-screen bg-cover bg-center flex items-center justify-center relative"
 			style={{
 				backgroundImage: "url('/images/background/PickCharBackground.gif')",
 			}}
 		>
-			<audio ref={bgMusicRef} src='/audio/bgm.mp3' loop />
-			<audio ref={clickSoundRef} src='/audio/click.mp3' />
+			<audio ref={bgMusicRef} src="/audio/bgm.mp3" loop />
+			<audio ref={clickSoundRef} src="/audio/click.mp3" />
 
-			<div className='flex flex-col items-center text-center px-4 w-full max-w-4xl z-10'>
+			<div className="flex flex-col items-center text-center px-4 w-full max-w-4xl z-10">
 				<h1
-					className='text-xl sm:text-3xl md:text-5xl text-glow-pickchar text-white leading-tight text-pulse-pickchar mb-6'
+					className="text-xl sm:text-3xl md:text-5xl text-glow-pickchar text-white leading-tight text-pulse-pickchar mb-6"
 					style={{ fontFamily: "'Press Start 2P', cursive" }}
 				>
 					Choose Your <br /> Character
@@ -101,16 +97,16 @@ function PickChar() {
 				/>
 
 				<input
-					type='text'
+					type="text"
 					value={playerName}
 					onChange={handleNameChange}
-					placeholder='Enter Your Name'
-					className='px-3 sm:px-4 py-2 text-sm sm:text-lg border-2 border-blue-800 rounded-md text-center w-40 sm:w-64 md:w-72 placeholder:text-xs sm:placeholder:text-sm mb-4 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500'
+					placeholder="Enter Your Name"
+					className="px-3 sm:px-4 py-2 text-sm sm:text-lg border-2 border-blue-800 rounded-md text-center w-40 sm:w-64 md:w-72 placeholder:text-xs sm:placeholder:text-sm mb-4 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
 				/>
 
 				<button
 					onClick={handleSelectAndNavigate}
-					className='px-5 sm:px-8 py-2 sm:py-4 bg-blue-800 text-white text-sm sm:text-xl rounded-full shadow-lg hover:bg-blue-500 transition hover:scale-110'
+					className="px-5 sm:px-8 py-2 sm:py-4 bg-blue-800 text-white text-sm sm:text-xl rounded-full shadow-lg hover:bg-blue-500 transition hover:scale-110"
 				>
 					Select Character
 				</button>
@@ -127,4 +123,5 @@ function PickChar() {
 		</div>
 	);
 }
+
 export default PickChar;
