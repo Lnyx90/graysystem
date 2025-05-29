@@ -63,19 +63,28 @@ function Game() {
 	'Eat Snacks': { duration: 4000, effects: { hunger: +20, energy: +10, hygiene: -2 } },
 	'Eat Seafood': { duration: 5000, effects: { hunger: +25, energy: +15, happiness: +5 } },
 	'Buy Fishing Rod': { duration: 3000, effects: { happiness: +10,  } },
-	'Drink Tropical Juice': { duration: 3000, effects: { energy: +20, hygiene: +2 } },
+	'Become Cashier': { duration: 3000, effects: { happiness: +10, energy: -3 } },
 
 	'Write Travel Journal': { duration: 4000, effects: { happiness: +10 } },
 	'Hiking Journaling': { duration: 4000, effects: { happiness: +10 } },
 
 	'Buy Bucket': { duration: 3000, effects: { happiness: +10, energy: -3 } },
+	'Buy Bait': { duration: 3000, effects: { happiness: +10, energy: -3 } },
+	'Buy Sandcastle Bucket': { duration: 3000, effects: { happiness: +10, energy: -3 } },
+	'Buy Sandals': { duration: 3000, effects: { happiness: +10, energy: -3 } },
 	'Talk to Fellow Campers': { duration: 3000, effects: { happiness: +15, energy: -3 } },
 
 	'Buy Souvenir': { duration: 3000, effects: { happiness: +10, energy: -2 } },
-	'Rent a Traditional Outfit': { duration: 3000, effects: { happiness: +15, energy: -5 } },
+	'Buy Magnifying Glass': { duration: 3000, effects: { happiness: +15, energy: -5 } },
+	'Buy Journal': { duration: 3000, effects: { happiness: +15, energy: -5 } },
+	'Buy Drink': { duration: 3000, effects: { happiness: +10, energy: -5 } },
+	'Buy Binoculars': { duration: 3000, effects: { happiness: +15, energy: -5 } },
 
 	'Hiking': { duration: 5000, effects: { energy: -20, happiness: +15, hunger: -10 } },
 	'Fishing': { duration: 5000, effects: { hunger: -15, happiness: +10, energy: -10 } },
+	'Rent a Boat': { duration: 5000, effects: { happiness: +20, energy: -10 } },
+	'Become a Tour Guide': { duration: 5000, effects: { happiness: +25, energy: -15 } },
+	'Take a Picture': { duration: 4000, effects: { happiness: +15, energy: -5 } },
 
 	'Collect Firewood': { duration: 3000, effects: { energy: -15 } },
 	'Build Campfire': { duration: 3000, effects: { energy: -15, happiness: +10 } },
@@ -745,7 +754,7 @@ const performActions = (action) => {
 				playerPosition.x <= 1380 &&
 				playerPosition.y === 1100
 			) {
-				setActions(['Buy Sandcastle Bucket', 'Drink Tropical Juice', 'Buy Sandals']);
+				setActions(['Buy Sandcastle Bucket', 'Become Cashier', 'Buy Sandals']);
 				setLocationText(['You are near a Seaside Shop']);
 			} else if (
 				playerPosition.x >= 2619 &&
