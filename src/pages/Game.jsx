@@ -1,26 +1,32 @@
-import React, { useEffect, useImperativeHandle, useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useImperativeHandle, useState, useRef} from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import GameTitleBar from '../components/GameTitleBar';
 import GameWelcomePopup from '../components/GameWelcomePopup';
 import GameStatusBar from '../components/GameStatusBar';
 import GameSideBar from '../components/GameSideBar';
-
+import LevelSelection from '../components/PickCharLevelSelection';
 import useGameTime from '../hooks/GameTime';
 import { getActionData, goBackToMainMap } from '../hooks/GameMapLocation';
 import '../styles/Game.css';
 
 function Game() {
 	//Player
-	const [player, setPlayer] = useState({
-		name: '',
-		base: '',
-		direction: 'down',
-	});
+	const location = useLocation();
+	const navigate = useNavigate();
+	const [player, setPlayer] = useState({ name: '', base: '', direction: 'down' });
 	const [imageLoaded, setImageLoaded] = useState(false);
 	const [playerSize, setPlayerSize] = useState(65);
+	const { difficulty: initialDifficulty, hearts: initialHearts } = location.state || {};
+	const [difficulty, setDifficulty] = useState(initialDifficulty || null);
+	const [hearts, setHearts] = useState(initialHearts || 0);
 
-
+	const defaultPlayerStatus = [
+		{ id: 'hunger', value: 50, color: 'bg-red-500' },
+		{ id: 'energy', value: 50, color: 'bg-yellow-300' },
+		{ id: 'hygiene', value: 50, color: 'bg-blue-400' },
+		{ id: 'happiness', value: 50, color: 'bg-pink-400' },
+	];
 	const [playerStatus, setPlayerStatus] = useState([
 		{ id: 'hunger', value: 50, color: 'bg-red-500' },
 		{ id: 'energy', value: 50, color: 'bg-yellow-300' },
@@ -122,6 +128,11 @@ function Game() {
 	'Sleep': { duration: 7000, effects: { energy: +50, hygiene: -10, happiness: +10  } },
 	'Bath': { duration: 4000, effects: { hygiene: +30 } ,onStart: showBathPopup},
 };
+
+const showBathPopup = () => {
+  setBathPopup({ show: true, message: "Bath Time!" });
+  setTimeout(() => setBathPopup({ show: false, message: "" }), 3000);
+};
 	
 useEffect(() => {
 	const interval = setInterval(() => {
@@ -129,38 +140,75 @@ useEffect(() => {
 			prevStatus.map(stat => {
 				let newValue = stat.value;
 
-					switch (stat.id) {
-						case 'hunger':
-							newValue = Math.max(0, stat.value - 1);
-							break;
-						case 'energy':
-							newValue = Math.max(0, stat.value - 2);
-							break;
-						case 'happiness':
-							newValue = Math.max(0, stat.value - 1);
-							break;
-						case 'hygiene':
-							newValue = Math.max(0, stat.value - 1);
-							break;
-						default:
-							break;
-					}
+				switch (stat.id) {
+					case 'hunger':
+						newValue = Math.max(0, stat.value - 1); 
+						break;
+					case 'energy':
+						newValue = Math.max(0, stat.value - 2);
+						break;
+					case 'happiness':
+						newValue = Math.max(0, stat.value - 1);
+						break;
+					case 'hygiene':
+						newValue = Math.max(0, stat.value - 1);
+						break;
+					default:
+						break;
+				}
 
-					return { ...stat, value: newValue };
-				})
-			);
-		}, 8000);
+				return { ...stat, value: newValue };
+			})
+		);
+	}, 8000);
 
-		return () => clearInterval(interval);
-	}, []);
+	return () => clearInterval(interval);
+}, []);
+
 
 	const navigate = useNavigate();
 
-	React.useEffect(() => {
-		if (playerStatus.some((stat) => stat.value === 0)) {
-			navigate('/dead');
-		}
-	}, [playerStatus, navigate]);
+ const [deathPopup, setDeathPopup] = useState({ show: false, message: '' });
+  const [isDead, setIsDead] = useState(false);
+
+  useEffect(() => {
+  if (initialDifficulty && initialHearts) {
+    setDifficulty(initialDifficulty);
+    setHearts(initialHearts);
+  }
+}, [initialDifficulty, initialHearts]);
+
+  useEffect(() => {
+    console.log('Checking death:', playerStatus, hearts);
+    if (!difficulty || isDead) return;
+
+    const dead = playerStatus.some(stat => stat.value === 0);
+    if (!dead) return;
+
+    setIsDead(true);
+
+    if (hearts > 1) {
+      const newHearts = hearts - 1;
+      setHearts(newHearts);
+      setDeathPopup({
+        show: true,
+        message: `You died!      ❤️ Remaining hearts: ${newHearts}`,
+      }); 
+	  setTimeout(() => {
+      setPlayerStatus(defaultPlayerStatus);
+      setIsDead(false);
+    }, 2000); 
+    } else {
+      setDeathPopup({
+        show: true,
+        message: 'You died!    💀 No more hearts left.      Game Over!',
+      });
+      setTimeout(() => {
+        navigate('/dead');
+      }, 2000);
+    }
+  }, [playerStatus, hearts, difficulty, isDead, navigate]);
+
 
 	const startTimedActivity = (activity) => {
 	if (activityInProgress) return;
@@ -219,11 +267,6 @@ const performActions = (action) => {
 	}
 };
 
-
-
-
-
-
 	//Movement
 	const moveIntervalRef = useRef(null);
 	function startMoving(direction) {
@@ -263,11 +306,11 @@ const performActions = (action) => {
 	//Actions
 	const [actions, setActions] = useState([]);
 	const actionData = getActionData(actions);
-	const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
-	const showActionPopup = (message) => {
-		setActionPopup({ show: true, message });
-		setTimeout(() => setActionPopup({ show: false, message: '' }), 3000);
-	};
+const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
+	const showActionPopup = (message) => { 
+  setActionPopup({ show: true, message });
+  setTimeout(() => setActionPopup({ show: false, message: '' }), 3000);
+	}
 
 	//Map
 	let [currentMap, setCurrentMap] = useState('default');
@@ -933,12 +976,15 @@ const performActions = (action) => {
 										'opacity 0.7s ease-out, transform 0.7s ease-out, left 0.1s, top 0.1s',
 								}}
 							>
-								<p className='text-center'>{player.name}</p>
-								<img
-									style={{ width: playerSize }}
-									src={`/images/characters/${player.base}_${player.direction}.png`}
-									alt='player'
-								/>
+								<div className='flex flex-col'>
+									<p>{player.name}</p>
+									<img
+										className='self-center'
+										style={{ width: playerSize }}
+										src={`/images/characters/${player.base}_${player.direction}.png`}
+										alt="player"
+									/>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -960,6 +1006,21 @@ const performActions = (action) => {
 					fastForward={fastForward}  
 				/>
 			</div>
+			{deathPopup.show && (
+			<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+				<div className="bg-white rounded-lg p-6 max-w-xs text-center shadow-lg">
+				<p className="text-lg font-semibold mb-2">{deathPopup.message}</p>
+				{hearts > 0 && (
+					<button
+					onClick={() => setDeathPopup({ show: false, message: '' })}
+					className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+					>
+					Continue
+					</button>
+				)}
+				</div>
+			</div>
+			)}
 		</div>
 	);
 }
