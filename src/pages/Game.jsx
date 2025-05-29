@@ -1,4 +1,4 @@
-import React, { useEffect, useImperativeHandle, useState, useRef} from 'react';
+import React, { useEffect, useImperativeHandle, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import GameTitleBar from '../components/GameTitleBar';
@@ -12,8 +12,11 @@ import '../styles/Game.css';
 
 function Game() {
 	//Player
-
-	const [player, setPlayer] = useState({ name: '', base: '', direction: 'down' });
+	const [player, setPlayer] = useState({
+		name: '',
+		base: '',
+		direction: 'down',
+	});
 	const [imageLoaded, setImageLoaded] = useState(false);
 	const [playerSize, setPlayerSize] = useState(65);
 
@@ -34,14 +37,14 @@ function Game() {
 		);
 	};
 
+	const [unlockedItems, setUnlockedItems] = useState([]);
 	const unlockItem = (itemName) => {
-	setUnlockedItems((prev) =>
-		prev.includes(itemName) ? prev : [...prev, itemName]
-	);
+		setUnlockedItems((prev) =>
+			prev.includes(itemName) ? prev : [...prev, itemName]
+		);
 	};
 
 	const performActions = (action) => {
-		
 		switch (typeof action === 'string' ? action : action.label) {
 			case 'Enjoy the View':
 			case 'Capture the Moment':
@@ -49,7 +52,7 @@ function Game() {
 			case 'Observing Borobudur':
 			case 'Fly a Lantern':
 			case 'Attend a Ceremony':
-			case 'Observe Nature':	
+			case 'Observe Nature':
 				updateStat('happiness', +15);
 				updateStat('energy', -5);
 				break;
@@ -96,7 +99,7 @@ function Game() {
 
 			case 'Rent a Traditional Outfit':
 			case 'Rent a Boat':
-			case 'Rent speedboat':		
+			case 'Rent speedboat':
 				updateStat('happiness', +15);
 				updateStat('energy', -5);
 				break;
@@ -168,27 +171,25 @@ function Game() {
 			case 'Sightseeing':
 			case 'Take a Picture':
 			case 'Talk to Fellow Campers':
-			case 'Meditate':	
-				updateStat('happiness' , +10);	
+			case 'Meditate':
+				updateStat('happiness', +10);
 
-		
-		case 'Eat':
-        showActionPopup('Delicious meal! Hunger satisfied.');
-        updateState('hunger', +30);
-        updateState('energy', +10);
-        updateState('hygiene', -5);
-        return;
-	  case 'Sleep':
-		showActionPopup('Rested well! Energy restored.');
-		updateState('energy', +50);
-		updateState('hygiene', -10);
-		updateState('happiness', +10);
-		return;
-	  case 'Bath':
-  showBathPopup();
-  updateState('hygiene', +30);
-  return;
-	 
+			case 'Eat':
+				showActionPopup('Delicious meal! Hunger satisfied.');
+				updateState('hunger', +30);
+				updateState('energy', +10);
+				updateState('hygiene', -5);
+				return;
+			case 'Sleep':
+				showActionPopup('Rested well! Energy restored.');
+				updateState('energy', +50);
+				updateState('hygiene', -10);
+				updateState('happiness', +10);
+				return;
+			case 'Bath':
+				showBathPopup();
+				updateState('hygiene', +30);
+				return;
 
 			default:
 				break;
@@ -196,46 +197,45 @@ function Game() {
 	};
 
 	const [bathPopup, setBathPopup] = useState({
-  show: false,
-  message: "Bath Time!"
-});
+		show: false,
+		message: 'Bath Time!',
+	});
 
-const showBathPopup = () => {
-  setBathPopup({ show: true, message: "Bath Time!" });
-  setTimeout(() => setBathPopup({ show: false, message: "" }), 3000);
-};
-	
-useEffect(() => {
-	const interval = setInterval(() => {
-		setPlayerStatus(prevStatus =>
-			prevStatus.map(stat => {
-				let newValue = stat.value;
+	const showBathPopup = () => {
+		setBathPopup({ show: true, message: 'Bath Time!' });
+		setTimeout(() => setBathPopup({ show: false, message: '' }), 3000);
+	};
 
-				switch (stat.id) {
-					case 'hunger':
-						newValue = Math.max(0, stat.value - 1); 
-						break;
-					case 'energy':
-						newValue = Math.max(0, stat.value - 2);
-						break;
-					case 'happiness':
-						newValue = Math.max(0, stat.value - 1);
-						break;
-					case 'hygiene':
-						newValue = Math.max(0, stat.value - 1);
-						break;
-					default:
-						break;
-				}
+	useEffect(() => {
+		const interval = setInterval(() => {
+			setPlayerStatus((prevStatus) =>
+				prevStatus.map((stat) => {
+					let newValue = stat.value;
 
-				return { ...stat, value: newValue };
-			})
-		);
-	}, 8000);
+					switch (stat.id) {
+						case 'hunger':
+							newValue = Math.max(0, stat.value - 1);
+							break;
+						case 'energy':
+							newValue = Math.max(0, stat.value - 2);
+							break;
+						case 'happiness':
+							newValue = Math.max(0, stat.value - 1);
+							break;
+						case 'hygiene':
+							newValue = Math.max(0, stat.value - 1);
+							break;
+						default:
+							break;
+					}
 
-	return () => clearInterval(interval);
-}, []);
+					return { ...stat, value: newValue };
+				})
+			);
+		}, 8000);
 
+		return () => clearInterval(interval);
+	}, []);
 
 	const navigate = useNavigate();
 
@@ -259,12 +259,6 @@ useEffect(() => {
 		clearInterval(moveIntervalRef.current);
 		moveIntervalRef.current = null;
 	}
-
-	const inventoryItems = [
-		{ id: 1, name: 'Item 1', icon: '1' },
-		{ id: 2, name: 'Item 2', icon: '2' },
-		{ id: 3, name: 'Item 3', icon: '3' },
-	];
 
 	//Date
 	const { gameTime, formattedDate, formattedTime, greeting } = useGameTime(10);
@@ -290,13 +284,11 @@ useEffect(() => {
 	//Actions
 	const [actions, setActions] = useState([]);
 	const actionData = getActionData(actions);
-const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
-	const showActionPopup = (message) => { 
-  setActionPopup({ show: true, message });
-  setTimeout(() => setActionPopup({ show: false, message: '' }), 3000);
-	}
-
-
+	const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
+	const showActionPopup = (message) => {
+		setActionPopup({ show: true, message });
+		setTimeout(() => setActionPopup({ show: false, message: '' }), 3000);
+	};
 
 	//Map
 	let [currentMap, setCurrentMap] = useState('default');
@@ -444,40 +436,39 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 
 	//UseEffects
 	useEffect(() => {
-	const storedName = localStorage.getItem('playerName');
-	const storedBase = localStorage.getItem('PlayerImageBase'); 
+		const storedName = localStorage.getItem('playerName');
+		const storedBase = localStorage.getItem('PlayerImageBase');
 
-	document.body.style.backgroundImage = "url('/images/background/newbg.gif')";
+		document.body.style.backgroundImage = "url('/images/background/newbg.gif')";
 
-	setPlayer({
-		name: storedName || 'Player',
-		base: storedBase || 'char1',
-		direction: 'down',
-	});
-}, []);
+		setPlayer({
+			name: storedName || 'Player',
+			base: storedBase || 'char1',
+			direction: 'down',
+		});
+	}, []);
 
 	function movePlayer(direction) {
-	setPlayer(prev => ({
-		...prev,
-		direction,
-	}));
+		setPlayer((prev) => ({
+			...prev,
+			direction,
+		}));
 
-	setPlayerPosition((prev) => {
-		let { x, y } = prev;
-		const step = 20;
+		setPlayerPosition((prev) => {
+			let { x, y } = prev;
+			const step = 20;
 
-		if (direction === 'right') x += step;
-		if (direction === 'left') x -= step;
-		if (direction === 'up') y -= step;
-		if (direction === 'down') y += step;
+			if (direction === 'right') x += step;
+			if (direction === 'left') x -= step;
+			if (direction === 'up') y -= step;
+			if (direction === 'down') y += step;
 
-		x = Math.max(minX, Math.min(x, maxX));
-		y = Math.max(minY, Math.min(y, maxY));
+			x = Math.max(minX, Math.min(x, maxX));
+			y = Math.max(minY, Math.min(y, maxY));
 
-		return { x, y };
-	});
-}
-
+			return { x, y };
+		});
+	}
 
 	useEffect(() => {
 		if (!showWelcomePopup) {
@@ -509,8 +500,6 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 			return () => clearTimeout(timeoutId);
 		}
 	}, [showWelcomePopup]);
-
-	
 
 	useEffect(() => {
 		const handleResize = () => {
@@ -699,7 +688,6 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 			) {
 				setActions(['Buy Bucket', 'Buy Fishing Rod', 'Buy Bait']);
 				setLocationText('Welcome to Bites Shop');
-
 			} else if (playerPosition.x === 3220 && playerPosition.y === 1500) {
 				setActions(['Rent a Boat', 'Become a Tour Guide', 'Buy Binoculars']);
 				setLocationText('Welcome to Dockside shop');
@@ -823,8 +811,6 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 				setActions([]);
 			}
 		}
-
-
 	}, [playerPosition, currentMap]);
 
 	return (
@@ -838,27 +824,29 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 				closePopUp={closePopUp}
 			/>
 			{/* Action Popup */}
-				{actionPopup.show && (
-				<div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-white text-black px-4 py-2 rounded-lg shadow-lg z-50 animate-fade">
+			{actionPopup.show && (
+				<div className='fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-white text-black px-4 py-2 rounded-lg shadow-lg z-50 animate-fade'>
 					{actionPopup.message}
 				</div>
-				)}
-				{/* Add this to your JSX */}
-{bathPopup.show && (
-  <div className="fixed inset-0 z-50 flex items-center justify-center">
-    <div className="animate-popup bg-white bg-opacity-90 p-4 rounded-lg shadow-xl border-2 border-blue-300 max-w-xs text-center">
-      <img 
-        src="/images/symbol/bath.gif" 
-        alt="Bathing" 
-        className="w-48 h-48 mx-auto mb-2"
-      />
-      <p className="text-lg font-bold text-blue-600">{bathPopup.message}</p>
-      <p className="text-sm text-gray-700">You feel clean and refreshed!</p>
-    </div>
-  </div>
-)}
-
-
+			)}
+			{/* Add this to your JSX */}
+			{bathPopup.show && (
+				<div className='fixed inset-0 z-50 flex items-center justify-center'>
+					<div className='animate-popup bg-white bg-opacity-90 p-4 rounded-lg shadow-xl border-2 border-blue-300 max-w-xs text-center'>
+						<img
+							src='/images/symbol/bath.gif'
+							alt='Bathing'
+							className='w-48 h-48 mx-auto mb-2'
+						/>
+						<p className='text-lg font-bold text-blue-600'>
+							{bathPopup.message}
+						</p>
+						<p className='text-sm text-gray-700'>
+							You feel clean and refreshed!
+						</p>
+					</div>
+				</div>
+			)}
 
 			<GameTitleBar formattedDate={formattedDate} />
 
@@ -951,9 +939,9 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 							}}
 						>
 							<div
-								className='text-center'
+							
 								style={{
-									width: playerSize * 3,
+									width: playerSize,
 									left: playerPosition.x,
 									top: playerPosition.y,
 									position: 'fixed',
@@ -966,21 +954,12 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 										'opacity 0.7s ease-out, transform 0.7s ease-out, left 0.1s, top 0.1s',
 								}}
 							>
-								<div className='flex flex-col'>
-									<p>{player.name}</p>
-									<img
-										className='self-center'
-										style={{ width: playerSize }}
-										src={`/images/characters/${player.base}_${player.direction}.png`}
-										alt="player"
-									/>
-
-									<div className='h-12 mt-2 gap-3 grid grid-cols-3'>
-										<div className='border-1 bg-white/30'></div>
-										<div className='border-1 bg-white/30'></div>
-										<div className='border-1 bg-white/30'></div>
-									</div>
-								</div>
+								<p className='text-center'>{player.name}</p>
+								<img
+									style={{ width: playerSize }}
+									src={`/images/characters/${player.base}_${player.direction}.png`}
+									alt='player'
+								/>
 							</div>
 						</div>
 					</div>
