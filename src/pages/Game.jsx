@@ -7,9 +7,7 @@ import GameStatusBar from '../components/GameStatusBar';
 import GameSideBar from '../components/GameSideBar';
 
 import useGameTime from '../hooks/GameTime';
-import Status from '../hooks/GameStats';
 import { getActionData, goBackToMainMap } from '../hooks/GameMapLocation';
-import { performActions } from '../hooks/GameUpdateStat';
 import '../components/GameInventory';
 
 import '../styles/Game.css';
@@ -54,20 +52,20 @@ function Game() {
 
 			case 'Rest & Eat Snacks':
 			case 'Eat Snacks':
-				updateState('hunger', -20);
+				updateState('hunger', +20);
 				updateState('energy', +10);
 				updateState('hygiene', -2);
 				break;
 
 			case 'Eat Seafood':
-				updateState('hunger', -25);
+				updateState('hunger', +25);
 				updateState('energy', +15);
 				updateState('happiness', +5);
 				break;
 
 			case 'Drink Coffee':
 				updateState('energy', +25);
-				updateState('hunger', -5);
+				updateState('hunger', +5);
 				break;
 
 			case 'Drink Tropical Juice':
@@ -99,7 +97,7 @@ function Game() {
 			case 'Hiking':
 				updateState('energy', -20);
 				updateState('happiness', +15);
-				updateState('hunger', +10);
+				updateState('hunger', -10);
 				break;
 
 			case 'Fishing':
@@ -124,7 +122,7 @@ function Game() {
 				break;
 
 			case 'Cook Food':
-				updateState('hunger', -30);
+				updateState('hunger', +30);
 				updateState('energy', -5);
 				break;
 
@@ -166,8 +164,39 @@ function Game() {
 		}
 	};
 
-	const navigate = useNavigate();
+useEffect(() => {
+	const interval = setInterval(() => {
+		setPlayerStatus(prevStatus =>
+			prevStatus.map(stat => {
+				let newValue = stat.value;
 
+				switch (stat.id) {
+					case 'hunger':
+						newValue = Math.max(0, stat.value - 1); 
+						break;
+					case 'energy':
+						newValue = Math.max(0, stat.value - 2);
+						break;
+					case 'happiness':
+						newValue = Math.max(0, stat.value - 1);
+						break;
+					case 'hygiene':
+						newValue = Math.max(0, stat.value - 1);
+						break;
+					default:
+						break;
+				}
+
+				return { ...stat, value: newValue };
+			})
+		);
+	}, 8000);
+
+	return () => clearInterval(interval);
+}, []);
+
+
+const navigate = useNavigate();
 	React.useEffect(() => {
 		if (playerStatus.some((stat) => stat.value === 0)) {
 			navigate('/dead');
@@ -575,8 +604,8 @@ function Game() {
 				setActions([]);
 				setLocationText('Welcome to Lake Toba');
 			} else if (
-				playerPosition.x >= 0 &&
-				playerPosition.x <= 1300 &&
+				playerPosition.x >= 1340 &&
+				playerPosition.x <= 1740 &&
 				playerPosition.y >= 1640 &&
 				playerPosition.y <= 2350
 			) {
@@ -617,13 +646,13 @@ function Game() {
 				setActions([]);
 				setLocationText('Welcome Home');
 			} else if (
-				playerPosition.x === 2580 &&
-				playerPosition.y === 620
+				playerPosition.x >= 2500 && playerPosition.x <= 2640&&
+				playerPosition.y >= 580 && playerPosition.y <= 700
 			) {
 				setActions(['Eat Snacks', 'Drink Coffee', 'Write Journal']);
 				setLocationText('Welcome to Bites Shop');
 
-			} else if (playerPosition.x === 3220 && playerPosition.y === 1500) {
+			} else if (playerPosition.x === 3180 && playerPosition.y === 1500) {
 				setActions(['Rent a Boat', 'Rent speedboat']);
 				setLocationText('Welcome to Dockside shop');
 			} else if (
@@ -713,14 +742,14 @@ function Game() {
 			}
 		} else if (currentMap === 'beach') {
 			if (
-				playerPosition.x >= 1299 &&
+				playerPosition.x >= 1140 &&
 				playerPosition.x <= 1380 &&
 				playerPosition.y === 1100
 			) {
 				setActions(['Eat Seafood', 'Drink Tropical Juice', 'Chit Chat']);
 				setLocationText(['You are near a Seaside Restaurant']);
 			} else if (
-				playerPosition.x >= 2619 &&
+				playerPosition.x >= 2500 &&
 				playerPosition.x <= 4659 &&
 				playerPosition.y === 1540
 			) {
@@ -894,7 +923,8 @@ function Game() {
 									<img
 										className='self-center'
 										style={{ width: playerSize }}
-										src={player.image}
+										src={`/images/characters/${player.base}_${player.direction}.png`}
+										alt="player"
 									/>
 
 									<div className='h-12 mt-2 gap-3 grid grid-cols-3'>
