@@ -37,6 +37,11 @@ function Game() {
 			)
 		);
 	};
+
+
+
+
+
 //Activites
 	const [currentActivity, setCurrentActivity] = useState(null);
 	const [activityInProgress, setActivityInProgress] = useState(false);
@@ -49,9 +54,19 @@ function Game() {
 		);
 	};
 
+	//popup
+	const [bathPopup, setBathPopup] = useState({
+  show: false,
+  message: "Bath Time!"
+	});
+
+	const showBathPopup = () => {
+	setBathPopup({ show: true, message: "Bath Time!" });
+	setTimeout(() => setBathPopup({ show: false, message: "" }), 3000);
+	};
+
 	const timedActions = {
-	'Enjoy the View': {
-		duration: 4000,effects: { happiness: +15, energy: -5 },},
+	'Enjoy the View': {duration: 4000,effects: { happiness: +15, energy: -5 },},
 	'Capture the Moment': { duration: 4000, effects: { happiness: +15, energy: -5 } },
 	'Take a Picture': { duration: 4000, effects: { happiness: +15, energy: -5 } },
 	'Sightseeing': { duration: 4000, effects: { happiness: +15, energy: -5 } },
@@ -104,21 +119,9 @@ function Game() {
 
 
 	'Eat': { duration: 5000, effects: { hunger: +30, energy: +10, hygiene: -5 } },
-	'Sleep': { duration: 7000, effects: { energy: +50, hygiene: -10, happiness: +10 } },
-	'Bath': { duration: 4000, effects: { hygiene: +30 } },
+	'Sleep': { duration: 7000, effects: { energy: +50, hygiene: -10, happiness: +10  } },
+	'Bath': { duration: 4000, effects: { hygiene: +30 } ,onStart: showBathPopup},
 };
-
-
-const [bathPopup, setBathPopup] = useState({
-  show: false,
-  message: "Bath Time!"
-});
-
-const showBathPopup = () => {
-  setBathPopup({ show: true, message: "Bath Time!" });
-  setTimeout(() => setBathPopup({ show: false, message: "" }), 3000);
-};
-
 	
 useEffect(() => {
 	const interval = setInterval(() => {
@@ -162,10 +165,14 @@ useEffect(() => {
 	const startTimedActivity = (activity) => {
 	if (activityInProgress) return;
 
-	const duration = activity.duration; // e.g., 5000 ms
+	const duration = activity.duration; 
 	const steps = 10;
 	const intervalTime = duration / steps;
 	const deltaPerStep = {};
+
+	if (activity.onStart) {
+		activity.onStart(); 
+	}
 
 	Object.entries(activity.effects).forEach(([stat, totalDelta]) => {
 		deltaPerStep[stat] = totalDelta / steps;
