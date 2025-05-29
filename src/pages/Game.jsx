@@ -9,8 +9,10 @@ import useGameTime from '../hooks/GameTime';
 import Status from '../hooks/GameStats';
 import { getActionData, goBackToMainMap } from '../hooks/GameMapLocation';
 import { performActions } from '../hooks/GameUpdateStat';
+import '../components/GameInventory';
 
 import '../styles/Game.css';
+import GameInventory from '../components/GameInventory';
 
 function Game() {
 	//Player
@@ -177,6 +179,12 @@ function Game() {
 		moveIntervalRef.current = null;
 	}
 
+	const inventoryItems = [
+    { id: 1, name: 'Item 1', icon: '1' }, 
+    { id: 2, name: 'Item 2', icon: '2' },
+    { id: 3, name: 'Item 3', icon: '3' },
+  ];
+
 	//Date
 	const { gameTime, formattedDate, formattedTime, greeting } = useGameTime(10);
 
@@ -234,6 +242,7 @@ function Game() {
 		beach: '/images/background/GameBeach.gif',
 		mountain: '/images/background/GameMountainMap.jpeg',
 		temple: '/images/background/GameTempleMap.jpg',
+		home: '/images/background/GameHomeMap.jpeg',
 	};
 
 	if (width >= 1440) {
@@ -547,6 +556,7 @@ function Game() {
 				setPlayerPosition({ x: 100, y: 100 });
 				setActions([]);
 				setLocationText('Welcome to Lake Toba');
+
 			} else if (
 				playerPosition.x >= 0 &&
 				playerPosition.x <= 1300 &&
@@ -614,7 +624,48 @@ function Game() {
 			} else {
 				setActions([]);
 			}
-		} else if (currentMap === 'temple') {
+		} 
+		 else if (currentMap === 'mountain') {
+			if (
+			Math.sqrt((playerPosition.x - 2460) ** 2 + (playerPosition.y - 80) ** 2) < 80
+			) {
+			setActions([
+				'Enjoy the View',
+				'Capture the Moment',
+				'Rest & Eat Snacks',
+				'Hiking Journaling'
+			]);
+			setLocationText('You are at the Mountain Peak');
+			}
+
+			else if (
+			Math.sqrt((playerPosition.x - 2460) ** 2 + (playerPosition.y - 1800) ** 2) < 120
+			) {
+			setActions([
+				'Hiking',
+				'Observe Nature',
+				'Collect Firewood',
+				'Gather Spring Water'
+			]);
+			setLocationText('You are on the Mountain Slope');
+			}
+
+			else if (
+			Math.sqrt((playerPosition.x - 3860) ** 2 + (playerPosition.y - 2480) ** 2) < 120
+			) {
+			setActions([
+				'Set Up Tent',
+				'Cook Food',
+				'Build a Campfire',
+				'Talk to Fellow Campers'
+			]);
+			setLocationText('You are at the Campground');
+			}
+			else {
+			setActions([]);
+			}
+		} 
+		else if (currentMap === 'temple') {
 			if (
 				playerPosition.x >= 1740 &&
 				playerPosition.x <= 2180 &&
@@ -682,9 +733,35 @@ function Game() {
 				setActions([]);
 			}
 		}
+else if (currentMap === 'home') {
+  if (
+    playerPosition.x > 1850 && playerPosition.x < 1950 &&
+    playerPosition.y > 250 && playerPosition.y < 350
+  ) {
+    setActions(['Sleep']);
+    setLocationText(['This looks like a good place to rest']);
+  } else if (
+       playerPosition.x === 2740 &&
+    playerPosition.y === 940
+  ) {
+    setActions(['Eat']);
+    setLocationText(['You are near the kitchen']);
+  } else if (
+    playerPosition.x > 1650 && playerPosition.x < 1750 &&
+    playerPosition.y > 1100 && playerPosition.y < 1200
+  ) {
+    setActions(['Bath']);
+    setLocationText(['Time to freshen up']);
+  } else {
+    setActions([]);
+    setLocationText(['You are at home']);
+  }
+}
+
+
 	}, [playerPosition, currentMap]);
 
-	//Collision
+
 
 	return (
 		<div
@@ -774,11 +851,11 @@ function Game() {
 							</button>
 						</div>
 					</div>
-
+					
 					<div className='w-full h-full rounded-lg relative overflow-hidden'>
 						<div
 							id='map'
-							className='absolute scale-y-50 scale-x-50 md:scale-y-75 md:scale-x-75'
+							className='z-5 absolute scale-y-50 scale-x-50 md:scale-y-75 md:scale-x-75'
 							style={{
 								width: `${mapWidth}px`,
 								height: `${mapHeight}px`,
@@ -805,10 +882,12 @@ function Game() {
 							>
 								<p>{player.name}</p>
 								<img src={player.image} />
-							</div>
+						</div>
 						</div>
 					</div>
 				</div>
+
+				
 
 				<GameSideBar
 					currentMap={currentMap}
@@ -823,6 +902,7 @@ function Game() {
 					performActions={performActions}
 				/>
 			</div>
+			<GameInventory />
 		</div>
 	);
 }
