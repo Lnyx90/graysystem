@@ -49,9 +49,9 @@ function Game() {
 
 
 //Activites
+	const activityInterval = useRef(null); 
 	const [currentActivity, setCurrentActivity] = useState(null);
 	const [activityInProgress, setActivityInProgress] = useState(false);
-	const [activityInterval, setActivityInterval] = useState(null);
 
 	const [unlockedItems, setUnlockedItems] = useState([]);
 	const unlockItem = (itemName) => {
@@ -105,8 +105,7 @@ function Game() {
 	'Fishing': { duration: 5000, effects: { hunger: -15, happiness: +10, energy: -10 } },
 	'Rent a Boat': { duration: 5000, effects: { happiness: +20, energy: -10 } },
 	'Become a Tour Guide': { duration: 5000, effects: { happiness: +25, energy: -15 } },
-	'Take a Picture': { duration: 4000, effects: { happiness: +15, energy: -5 } },
-
+	
 	'Collect Firewood': { duration: 3000, effects: { energy: -15 } },
 	'Build Campfire': { duration: 3000, effects: { energy: -15, happiness: +10 } },
 	'Build a Campfire': { duration: 3000, effects: { energy: -15, happiness: +10 } },
@@ -205,7 +204,7 @@ useEffect(() => {
 	const startTimedActivity = (activity) => {
 	if (activityInProgress) return;
 
-	const duration = activity.duration; 
+	const duration = activity.duration;
 	const steps = 10;
 	const intervalTime = duration / steps;
 	const deltaPerStep = {};
@@ -228,28 +227,39 @@ useEffect(() => {
 		});
 
 		stepCount++;
+
 		if (stepCount >= steps) {
-			clearInterval(intervalId);
-			setActivityInterval(null);
+			clearInterval(activityInterval.current);
+			activityInterval.current = null;
 			setActivityInProgress(false);
 			setCurrentActivity(null);
 		}
 	}, intervalTime);
 
-	setActivityInterval(intervalId);
+	activityInterval.current = intervalId;
 };
+
+
 const fastForward = () => {
-	if (!currentActivity) return;
-	if (activityInterval) clearInterval(activityInterval);
+  if (!currentActivity) return;
+  
+  if (activityInterval.current) {
+    clearInterval(activityInterval.current);
+    activityInterval.current = null;
+  }
 
-	Object.entries(currentActivity.effects).forEach(([key, delta]) => {
-		updateState(key, delta);
-	});
+  setBathPopup({ show: false, message: "" });
+  setActionPopup({ show: false, message: "" });
 
-	setActivityInterval(null);
-	setActivityInProgress(false);
-	setCurrentActivity(null);
+
+  Object.entries(currentActivity.effects).forEach(([key, delta]) => {
+    updateStats(key, delta);
+  });
+
+  setActivityInProgress(false);
+  setCurrentActivity(null);
 };
+
 const performActions = (action) => {
 	const label = typeof action === 'string' ? action : action.label;
 
@@ -458,7 +468,7 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 		setPlayer({
 			name: storedName || 'Player',
 			base: storedBase || 'char1',
-			direction: 'down',
+			direction: 'right',
 		});
 	}, []);
 
@@ -657,10 +667,10 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 				setActions([]);
 				setLocationText('Welcome to Lake Toba');
 			} else if (
-				playerPosition.x >= 0 &&
-				playerPosition.x <= 1300 &&
-				playerPosition.y >= 1640 &&
-				playerPosition.y <= 2350
+				playerPosition.x >= 1330 &&
+				playerPosition.x <= 1480 &&
+				playerPosition.y >= 2340 &&
+				playerPosition.y <= 2550
 			) {
 				setCurrentMap('beach');
 				setPlayerPosition({ x: 100, y: 100 });
@@ -837,16 +847,16 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 				showWelcomePopup={showWelcomePopup}
 				closePopUp={closePopUp}
 			/>
-			{/* Action Popup */}
+			
 			{actionPopup.show && (
 				<div className='fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-white text-black px-4 py-2 rounded-lg shadow-lg z-50 animate-fade'>
 					{actionPopup.message}
 				</div>
 			)}
-			{/* Add this to your JSX */}
+			
 			{bathPopup.show && (
-				<div className='fixed inset-0 z-50 flex items-center justify-center'>
-					<div className='animate-popup bg-white bg-opacity-90 p-4 rounded-lg shadow-xl border-2 border-blue-300 max-w-xs text-center'>
+				 <div className='fixed inset-0 z-50 flex items-center justify-center pointer-events-none'>
+    			<div className='animate-popup bg-white bg-opacity-90 p-4 rounded-lg shadow-xl border-2 border-blue-300 max-w-xs text-center pointer-events-auto'>
 						<img
 							src='/images/symbol/bath.gif'
 							alt='Bathing'
@@ -858,6 +868,7 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 						<p className='text-sm text-gray-700'>
 							You feel clean and refreshed!
 						</p>
+						 
 					</div>
 				</div>
 			)}
@@ -993,9 +1004,9 @@ const [actionPopup, setActionPopup] = useState({ show: false, message: '' });
 					setActions={setActions}
 					setLocationText={setLocationText}
 					performActions={performActions}
-					activityInProgress={activityInProgress}  
-					currentActivity={currentActivity}         
-					fastForward={fastForward}  
+					activityInProgress={activityInProgress}
+					currentActivity={currentActivity}
+					fastForward={fastForward}
 				/>
 			</div>
 			{deathPopup.show && (

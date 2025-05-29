@@ -3,6 +3,7 @@
 import React from 'react';
 
 function GameSideBar(props) {
+
   const {
     currentMap,
     locationText,
@@ -14,10 +15,9 @@ function GameSideBar(props) {
     setActions,
     setLocationText,
     performActions,
-
     activityInProgress,
     currentActivity,
-    fastForward,
+    fastForward
   } = props;
 
   function handleBackToMainMap() {
@@ -92,7 +92,7 @@ function GameSideBar(props) {
             ))
           )}
 
-          {/* Fast Forward UI */}
+       
           {activityInProgress && (
             <div className="text-center mt-2">
               <div className="text-xs md:text-sm font-semibold mb-1 animate-pulse">
