@@ -1,4 +1,5 @@
-import React, { useEffect, useImperativeHandle, useState, useRef } from 'react';
+import React, { useEffect, useImperativeHandle, useState, useRef} from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import GameTitleBar from '../components/GameTitleBar';
 import GameWelcomePopup from '../components/GameWelcomePopup';
@@ -163,6 +164,14 @@ function Game() {
 				break;
 		}
 	};
+
+	const navigate = useNavigate();
+
+	React.useEffect(() => {
+		if (playerStatus.some((stat) => stat.value === 0)) {
+			navigate('/dead');
+		}
+	}, [playerStatus, navigate]);
 
 	//Movement
 	const moveIntervalRef = useRef(null);
@@ -426,8 +435,8 @@ function Game() {
 
 				setPlayerSize(60);
 
-				setMinX(0);
-				setMinY(0);
+				setMinX(10);
+				setMinY(10);
 
 				setMaxX(4790);
 				setMaxY(2610);
@@ -446,8 +455,8 @@ function Game() {
 
 				setPlayerSize(60);
 
-				setMinX(0);
-				setMinY(0);
+				setMinX(10);
+				setMinY(10);
 
 				setMaxX(4310);
 				setMaxY(2500);
@@ -465,8 +474,8 @@ function Game() {
 				setVWHeight(-600);
 				setPlayerSize(60);
 
-				setMinX(0);
-				setMinY(0);
+				setMinX(10);
+				setMinY(10);
 
 				setMaxX(4110);
 				setMaxY(2490);
@@ -485,8 +494,8 @@ function Game() {
 
 				setPlayerSize(60);
 
-				setMinX(0);
-				setMinY(0);
+				setMinX(10);
+				setMinY(10);
 
 				setMaxX(4670);
 				setMaxY(2590);
@@ -500,12 +509,12 @@ function Game() {
 				setMapWidth(5000);
 				setMapHeight(3000);
 
-				setVWWidth(-4400);
+				setVWWidth(-4550);
 				setVWHeight(-2500);
 				setPlayerSize(60);
 
-				setMinX(0);
-				setMinY(0);
+				setMinX(10);
+				setMinY(10);
 
 				setMaxX(4570);
 				setMaxY(2580);
@@ -519,13 +528,13 @@ function Game() {
 				setMapWidth(5000);
 				setMapHeight(3000);
 
-				setVWWidth(-4500);
+				setVWWidth(-4650);
 				setVWHeight(-2500);
 
 				setPlayerSize(60);
 
-				setMinX(0);
-				setMinY(0);
+				setMinX(10);
+				setMinY(10);
 
 				setMaxX(4480);
 				setMaxY(2590);
@@ -779,7 +788,7 @@ function Game() {
 						{rupiah}
 					</div>
 
-					<div className=' m-2 mt-68 p-2 rounded-lg fixed grid grid-cols-3 grid-rows-3 z-10'>
+					<div className='m-2 mt-68 p-2 rounded-lg fixed grid grid-cols-3 grid-rows-3 z-10'>
 						<div className='col-span-3 flex justify-center items-center '>
 							<button
 								onMouseDown={() => startMoving('up')}
@@ -858,7 +867,7 @@ function Game() {
 							<div
 								className='text-center'
 								style={{
-									width: playerSize,
+									width: playerSize * 3,
 									left: playerPosition.x,
 									top: playerPosition.y,
 									position: 'fixed',
@@ -871,8 +880,20 @@ function Game() {
 										'opacity 0.7s ease-out, transform 0.7s ease-out, left 0.1s, top 0.1s',
 								}}
 							>
-								<p>{player.name}</p>
-								<img src={player.image} />
+								<div className='flex flex-col'>
+									<p>{player.name}</p>
+									<img
+										className='self-center'
+										style={{ width: playerSize }}
+										src={player.image}
+									/>
+
+									<div className='h-12 mt-2 gap-3 grid grid-cols-3'>
+										<div className='border-1 bg-white/30'></div>
+										<div className='border-1 bg-white/30'></div>
+										<div className='border-1 bg-white/30'></div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -891,7 +912,6 @@ function Game() {
 					performActions={performActions}
 				/>
 			</div>
-			<GameInventory />
 		</div>
 	);
 }
