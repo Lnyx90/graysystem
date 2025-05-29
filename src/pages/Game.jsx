@@ -672,7 +672,7 @@ function Game() {
 							</button>
 						</div>
 					</div>
-
+					
 					<div className='w-full h-full rounded-lg relative overflow-hidden'>
 						<div
 							id='map'
@@ -703,7 +703,7 @@ function Game() {
 							>
 								<p>{player.name}</p>
 								<img src={player.image} />
-							</div>
+						</div>
 						</div>
 					</div>
 				</div>
