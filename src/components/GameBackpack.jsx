@@ -21,7 +21,7 @@ const items = [
 	{ name: 'Peg', image: '/images/items/pasak.png' },
 	{ name: 'Knife', image: '/images/items/pisau.png' },
 	{ name: 'Sandal', image: '/images/items/sandal.png' },
-	{ name: 'SandBucket', image: '/images/items/sandcastle.png' },
+	{ name: 'Sand Bucket', image: '/images/items/sandcastle.png' },
 	{ name: 'Gloves', image: '/images/items/sarungtangan.png' },
 	{ name: 'Scroll', image: '/images/items/scroll.png' },
 	{ name: 'Shoes', image: '/images/items/sepatuhiking.png' },
@@ -45,7 +45,6 @@ function GameBackpack({ unlockedItems }) {
 
 	const currentItem = items[currentIndex];
 	const isUnlocked = unlockedItems.includes(currentItem.name);
-	
 
 	return (
 		<div className='relative inline-block'>
@@ -85,7 +84,9 @@ function GameBackpack({ unlockedItems }) {
 									{!isUnlocked && (
 										<div className='text-[2vw] sm:text-[1.5vw] text-red-500 mt-1'>
 											Locked
+											
 										</div>
+										
 									)}
 								</div>
 							</div>

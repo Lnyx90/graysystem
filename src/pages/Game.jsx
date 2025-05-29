@@ -38,159 +38,138 @@ function Game() {
 	};
 
 	const [unlockedItems, setUnlockedItems] = useState([]);
-	const unlockItem = (itemName) => {
-		setUnlockedItems((prev) =>
-			prev.includes(itemName) ? prev : [...prev, itemName]
-		);
+
+	const unlockItem = (name) => {
+		setUnlockedItems((prev) => (prev.includes(name) ? prev : [...prev, name]));
 	};
 
 	const performActions = (action) => {
-		switch (typeof action === 'string' ? action : action.label) {
-			case 'Enjoy the View':
-			case 'Capture the Moment':
-			case 'Sightseeing':
-			case 'Observing Borobudur':
-			case 'Fly a Lantern':
-			case 'Attend a Ceremony':
-			case 'Observe Nature':
-				updateStats('happiness', +15);
-				updateStats('energy', -5);
-				break;
+		const actionLabel = typeof action === 'string' ? action : action.label;
 
-			case 'Rest & Eat Snacks':
-			case 'Eat Snacks':
-				updateStats('hunger', -20);
-				updateStats('energy', +10);
-				updateStats('hygiene', -2);
+		switch (actionLabel) {
+			case 'Eat':
+				updateStats('hunger', +50);
 				break;
-
-			case 'Eat Seafood':
-				updateStats('hunger', -25);
-				updateStats('energy', +15);
-				updateStats('happiness', +5);
+			case 'Sleep':
+				updateStats('energy', +50);
+				updateStats('hunger', -50);
 				break;
-
-			case 'Drink Coffee':
-				updateStats('energy', +25);
-				updateStats('hunger', -5);
+			case 'Bath':
+				updateStats('hygiene', +50);
 				break;
-
-			case 'Drink Tropical Juice':
-				updateStats('energy', +20);
-				updateStats('hygiene', +2);
+			case 'Buy Bucket':
+				unlockItem('Bucket');
 				break;
-
-			case 'Write Travel Journal':
-			case 'Hiking Journaling':
-			case 'Write Journal':
-				updateStats('happiness', +10);
+			case 'Buy Fishing Rod':
+				unlockItem('Fishing Rod');
 				break;
-
-			case 'Chit Chat':
-			case 'Talk to Fellow Campers':
-				updateStats('happiness', +15);
-				updateStats('energy', -3);
+			case 'Buy Bait':
+				unlockItem('Bait');
 				break;
-
-			case 'Buy Souvenir':
-				updateStats('happiness', +10);
-				updateStats('energy', -2);
-				break;
-
-			case 'Rent a Traditional Outfit':
 			case 'Rent a Boat':
-			case 'Rent speedboat':
-				updateStats('happiness', +15);
-				updateStats('energy', -5);
 				break;
-
-			case 'Hiking':
+			case 'Become a Tour Guide':
+				updateStats('energy', -40);
+				break;
+			case 'Buy Binoculars':
+				unlockItem('Binocular');
+				break;
+			case 'Sightseeing':
+				updateStats('happiness', +20);
+				break;
+			case 'Fishing':
 				updateStats('energy', -20);
 				updateStats('happiness', +15);
-				updateStats('hunger', +10);
 				break;
-
-			case 'Fishing':
-				updateStats('hunger', -15);
-				updateStats('happiness', +10);
-				updateStats('energy', -10);
+			case 'Take a Picture':
 				break;
-
+			case 'Enjoy the View':
+				updateStats('happiness', +20);
+				break;
+			case 'Capture the Moment':
+				break;
+			case 'Rest & Eat Snacks':
+				updateStats('hunger', +25);
+				updateStats('energy', +25);
+				break;
+			case 'Hiking Journaling':
+				break;
+			case 'Hiking':
+				updateStats('energy', -25);
+				break;
+			case 'Observe Nature':
+				updateStats('happiness', +15);
+				break;
 			case 'Collect Firewood':
 				updateStats('energy', -15);
+				unlockItem('Wood');
 				break;
-
-			case 'Build Campfire':
+			case 'Gather Spring Water':
+				updateStats('energy', -15);
+				break;
+			case 'Set Up Tent':
+				updateStats('energy', -15);
+				break;
+			case 'Cook Food':
+				updateStats('energy', -15);
+				updateStats('hunger', +25);
+				break;
 			case 'Build a Campfire':
 				updateStats('energy', -15);
-				updateStats('happiness', +10);
 				break;
-
-			case 'Set Up Tent':
-				updateStats('energy', -10);
-				updateStats('hygiene', -3);
-				break;
-
-			case 'Cook Food':
-				updateStats('hunger', -30);
-				updateStats('energy', -5);
-				break;
-
-			case 'Observe Nature':
-			case 'Learn Coral Ecosystem':
-			case 'Observe Small Marine Life':
-				updateStats('happiness', +20);
-				updateStats('energy', -5);
-				break;
-
-			case 'Gather Spring Water':
-				updateStats('hygiene', +15);
-				updateStats('energy', -3);
-				break;
-
-			case 'Tanning':
-				updateStats('happiness', +10);
-				updateStats('hygiene', -5);
-				break;
-
-			case 'Build Sandcastles':
-				updateStats('happiness', +12);
-				updateStats('energy', -5);
-				break;
-
-			case 'Seashell Hunt':
-				updateStats('happiness', +15);
-				updateStats('energy', -7);
-				break;
-
-			case 'Visit Museum':
-				updateStats('happiness', +8);
-				updateStats('energy', -5);
-				break;
-
-			case 'Sightseeing':
-			case 'Take a Picture':
 			case 'Talk to Fellow Campers':
+				updateStats('happiness', +20);
+				break;
+			case 'Buy Magnifying Glass':
+				unlockItem('Magnifying Glass');
+				break;
+			case 'Buy Journal':
+				unlockItem('Journal');
+				break;
+			case 'Buy Drink':
+				break;
+			case 'Visit Museum':
+				break;
 			case 'Meditate':
-				updateStats('happiness', +10);
-
-			case 'Eat':
-				showActionPopup('Delicious meal! Hunger satisfied.');
-				updateStats('hunger', +30);
-				updateStats('energy', +10);
-				updateStats('hygiene', -5);
-				return;
-			case 'Sleep':
-				showActionPopup('Rested well! Energy restored.');
-				updateStats('energy', +50);
-				updateStats('hygiene', -10);
-				updateStats('happiness', +10);
-				return;
-			case 'Bath':
-				showBathPopup();
-				updateStats('hygiene', +30);
-				return;
-
+				updateStats('happiness', +15);
+				break;
+			case 'Observing Borobudur':
+				updateStats('happiness', +15);
+				break;
+			case 'Fly a Lanttern':
+				updateStats('happiness', +15);
+				break;
+			case 'Attend a Ceremony':
+				updateStats('happiness', +5);
+				break;
+			case 'Buy Sandcastle Bucket':
+				unlockItem('Sand Bucket');
+				break;
+			case 'Drink Tropical Juice':
+				updateStats('energy', +20);
+				updateStats('hunger', +5);
+				break;
+			case 'Buy Sandals':
+				unlockItem('Sandal');
+				break;
+			case 'Take Picture':
+				break;
+			case 'Learn Coral Ecosystem':
+				updateStats('happiness', +15);
+				break;
+			case 'Observe Small Marine Life':
+				updateStats('happiness', +15);
+				break;
+			case 'Tanning':
+				updateStats('happiness', +15);
+				break;
+			case 'Build Sandcastles':
+				updateStats('energy', -15);
+				updateStats('happiness', +15);
+				break;
+			case 'Seashell Hunt':
+				updateStats('energy', -15);
+				break;
 			default:
 				break;
 		}
@@ -682,10 +661,7 @@ function Game() {
 			) {
 				setActions(['Eat', 'Sleep', 'Bath']);
 				setLocationText('Welcome Home');
-			} else if (
-				playerPosition.x === 2580 &&
-				playerPosition.y === 620
-			) {
+			} else if (playerPosition.x === 2580 && playerPosition.y === 620) {
 				setActions(['Buy Bucket', 'Buy Fishing Rod', 'Buy Bait']);
 				setLocationText('Welcome to Bites Shop');
 			} else if (playerPosition.x === 3220 && playerPosition.y === 1500) {
@@ -748,11 +724,7 @@ function Game() {
 				playerPosition.x <= 2180 &&
 				playerPosition.y === 2180
 			) {
-				setActions([
-					'Buy Magnifying Glass',
-					'Buy Journal',
-					'Buy Drink',
-				]);
+				setActions(['Buy Magnifying Glass', 'Buy Journal', 'Buy Drink']);
 				setLocationText(['You are near a shop']);
 			} else if (
 				playerPosition.x >= 3940 &&
@@ -782,7 +754,11 @@ function Game() {
 				playerPosition.x <= 1380 &&
 				playerPosition.y === 1100
 			) {
-				setActions(['Buy Sandcastle Bucket', 'Drink Tropical Juice', 'Buy Sandals']);
+				setActions([
+					'Buy Sandcastle Bucket',
+					'Drink Tropical Juice',
+					'Buy Sandals',
+				]);
 				setLocationText(['You are near a Seaside Shop']);
 			} else if (
 				playerPosition.x >= 2619 &&
@@ -848,7 +824,11 @@ function Game() {
 				</div>
 			)}
 
-			<GameTitleBar formattedDate={formattedDate} />
+			<GameTitleBar
+				formattedDate={formattedDate}
+				unlockedItems={unlockedItems}
+				unlockItem={unlockItem}
+			/>
 
 			<GameStatusBar status={playerStatus} />
 
@@ -939,7 +919,6 @@ function Game() {
 							}}
 						>
 							<div
-							
 								style={{
 									width: playerSize,
 									left: playerPosition.x,
