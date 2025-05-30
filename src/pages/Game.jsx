@@ -264,7 +264,7 @@ useEffect(() => {
 			setHearts(newHearts);
 			setDeathPopup({
 				show: true,
-				message: `You died!      ❤️ Remaining hearts: ${newHearts}`,
+				message: `You died!     ❤️ Remaining hearts: ${newHearts}`,
 			});
 			setTimeout(() => {
 				setPlayerStatus(defaultPlayerStatus);
@@ -814,11 +814,11 @@ useEffect(() => {
 			if (
 				playerPosition.x >= 740 &&
 				playerPosition.x <= 900 &&
-				playerPosition.y === 260
+				playerPosition.y >= 260 && playerPosition.y <= 300
 			) {
 				setActions(['Eat', 'Sleep', 'Bath']);
 				setLocationText('Welcome Home');
-			} else if (playerPosition.x === 2580 && playerPosition.y === 620) {
+			} else if (playerPosition.x >= 2460 && playerPosition.x <= 2660 && playerPosition.y >= 570 && playerPosition.y <= 620) {
 				setActions(['Buy Bucket', 'Buy Fishing Rod', 'Buy Bait']);
 				setLocationText('Welcome to Bites Shop');
 			} else if (playerPosition.x === 3220 && playerPosition.y === 1500) {
@@ -834,6 +834,7 @@ useEffect(() => {
 				setLocationText(['You are at fishing dock']);
 			} else {
 				setActions([]);
+				setLocationText('Welcome to Lake Toba');
 			}
 		} else if (currentMap === 'mountain') {
 			if (
@@ -874,12 +875,13 @@ useEffect(() => {
 				setLocationText('You are at the Campground');
 			} else {
 				setActions([]);
+				setLocationText('Welcome to the Mountain');
 			}
 		} else if (currentMap === 'temple') {
 			if (
-				playerPosition.x >= 1740 &&
-				playerPosition.x <= 220 &&
-				playerPosition.y === 2110
+				playerPosition.x >= 1820 &&
+				playerPosition.x <= 1940 &&
+				playerPosition.y >= 2180 && playerPosition.y <= 2220
 			) {
 				setActions(['Buy Magnifying Glass', 'Buy Journal', 'Buy Drink']);
 				setLocationText(['You are near a shop']);
@@ -904,6 +906,7 @@ useEffect(() => {
 				]);
 			} else {
 				setActions([]);
+				setLocationText('Welcome to the Borobudur Temple');
 			}
 		} else if (currentMap === 'beach') {
 			if (
@@ -938,6 +941,7 @@ useEffect(() => {
 				]);
 			} else {
 				setActions([]);
+				setLocationText('Welcome to Kuta Beach');
 			}
 		}
 	}, [playerPosition, currentMap]);
@@ -1120,8 +1124,8 @@ useEffect(() => {
 				/>
 			</div>
 			{deathPopup.show && (
-				<div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50'>
-					<div className='bg-white rounded-lg p-6 max-w-xs text-center shadow-lg'>
+				<div className='fixed inset-0 flex items-center justify-center bg-opacity-50 z-50 backdrop-blur-sm'>
+					<div className='ml-4 mr-4 bg-white rounded-lg p-6 max-w-xs text-center shadow-lg'>
 						<p className='text-lg font-semibold mb-2'>{deathPopup.message}</p>
 						{hearts > 0 && (
 							<button
