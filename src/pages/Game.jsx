@@ -996,9 +996,11 @@ useEffect(() => {
 						X: {playerPosition.x}, Y: {playerPosition.y}
 					</div>
 
-					<div className='w-fit h-fit m-2 mt-12 p-2 text-[6px] md:text-[10px] rounded-lg fixed bg-white z-10'>
-						{rupiah}
-					</div>
+				<div className='w-fit h-fit m-2 mt-12 p-2 text-[6px] md:text-[10px] rounded-lg fixed bg-white z-10 flex items-center gap-1'>
+  <img src="/images/symbol/money.png" alt="Coin" className="w-3 h-3 md:w-4 md:h-4" />
+  {rupiah}
+</div>
+
 
 					<div className='m-2 mt-68 p-2 rounded-lg fixed grid grid-cols-3 grid-rows-3 z-10'>
 						<div className='col-span-3 flex justify-center items-center '>
