@@ -129,11 +129,81 @@ const popupConfigs = {
     message: 'Get to Know Your New Friend',
     additionalMessage: 'Be careful of Its Claw'
   },
-  Sandcastle: {
-	image: '/images/symbol/Sandcastle.gif',
-    message: 'Master of the sand!',
-    additionalMessage: ''
+   Sandcastle: {
+    image: '/images/items/sandcastle.png',
+    message: 'You Bought a Sandcastle Bucket!',
+    additionalMessage: 'Check You Backpack!'
   },
+  sleep: {
+    image: '/images/symbol/sleep.png',
+    message: 'Good Night!',
+    additionalMessage: 'Sleep Tight!'
+  },
+  Eat: {
+    image: '/images/items/makanan.png',
+    message: 'Bon Appétit!',
+    additionalMessage: 'Enjoy Your Meal!'
+  },
+  BuyBucket: {
+    image: '/images/items/wadah.png',
+    message: 'Bought a Bucket',
+    additionalMessage: 'Check Your Backpack!'
+  },
+  BuyBait: {
+    image: '/images/items/umpan.png',
+    message: 'Bought Bait',
+    additionalMessage: 'Check Your Backpack!'
+  },
+  TourGuide: {
+    image: '/images/symbol/tourguide.png',
+    message: 'You are now a Tour Guide!',
+    additionalMessage: 'Guide your friends to explore the world!'
+  },
+  BuyBinoculars: {
+    image: '/images/items/binokular.png',
+    message: 'Bought Binoculars',
+    additionalMessage: 'Check Your Backpack!'
+  },
+  Fishing: {
+    image: '/images/symbol/fish.png',
+    message: 'Fishing Time!',
+    additionalMessage: 'Relax and enjoy the moment!'
+  },
+  Sightseeing: {
+    image: '/images/symbol/sight.png',
+    message: 'Enjoy the Scenery!',
+    additionalMessage: 'Take a moment to appreciate nature!'
+  },
+  Takepic: {
+    image: '/images/items/kamera.png',
+    message: 'Capture the Moment!',
+    additionalMessage: 'Your memories are now preserved!'
+  },
+  BecomeCashier: {
+    image: '/images/symbol/cashier.png',
+    message: 'You are now a Cashier!',
+    additionalMessage: 'Manage your transactions wisely!'
+  },
+  ObserveCoral: {
+    image: '/images/symbol/coral.png',
+    message: 'Observe the Coral Ecosystem!',
+    additionalMessage: 'Learn about the beauty of marine life!'
+  },
+  BuildSandcastle: {
+    image: '/images/symbol/Sandcastle.gif',
+    message: 'Building Sandcastles is Fun!',
+    additionalMessage: 'Let your creativity shine!'
+  },
+  Seashell: {
+    image: '/images/symbol/seashell.png',
+    message: 'Seashell Hunt is Exciting!',
+    additionalMessage: 'Discover the treasures of the beach!'
+  },
+  Tanning: {
+    image: '/images/symbol/sun.png',
+    message: 'Enjoy the Sun!',
+    additionalMessage: 'Get that perfect tan!'
+      },
   
   
 
@@ -152,11 +222,11 @@ const showPopup = (type) => {
   setTimeout(() => setPopup({ show: false, type: '', message: '', additionalMessage: '', image: '' }), 3000);
 };
 
-	const timedActions = {
+    const timedActions = {
   'Enjoy the View': { duration: 2000, effects: { happiness: +15, energy: -5 } },
   'Capture the Moment': { duration: 2000, effects: { happiness: +15, energy: -5 } },
   'Take a Picture': { duration: 2000, effects: { happiness: +15, energy: -5 },  onStart: () => showPopup('Takepic') },
-  'Sightseeing': { duration: 2000, effects: { happiness: +15, energy: -5 } },
+  'Sightseeing': { duration: 2000, effects: { happiness: +15, energy: -5 }, onStart: () => showPopup('Sightseeing') },
   'Observing Borobudur': { duration: 2000, effects: { happiness: +15, energy: -5 } },
   'Fly a Lanttern': { duration: 2000, effects: { happiness: +15, energy: -5 }, onStart: () => showPopup('FlyLantern')},
   'Attend a Ceremony': { duration: 2000, effects: { happiness: +15, energy: -5 } },
@@ -164,16 +234,17 @@ const showPopup = (type) => {
   'Rest & Eat Snacks': { duration: 2000, effects: { hunger: +20, energy: +10, hygiene: -2 } },
   'Eat Snacks': { duration: 2000, effects: { hunger: +20, energy: +10, hygiene: -2 } },
   'Eat Seafood': { duration: 3000, effects: { hunger: +25, energy: +15, happiness: +5 } },
+  
 
   'Buy Fishing Rod': { duration: 1000, effects: { happiness: +10 }, cost: 150 , onStart: () => showPopup('BuyFishingRod'),cost: 150, unlock: 'Fishing Rod' },
-  'Become Cashier': { duration: 2000, effects: { happiness: +10, energy: -3 }, earnings: 1000 },
+  'Become Cashier': { duration: 2000, effects: { happiness: +10, energy: -3 }, earnings: 1000, onStart: () => showPopup('BecomeCashier') },
 
   'Write Travel Journal': { duration: 2000, effects: { happiness: +10 } },
   'Hiking Journaling': { duration: 2000, effects: { happiness: +10 },  onStart: () => showPopup('Journal') },
 
-  'Buy Bucket': { duration: 1000, effects: { happiness: +10, energy: -3 }, cost: 100,unlock: 'Bucket' },
-  'Buy Bait': { duration: 1000, effects: { happiness: +10, energy: -3 }, cost: 50,unlock: 'Bait' },
-  'Buy Sandcastle Bucket': { duration: 1000, effects: { happiness: +10, energy: -3 }, cost: 120,unlock: 'Sand Bucket' },
+  'Buy Bucket': { duration: 1000, effects: { happiness: +10, energy: -3 }, cost: 100,unlock: 'Bucket', onStart: () => showPopup('BuyBucket') },
+  'Buy Bait': { duration: 1000, effects: { happiness: +10, energy: -3 }, cost: 50,unlock: 'Bait', onStart: () => showPopup('BuyBait') },
+  'Buy Sandcastle Bucket': { duration: 1000, effects: { happiness: +10, energy: -3 }, cost: 120,unlock: 'SandBucket', onStart: () => showPopup('Sandcastle'), unlock: 'sandcastle' },
   'Buy Sandals': { duration: 1000, effects: { happiness: +10, energy: -3 }, cost: 200,  onStart: () => showPopup('Sandal'), unlock: 'Sandal' },
   'Talk to Fellow Campers': { duration: 2000, effects: { happiness: +15, energy: -3 } },
 
@@ -181,12 +252,12 @@ const showPopup = (type) => {
   'Buy Magnifying Glass': { duration: 1000, effects: { happiness: +15, energy: -5 }, cost: 250, unlock: 'Magnifying Glass' },
   'Buy Journal': { duration: 1000, effects: { happiness: +15, energy: -5 }, cost: 180 ,unlock: 'Journal'},
   'Buy Drink': { duration: 1000, effects: { happiness: +10, energy: -5 }, cost: 50 },
-  'Buy Binoculars': { duration: 1000, effects: { happiness: +15, energy: -5 }, cost: 350 },
+  'Buy Binoculars': { duration: 1000, effects: { happiness: +15, energy: -5 }, cost: 350, onStart: () => showPopup('BuyBinoculars'), unlock: 'Binoculars' },
 
   'Hiking': { duration: 3000, effects: { energy: -20, happiness: +15, hunger: -10 } },
-  'Fishing': { duration: 3000, effects: { hunger: -15, happiness: +10, energy: -10 } },
+  'Fishing': { duration: 3000, effects: { hunger: -10, happiness: +15, energy: -5 }, onStart: () => showPopup('Fishing') },
   'Rent a Boat': { duration: 3000, effects: { happiness: +20, energy: -10 }, onStart: () => showPopup('Rentboat') },
-  'Become a Tour Guide': { duration: 3000, effects: { happiness: +25, energy: -15 }, earnings: 5000 },
+  'Become a Tour Guide': { duration: 3000, effects: { happiness: +25, energy: -15 }, earnings: 5000, onStart: () => showPopup('TourGuide') },
 
   'Collect Firewood': { duration: 2000, effects: { energy: -15 },onStart: () => showPopup('Wood'),unlock: 'Wood'},
   'Build Campfire': { duration: 2000, effects: { energy: -15, happiness: +10 } },
@@ -195,17 +266,17 @@ const showPopup = (type) => {
 
   'Cook Food': { duration: 3000, effects: { hunger: +30, energy: -5 }, onStart: () => showPopup('Cook') },
   'Observe Nature': { duration: 2000, effects: { happiness: +20, energy: -5, hygiene: +5 } },
-  'Learn Coral Ecosystem': { duration: 2000, effects: { happiness: +20, energy: -5, hygiene: +5 } },
+  'Learn Coral Ecosystem': { duration: 2000, effects: { happiness: +20, energy: -5, hygiene: +5 }, onStart: () => showPopup('ObserveCoral') },
   'Observe Small Marine Life': { duration: 2000, effects: { happiness: +20, energy: -5, hygiene: +5 },  onStart: () => showPopup('Crab') },
 
   'Gather Spring Water': { duration: 2000, effects: { hygiene: +15, energy: -3 } },
-  'Tanning': { duration: 2000, effects: { happiness: +10, hygiene: -5 } },
-  'Build Sandcastles': { duration: 2000, effects: { happiness: +12, energy: -5 }, onStart: () => showPopup('Sandcastle')},
-  'Seashell Hunt': { duration: 2000, effects: { happiness: +15, energy: -7 } },
+  'Tanning': { duration: 2000, effects: { happiness: +10, hygiene: -5 }, onStart: () => showPopup('Tanning') },
+  'Build Sandcastles': { duration: 2000, effects: { happiness: +12, energy: -5 }, onStart: () => showPopup('BuildSandcastle')},
+  'Seashell Hunt': { duration: 2000, effects: { happiness: +15, energy: -7 }, onStart: () => showPopup('Seashell') },
   'Visit Museum': { duration: 2000, effects: { happiness: +8, energy: -5 } },
 
-  'Eat': { duration: 3000, effects: { hunger: +30, energy: +10, hygiene: -5 } },
-  'Sleep': { duration: 4000, effects: { energy: +50, hygiene: -10, happiness: +10 } },
+  'Eat': { duration: 3000, effects: { hunger: +30, energy: +10, hygiene: -5 }, onStart: () => showPopup('Eat') },
+  'Sleep': { duration: 4000, effects: { energy: +50, hygiene: -10, happiness: +10 }, onStart: () => showPopup('sleep') },
   'Bath': { duration: 2000, effects: { hygiene: +30 }, onStart: () => showPopup('bath')  },
 };
 	
