@@ -21,7 +21,7 @@ const items = [
 	{ name: 'Peg', image: '/images/items/pasak.png' },
 	{ name: 'Knife', image: '/images/items/pisau.png' },
 	{ name: 'Sandal', image: '/images/items/sandal.png' },
-	{ name: 'SandBucket', image: '/images/items/sandcastle.png' },
+	{ name: 'Sand Bucket', image: '/images/items/sandcastle.png' },
 	{ name: 'Gloves', image: '/images/items/sarungtangan.png' },
 	{ name: 'Scroll', image: '/images/items/scroll.png' },
 	{ name: 'Shoes', image: '/images/items/sepatuhiking.png' },
