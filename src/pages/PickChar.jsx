@@ -9,135 +9,109 @@ import Notification from '../components/PickCharNotification';
 import '../styles/PickChar.css';
 
 function PickChar() {
-	const [currentIndex, setCurrentIndex] = useState(0);
-	const [playerName, setPlayerName] = useState('');
-	const [showNotification, setShowNotification] = useState(false);
-	const [notificationMessage, setNotificationMessage] = useState('');
-	const [showLevelSelection, setShowLevelSelection] = useState(false);
-	const [isFading, setIsFading] = useState(false);
-	const navigate = useNavigate();
+  const characters = ['char1', 'char2', 'char3'];
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [selectedCharacter, setSelectedCharacter] = useState(characters[0]);
+  const [playerName, setPlayerName] = useState('');
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState('');
+  const [showLevelSelection, setShowLevelSelection] = useState(false);
+  const [isFading, setIsFading] = useState(false);
+  const navigate = useNavigate();
 
-	const { bgMusicRef, clickSoundRef, playClickSound } = PickCharAudio();
+  const { bgMusicRef, clickSoundRef, playClickSound } = PickCharAudio();
 
-	const characters = ['char1', 'char2', 'char3'];
+  const updateCharacter = (newIndex) => {
+    setIsFading(true);
+    setTimeout(() => {
+      setCurrentIndex(newIndex);
+      setSelectedCharacter(characters[newIndex]);
+      setIsFading(false);
+    }, 300);
+  };
 
-	useEffect(() => {
-		if (showNotification) {
-			const timer = setTimeout(() => {
-				setShowNotification(false);
-			}, 2000);
-			return () => clearTimeout(timer);
-		}
-	}, [showNotification]);
+  const prevCharacter = () => {
+    playClickSound();
+    const newIndex = (currentIndex - 1 + characters.length) % characters.length;
+    updateCharacter(newIndex);
+  };
 
-	const updateCharacter = (newIndex) => {
-		setIsFading(true);
-		setTimeout(() => {
-			setCurrentIndex(newIndex);
-			setIsFading(false);
-		}, 300);
-	};
+  const nextCharacter = () => {
+    playClickSound();
+    const newIndex = (currentIndex + 1) % characters.length;
+    updateCharacter(newIndex);
+  };
 
-	const prevCharacter = () => {
-		playClickSound();
-		const newIndex = (currentIndex - 1 + characters.length) % characters.length;
-		updateCharacter(newIndex);
-	};
+  const handleNameChange = (e) => setPlayerName(e.target.value);
 
-	const nextCharacter = () => {
-		playClickSound();
-		const newIndex = (currentIndex + 1) % characters.length;
-		updateCharacter(newIndex);
-	};
+  const handleSelectAndNavigate = () => {
+    if (!playerName.trim()) {
+      setNotificationMessage('Please enter your name!');
+      setShowNotification(true);
+      return;
+    }
+    playClickSound();
+    setShowLevelSelection(true);
+  };
 
-	const handleNameChange = (e) => {
-  const newName = e.target.value.trim();
-  
-  // Update local state (if using React state)
-  setPlayerName(newName);
-  
-  // Save to localStorage for persistence
-  localStorage.setItem('playerName', newName);
-  
-  // Update the player object (if needed)
-  setPlayer(prev => ({
-    ...prev,
-    name: newName || 'playerName', // Fallback to 'playerName' if empty
-  }));
-};
+  const handleLevelSelect = (level) => {
+    playClickSound();
+    console.log('Saving to localStorage:', selectedCharacter, playerName, level);
+    localStorage.setItem('PlayerImageBase', selectedCharacter);
+    localStorage.setItem('playerName', playerName);
+    localStorage.setItem('difficulty', level);
+    navigate('/game');
+  };
 
+  return (
+    <div
+      className="w-screen h-screen bg-cover bg-center flex items-center justify-center relative"
+      style={{
+        backgroundImage: "url('/images/background/PickCharBackground.gif')",
+      }}
+    >
+      <audio ref={bgMusicRef} src="/audio/bgm.mp3" loop />
+      <audio ref={clickSoundRef} src="/audio/click.mp3" />
 
-	const handleSelectAndNavigate = () => {
-		if (!playerName.trim()) {
-			setNotificationMessage('Please enter your name!');
-			setShowNotification(true);
-			return;
-		}
-		playClickSound();
-		setShowLevelSelection(true);
-	};
+      <div className="flex flex-col items-center text-center px-4 w-full max-w-4xl z-10">
+        <h1 className="text-xl sm:text-3xl md:text-5xl text-glow-pickchar text-white leading-tight text-pulse-pickchar mb-6" style={{ fontFamily: "'Press Start 2P', cursive" }}>
+          Choose Your <br /> Character
+        </h1>
 
-	const handleLevelSelect = (level) => {
-		playClickSound();
-		localStorage.setItem('PlayerImageBase', selectedCharacter);
-		localStorage.setItem('playerName', nameInput);
-		localStorage.setItem('gameLevel', level);
-		navigate('/game');
-	};
+        <CharacterSelection
+          characters={characters}
+          currentIndex={currentIndex}
+          isFading={isFading}
+          onPrev={prevCharacter}
+          onNext={nextCharacter}
+        />
 
-	
-	return (
-		<div
-			className="w-screen h-screen bg-cover bg-center flex items-center justify-center relative"
-			style={{
-				backgroundImage: "url('/images/background/PickCharBackground.gif')",
-			}}
-		>
-			<audio ref={bgMusicRef} src="/audio/bgm.mp3" loop />
-			<audio ref={clickSoundRef} src="/audio/click.mp3" />
+        <input
+          type="text"
+          value={playerName}
+          onChange={handleNameChange}
+          placeholder="Enter Your Name"
+          className="px-3 sm:px-4 py-2 text-sm sm:text-lg border-2 border-blue-800 rounded-md text-center w-40 sm:w-64 md:w-72 placeholder:text-xs sm:placeholder:text-sm mb-4 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
 
-			<div className="flex flex-col items-center text-center px-4 w-full max-w-4xl z-10">
-				<h1
-					className="text-xl sm:text-3xl md:text-5xl text-glow-pickchar text-white leading-tight text-pulse-pickchar mb-6"
-					style={{ fontFamily: "'Press Start 2P', cursive" }}
-				>
-					Choose Your <br /> Character
-				</h1>
+        <button
+          onClick={handleSelectAndNavigate}
+          className="px-5 sm:px-8 py-2 sm:py-4 bg-blue-800 text-white text-sm sm:text-xl rounded-full shadow-lg hover:bg-blue-500 transition hover:scale-110"
+        >
+          Select Character
+        </button>
 
-				<CharacterSelection
-					characters={characters}
-					currentIndex={currentIndex}
-					isFading={isFading}
-					onPrev={prevCharacter}
-					onNext={nextCharacter}
-				/>
+        {showNotification && <Notification message={notificationMessage} />}
+      </div>
 
-				<input
-					type="text"
-					value={playerName}
-					onChange={handleNameChange}
-					placeholder="Enter Your Name"
-					className="px-3 sm:px-4 py-2 text-sm sm:text-lg border-2 border-blue-800 rounded-md text-center w-40 sm:w-64 md:w-72 placeholder:text-xs sm:placeholder:text-sm mb-4 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-				/>
-
-				<button
-					onClick={handleSelectAndNavigate}
-					className="px-5 sm:px-8 py-2 sm:py-4 bg-blue-800 text-white text-sm sm:text-xl rounded-full shadow-lg hover:bg-blue-500 transition hover:scale-110"
-				>
-					Select Character
-				</button>
-
-				{showNotification && <Notification message={notificationMessage} />}
-			</div>
-
-			{showLevelSelection && (
-				<LevelSelection
-					onSelect={handleLevelSelect}
-					onClose={() => setShowLevelSelection(false)}
-				/>
-			)}
-		</div>
-	);
+      {showLevelSelection && (
+        <LevelSelection
+          onSelect={handleLevelSelect}
+          onClose={() => setShowLevelSelection(false)}
+        />
+      )}
+    </div>
+  );
 }
 
 export default PickChar;

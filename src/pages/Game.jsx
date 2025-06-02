@@ -62,11 +62,6 @@ function Game() {
 	};
 
 	//popup
-	const [bathPopup, setBathPopup] = useState({
-		show: false,
-		message: 'Bath Time!',
-	});
-
   const [popup, setPopup] = useState({
   show: false,
   type: '', // 'bath', 'eat', 'sleep', etc.
@@ -345,8 +340,16 @@ useEffect(() => {
 				message: 'You died!    💀 No more hearts left.      Game Over!',
 			});
 			setTimeout(() => {
-				navigate('/dead');
-			}, 2000);
+			const score = calculateLifeSatisfactionScore({
+				stats: playerStatus,
+				activities: activityLog,
+				items: unlockedItems,
+				areas: visitedMaps,
+			});
+
+  navigate('/dead', { state: { score } });
+}, 2000);
+
 		}
 	}, [playerStatus, hearts, difficulty, isDead, navigate]);
 
@@ -471,6 +474,8 @@ useEffect(() => {
 		clearInterval(moveIntervalRef.current);
 		moveIntervalRef.current = null;
 	}
+
+	
 
 	//Date
 	const { gameTime, formattedDate, formattedTime, greeting } = useGameTime(10);
@@ -648,15 +653,23 @@ useEffect(() => {
 		}
 	}
 
-	useEffect(() => {
-	const storedName = localStorage.getItem('playerName'); 
-	const storedBase = localStorage.getItem('PlayerImageBase');
+useEffect(() => {
+  const storedName = localStorage.getItem('playerName');
+  const storedBase = localStorage.getItem('PlayerImageBase');
 
-	setPlayer({
-		name: storedName ? storedName.trim() : 'playerName',
-		base: storedBase || 'char1',
-		direction: 'right',
-	});
+  console.log("Loaded from localStorage → name:", storedName, "base:", storedBase);
+
+  if (!storedName || !storedBase) {
+    alert('Missing character or name — redirecting to character selection');
+    navigate('/');
+    return;
+  }
+
+  setPlayer({
+    name: storedName.trim(),
+    base: storedBase,
+    direction: 'right',
+  });
 }, []);
 
 
@@ -1050,24 +1063,6 @@ useEffect(() => {
 				</div>
 			)}
 
-			{bathPopup.show && (
-				<div className='fixed inset-0 z-50 flex items-center justify-center pointer-events-none'>
-					<div className='animate-popup bg-white bg-opacity-90 p-4 rounded-lg shadow-xl border-2 border-blue-300 max-w-xs text-center pointer-events-auto'>
-						<img
-							src='/images/symbol/bath.gif'
-							alt='Bathing'
-							className='w-48 h-48 mx-auto mb-2'
-						/>
-						<p className='text-lg font-bold text-blue-600'>
-							{bathPopup.message}
-						</p>
-						<p className='text-sm text-gray-700'>
-							You feel clean and refreshed!
-						</p>
-					</div>
-				</div>
-			)}
-
 			<GameTitleBar
 				formattedDate={formattedDate}
 				unlockedItems={unlockedItems}
@@ -1182,6 +1177,8 @@ useEffect(() => {
 										'opacity 0.7s ease-out, transform 0.7s ease-out, left 0.1s, top 0.1s',
 								}}
 							>
+								
+								
 								<p>{player.name}</p>
 								<img
 									className='self-center'
