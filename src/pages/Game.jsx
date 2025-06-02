@@ -51,8 +51,6 @@ function Game() {
 		);
 	};
 
-	
-
 	//Activites
 	const activityInterval = useRef(null);
 	const [currentActivity, setCurrentActivity] = useState(null);
@@ -641,19 +639,19 @@ useEffect(() => {
 		}
 	}
 
-	//UseEffects
 	useEffect(() => {
-		const storedName = localStorage.getItem('playerName');
-		const storedBase = localStorage.getItem('PlayerImageBase');
+	const storedName = localStorage.getItem('playerName'); 
+	const storedBase = localStorage.getItem('PlayerImageBase');
 
-		document.body.style.backgroundImage = "url('/images/background/newbg.gif')";
+	setPlayer({
+		name: storedName ? storedName.trim() : 'playerName',
+		base: storedBase || 'char1',
+		direction: 'right',
+	});
+}, []);
 
-		setPlayer({
-			name: storedName || 'Player',
-			base: storedBase || 'char1',
-			direction: 'right',
-		});
-	}, []);
+
+
 
 	function movePlayer(direction) {
 		setPlayer((prev) => ({

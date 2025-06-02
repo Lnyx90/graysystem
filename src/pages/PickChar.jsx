@@ -50,7 +50,22 @@ function PickChar() {
 		updateCharacter(newIndex);
 	};
 
-	const handleNameChange = (e) => setPlayerName(e.target.value);
+	const handleNameChange = (e) => {
+  const newName = e.target.value.trim();
+  
+  // Update local state (if using React state)
+  setPlayerName(newName);
+  
+  // Save to localStorage for persistence
+  localStorage.setItem('playerName', newName);
+  
+  // Update the player object (if needed)
+  setPlayer(prev => ({
+    ...prev,
+    name: newName || 'playerName', // Fallback to 'playerName' if empty
+  }));
+};
+
 
 	const handleSelectAndNavigate = () => {
 		if (!playerName.trim()) {
@@ -64,12 +79,13 @@ function PickChar() {
 
 	const handleLevelSelect = (level) => {
 		playClickSound();
-		localStorage.setItem('PlayerImageBase', characters[currentIndex]);
-		localStorage.setItem('playerName', playerName);
+		localStorage.setItem('PlayerImageBase', selectedCharacter);
+		localStorage.setItem('playerName', nameInput);
 		localStorage.setItem('gameLevel', level);
 		navigate('/game');
 	};
 
+	
 	return (
 		<div
 			className="w-screen h-screen bg-cover bg-center flex items-center justify-center relative"
