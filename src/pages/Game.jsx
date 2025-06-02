@@ -451,6 +451,13 @@ useEffect(() => {
 	};
 
 	//Movement
+	const [isShaking, setIsShaking] = useState(false);
+	const triggerShake = () => {
+		if (isShaking) return; 
+		setIsShaking(true);
+		setTimeout(() => setIsShaking(false), 300);
+	};
+
 	const moveIntervalRef = useRef(null);
 	function startMoving(direction) {
 		if (moveIntervalRef.current) return;
@@ -520,6 +527,7 @@ useEffect(() => {
 	let [offsetY, setOffsetY] = useState(0);
 
 	const width = window.innerWidth;
+	const clampY = maxY + 60;  
 
 	const mapImages = {
 		default: '/images/background/GameDefaultMap.png',
@@ -528,6 +536,7 @@ useEffect(() => {
 		mountain: '/images/background/GameMountainMap.jpeg',
 		temple: '/images/background/GameTempleMap.jpg',
 	};
+	
 
 	if (width >= 1440) {
 		if (playerPosition.x > minScrollX) {
@@ -651,29 +660,33 @@ useEffect(() => {
 }, []);
 
 
+		function movePlayer(direction) {
+			setPlayer((prev) => ({
+				...prev,
+				direction,
+			}));
 
+			setPlayerPosition((prev) => {
+				let { x, y } = prev;
+				const step = 20;
+				let newX = x;
+				let newY = y;
 
-	function movePlayer(direction) {
-		setPlayer((prev) => ({
-			...prev,
-			direction,
-		}));
+				if (direction === 'right') newX += step;
+				if (direction === 'left') newX -= step;
+				if (direction === 'up') newY -= step;
+				if (direction === 'down') newY += step;
 
-		setPlayerPosition((prev) => {
-			let { x, y } = prev;
-			const step = 20;
+				const clampedX = Math.max(minX, Math.min(newX, maxX));
+				const clampedY = Math.max(minY, Math.min(newY, clampY));
 
-			if (direction === 'right') x += step;
-			if (direction === 'left') x -= step;
-			if (direction === 'up') y -= step;
-			if (direction === 'down') y += step;
+				if (clampedX !== newX || clampedY !== newY) {
+				triggerShake();
+				}
 
-			x = Math.max(minX, Math.min(x, maxX));
-			y = Math.max(minY, Math.min(y, maxY));
-
-			return { x, y };
-		});
-	}
+				return { x: clampedX, y: clampedY };
+			});
+			}
 
 	useEffect(() => {
 		if (!showWelcomePopup) {
@@ -1064,10 +1077,11 @@ useEffect(() => {
 			<GameStatusBar status={playerStatus} />
 
 			<div className='w-9/10 h-13/18 lg:h-14/18 mx-auto grid grid-rows-4 md:grid-cols-4 gap-2'>
-				<div className=' row-span-3 md:row-span-4 md:col-span-3'>
+				<div className={`row-span-3 md:row-span-4 md:col-span-3 game-wrapper ${isShaking ? 'shake' : ''}`}>
 					<div className='w-fit h-fit m-2 p-2 text-[6px] md:text-[10px] rounded-lg fixed bg-white z-10'>
 						X: {playerPosition.x}, Y: {playerPosition.y}
 					</div>
+					
 
 				<div className='w-fit h-fit m-2 mt-12 p-2 text-[6px] md:text-[10px] rounded-lg fixed bg-white z-10 flex items-center gap-1'>
   <img src="/images/symbol/money.png" alt="Coin" className="w-3 h-3 md:w-4 md:h-4" />
@@ -1150,6 +1164,7 @@ useEffect(() => {
 								transform: `translate(${-offsetX}px, ${-offsetY}px)`,
 								transition: 'transform 0.1s ease-out',
 							}}
+							
 						>
 							<div
 								className='text-center'
@@ -1173,6 +1188,7 @@ useEffect(() => {
 									src={`/images/characters/${player.base}_${player.direction}.png`}
 									alt='player'
 								/>
+								
 							</div>
 						</div>
 					</div>
