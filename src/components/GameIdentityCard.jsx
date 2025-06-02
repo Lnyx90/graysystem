@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 
-function IdentityCard({ onClose, userName,score}) {
+
+function IdentityCard({ onClose, userName}) {
 const [flipped, setFlipped] = useState(false);
 const imageBase = localStorage.getItem('PlayerImageBase') || 'char1'; 
 const characterImage = `/images/characters/${imageBase}_right.png`;
+
 
 
 
@@ -53,9 +55,6 @@ const characterImage = `/images/characters/${imageBase}_right.png`;
 							<div className='flex flex-col items-start justify-center'>
 								<p className=''>Name: {userName}</p>
 								<p className=''>Level: 1</p>
-							</div>
-							<div className='flex flex-col items-start justify-center'>
-								 <p className="mt-2">Life Satisfaction Score: {score}/100</p>
 							</div>
 						</div>
 					</div>

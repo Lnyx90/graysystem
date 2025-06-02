@@ -1,10 +1,13 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import '../styles/Dead.css'
 
 function Dead() {
     const navigate = useNavigate();
+	const location = useLocation();
+ 	 const score = location.state?.score || 0;
 
 	useEffect(() => {
 		// Play background music when component mounts
@@ -50,6 +53,9 @@ function Dead() {
 					<h2 className='text-3xl sm:text-4xl text-black font-bold glow-text'>
 						GAME OVER!
 					</h2>
+					 <div className="text-center mt-20">
+						<p className="text-xl mt-4 text-red-800">Life Satisfaction Score: {score}/100</p>
+						</div>
 				</div>
 				<button
 					onClick={startGame}

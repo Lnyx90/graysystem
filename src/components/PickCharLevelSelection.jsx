@@ -2,12 +2,17 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function LevelSelection({ onSelect }) {
-	const navigate = useNavigate();
+  const navigate = useNavigate();
   const [messageLines, setMessageLines] = useState([]);
   const [hasSelected, setHasSelected] = useState(false);
 
   const handleClick = (level) => {
     const hearts = level === 'easy' ? 3 : level === 'medium' ? 2 : 1;
+
+    // ✅ Call onSelect so PickChar can save to localStorage
+    if (onSelect) {
+      onSelect(level);
+    }
 
     setMessageLines([
       `You choose ${level} difficulty.`,
