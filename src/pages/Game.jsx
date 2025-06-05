@@ -11,13 +11,15 @@ import { getActionData, goBackToMainMap } from '../hooks/GameMapLocation';
 import '../styles/Game.css';
 import GamePopup from '../components/Gamepopup';
 
-
-
 function Game() {
 	//Player
 	const location = useLocation();
 	const navigate = useNavigate();
-	const [player, setPlayer] = useState({ name: '', base: '', direction: 'right' });
+	const [player, setPlayer] = useState({
+		name: '',
+		base: '',
+		direction: 'right',
+	});
 	const [imageLoaded, setImageLoaded] = useState(false);
 	const [playerSize, setPlayerSize] = useState(65);
 	const { difficulty: initialDifficulty, hearts: initialHearts } =
@@ -56,228 +58,401 @@ function Game() {
 	const [currentActivity, setCurrentActivity] = useState(null);
 	const [activityInProgress, setActivityInProgress] = useState(false);
 
-	
 	const unlockItem = (name) => {
 		setUnlockedItems((prev) => (prev.includes(name) ? prev : [...prev, name]));
 	};
 
 	//popup
-  const [popup, setPopup] = useState({
-  show: false,
-  type: '', // 'bath', 'eat', 'sleep', etc.
-  message: '',
-  additionalMessage: '',
-  image: ''
-});
+	const [popup, setPopup] = useState({
+		show: false,
+		type: '', // 'bath', 'eat', 'sleep', etc.
+		message: '',
+		additionalMessage: '',
+		image: '',
+	});
 
+	const popupConfigs = {
+		bath: {
+			image: '/images/symbol/bath.gif',
+			message: 'Bath Time!',
+			additionalMessage: 'You feel clean and refreshed!',
+		},
+		BuyFishingRod: {
+			image: '/images/items/pancing.png',
+			message: 'Here is Your Fishing Rod!',
+			additionalMessage: 'Check Your Backpack!',
+		},
+		Rentboat: {
+			image: '/images/symbol/boat.gif',
+			message: 'Get On Board!',
+			additionalMessage: 'Dont Forget Your Ticket!',
+		},
+		Takepic: {
+			image: '/images/items/kamera.png',
+			message: 'Say Cheese!',
+			additionalMessage: 'Damn, You look Amazing !',
+		},
+		FlyLantern: {
+			image: '/images/symbol/lantern.gif',
+			message: '',
+			additionalMessage: 'The lantern cant shine as bright as u',
+		},
+		Journal: {
+			image: '/images/symbol/Journal.gif',
+			message: 'Every Memory is Worth Written',
+			additionalMessage: '',
+		},
+		Wood: {
+			image: '/images/symbol/wood.gif',
+			message: 'Do it all for the flamin fire',
+			additionalMessage: '',
+		},
+		Cook: {
+			image: '/images/symbol/cook.gif',
+			message: 'Looking Delicious',
+			additionalMessage: '',
+		},
+		Sandal: {
+			image: '/images/symbol/sandal.avif',
+			message: 'Looking Good in Your New Sandals',
+			additionalMessage: '',
+		},
+		Crab: {
+			image: '/images/symbol/crab.gif',
+			message: 'Get to Know Your New Friend',
+			additionalMessage: 'Be careful of Its Claw',
+		},
+		Sandcastle: {
+			image: '/images/items/sandcastle.png',
+			message: 'You Bought a Sandcastle Bucket!',
+			additionalMessage: 'Check You Backpack!',
+		},
+		sleep: {
+			image: '/images/symbol/sleep.png',
+			message: 'Good Night!',
+			additionalMessage: 'Sleep Tight!',
+		},
+		Eat: {
+			image: '/images/items/makanan.png',
+			message: 'Bon Appétit!',
+			additionalMessage: 'Enjoy Your Meal!',
+		},
+		BuyBucket: {
+			image: '/images/items/wadah.png',
+			message: 'Bought a Bucket',
+			additionalMessage: 'Check Your Backpack!',
+		},
+		BuyBait: {
+			image: '/images/items/umpan.png',
+			message: 'Bought Bait',
+			additionalMessage: 'Check Your Backpack!',
+		},
+		TourGuide: {
+			image: '/images/symbol/tourguide.png',
+			message: 'You are now a Tour Guide!',
+			additionalMessage: 'Guide your friends to explore the world!',
+		},
+		BuyBinoculars: {
+			image: '/images/items/binokular.png',
+			message: 'Bought Binoculars',
+			additionalMessage: 'Check Your Backpack!',
+		},
+		Fishing: {
+			image: '/images/symbol/fish.png',
+			message: 'Fishing Time!',
+			additionalMessage: 'Relax and enjoy the moment!',
+		},
+		Sightseeing: {
+			image: '/images/symbol/sight.png',
+			message: 'Enjoy the Scenery!',
+			additionalMessage: 'Take a moment to appreciate nature!',
+		},
+		Takepic: {
+			image: '/images/items/kamera.png',
+			message: 'Capture the Moment!',
+			additionalMessage: 'Your memories are now preserved!',
+		},
+		BecomeCashier: {
+			image: '/images/symbol/cashier.png',
+			message: 'You are now a Cashier!',
+			additionalMessage: 'Manage your transactions wisely!',
+		},
+		ObserveCoral: {
+			image: '/images/symbol/coral.png',
+			message: 'Observe the Coral Ecosystem!',
+			additionalMessage: 'Learn about the beauty of marine life!',
+		},
+		BuildSandcastle: {
+			image: '/images/symbol/Sandcastle.gif',
+			message: 'Building Sandcastles is Fun!',
+			additionalMessage: 'Let your creativity shine!',
+		},
+		Seashell: {
+			image: '/images/symbol/seashell.png',
+			message: 'Seashell Hunt is Exciting!',
+			additionalMessage: 'Discover the treasures of the beach!',
+		},
+		Tanning: {
+			image: '/images/symbol/sun.png',
+			message: 'Enjoy the Sun!',
+			additionalMessage: 'Get that perfect tan!',
+		},
+	};
 
-const popupConfigs = {
-  bath: {
-    image: '/images/symbol/bath.gif',
-    message: 'Bath Time!',
-    additionalMessage: 'You feel clean and refreshed!'
-  },
-  BuyFishingRod: {
-	image: '/images/items/pancing.png',
-    message: 'Here is Your Fishing Rod!',
-    additionalMessage: 'Check Your Backpack!'
-  },
-  Rentboat: {
-    image: '/images/symbol/boat.gif',
-    message: 'Get On Board!',
-    additionalMessage: 'Dont Forget Your Ticket!'
-  },
-   Takepic: {
-	image: '/images/items/kamera.png',
-    message: 'Say Cheese!',
-    additionalMessage: 'Damn, You look Amazing !'
-  },
-   FlyLantern: {
-	image: '/images/symbol/lantern.gif',
-    message: '',
-    additionalMessage: 'The lantern cant shine as bright as u'
-  },
-  Journal: {
-	image: '/images/symbol/Journal.gif',
-    message: 'Every Memory is Worth Written',
-    additionalMessage: ''
-  },
-  Wood: {
-	image: '/images/symbol/wood.gif',
-    message: 'Do it all for the flamin fire',
-    additionalMessage: ''
-  },
-   Cook: {
-	image: '/images/symbol/cook.gif',
-    message: 'Looking Delicious',
-    additionalMessage: ''
-  },
-   Sandal: {
-	image: '/images/symbol/sandal.avif',
-    message: 'Looking Good in Your New Sandals',
-    additionalMessage: ''
-  },
-   Crab: {
-	image: '/images/symbol/crab.gif',
-    message: 'Get to Know Your New Friend',
-    additionalMessage: 'Be careful of Its Claw'
-  },
-   Sandcastle: {
-    image: '/images/items/sandcastle.png',
-    message: 'You Bought a Sandcastle Bucket!',
-    additionalMessage: 'Check You Backpack!'
-  },
-  sleep: {
-    image: '/images/symbol/sleep.png',
-    message: 'Good Night!',
-    additionalMessage: 'Sleep Tight!'
-  },
-  Eat: {
-    image: '/images/items/makanan.png',
-    message: 'Bon Appétit!',
-    additionalMessage: 'Enjoy Your Meal!'
-  },
-  BuyBucket: {
-    image: '/images/items/wadah.png',
-    message: 'Bought a Bucket',
-    additionalMessage: 'Check Your Backpack!'
-  },
-  BuyBait: {
-    image: '/images/items/umpan.png',
-    message: 'Bought Bait',
-    additionalMessage: 'Check Your Backpack!'
-  },
-  TourGuide: {
-    image: '/images/symbol/tourguide.png',
-    message: 'You are now a Tour Guide!',
-    additionalMessage: 'Guide your friends to explore the world!'
-  },
-  BuyBinoculars: {
-    image: '/images/items/binokular.png',
-    message: 'Bought Binoculars',
-    additionalMessage: 'Check Your Backpack!'
-  },
-  Fishing: {
-    image: '/images/symbol/fish.png',
-    message: 'Fishing Time!',
-    additionalMessage: 'Relax and enjoy the moment!'
-  },
-  Sightseeing: {
-    image: '/images/symbol/sight.png',
-    message: 'Enjoy the Scenery!',
-    additionalMessage: 'Take a moment to appreciate nature!'
-  },
-  Takepic: {
-    image: '/images/items/kamera.png',
-    message: 'Capture the Moment!',
-    additionalMessage: 'Your memories are now preserved!'
-  },
-  BecomeCashier: {
-    image: '/images/symbol/cashier.png',
-    message: 'You are now a Cashier!',
-    additionalMessage: 'Manage your transactions wisely!'
-  },
-  ObserveCoral: {
-    image: '/images/symbol/coral.png',
-    message: 'Observe the Coral Ecosystem!',
-    additionalMessage: 'Learn about the beauty of marine life!'
-  },
-  BuildSandcastle: {
-    image: '/images/symbol/Sandcastle.gif',
-    message: 'Building Sandcastles is Fun!',
-    additionalMessage: 'Let your creativity shine!'
-  },
-  Seashell: {
-    image: '/images/symbol/seashell.png',
-    message: 'Seashell Hunt is Exciting!',
-    additionalMessage: 'Discover the treasures of the beach!'
-  },
-  Tanning: {
-    image: '/images/symbol/sun.png',
-    message: 'Enjoy the Sun!',
-    additionalMessage: 'Get that perfect tan!'
-      },
-  
-  
+	const showPopup = (type) => {
+		const config = popupConfigs[type] || {};
+		setPopup({
+			show: true,
+			type,
+			message: config.message,
+			additionalMessage: config.additionalMessage,
+			image: config.image,
+		});
+		setTimeout(
+			() =>
+				setPopup({
+					show: false,
+					type: '',
+					message: '',
+					additionalMessage: '',
+					image: '',
+				}),
+			3000
+		);
+	};
 
+	const timedActions = {
+		'Enjoy the View': {
+			duration: 2000,
+			effects: { happiness: +15, energy: -5 },
+		},
+		'Capture the Moment': {
+			duration: 2000,
+			effects: { happiness: +15, energy: -5 },
+		},
+		'Take a Picture': {
+			duration: 2000,
+			effects: { happiness: +15, energy: -5 },
+			onStart: () => showPopup('Takepic'),
+		},
+		Sightseeing: {
+			duration: 2000,
+			effects: { happiness: +15, energy: -5 },
+			onStart: () => showPopup('Sightseeing'),
+		},
+		'Observing Borobudur': {
+			duration: 2000,
+			effects: { happiness: +15, energy: -5 },
+		},
+		'Fly a Lanttern': {
+			duration: 2000,
+			effects: { happiness: +15, energy: -5 },
+			onStart: () => showPopup('FlyLantern'),
+		},
+		'Attend a Ceremony': {
+			duration: 2000,
+			effects: { happiness: +15, energy: -5 },
+		},
 
-};
+		'Rest & Eat Snacks': {
+			duration: 2000,
+			effects: { hunger: +20, energy: +10, hygiene: -2 },
+		},
+		'Eat Snacks': {
+			duration: 2000,
+			effects: { hunger: +20, energy: +10, hygiene: -2 },
+		},
+		'Eat Seafood': {
+			duration: 3000,
+			effects: { hunger: +25, energy: +15, happiness: +5 },
+		},
 
-const showPopup = (type) => {
-  const config = popupConfigs[type] || {};
-  setPopup({
-    show: true,
-    type,
-    message: config.message,
-    additionalMessage: config.additionalMessage,
-    image: config.image
-  });
-  setTimeout(() => setPopup({ show: false, type: '', message: '', additionalMessage: '', image: '' }), 3000);
-};
+		'Buy Fishing Rod': {
+			duration: 1000,
+			effects: { happiness: +10 },
+			cost: 150,
+			onStart: () => showPopup('BuyFishingRod'),
+			cost: 150,
+			unlock: 'Fishing Rod',
+		},
+		'Become Cashier': {
+			duration: 2000,
+			effects: { happiness: +10, energy: -3 },
+			earnings: 1000,
+			onStart: () => showPopup('BecomeCashier'),
+		},
 
-    const timedActions = {
-  'Enjoy the View': { duration: 2000, effects: { happiness: +15, energy: -5 } },
-  'Capture the Moment': { duration: 2000, effects: { happiness: +15, energy: -5 } },
-  'Take a Picture': { duration: 2000, effects: { happiness: +15, energy: -5 },  onStart: () => showPopup('Takepic') },
-  'Sightseeing': { duration: 2000, effects: { happiness: +15, energy: -5 }, onStart: () => showPopup('Sightseeing') },
-  'Observing Borobudur': { duration: 2000, effects: { happiness: +15, energy: -5 } },
-  'Fly a Lanttern': { duration: 2000, effects: { happiness: +15, energy: -5 }, onStart: () => showPopup('FlyLantern')},
-  'Attend a Ceremony': { duration: 2000, effects: { happiness: +15, energy: -5 } },
+		'Write Travel Journal': { duration: 2000, effects: { happiness: +10 } },
+		'Hiking Journaling': {
+			duration: 2000,
+			effects: { happiness: +10 },
+			onStart: () => showPopup('Journal'),
+		},
 
-  'Rest & Eat Snacks': { duration: 2000, effects: { hunger: +20, energy: +10, hygiene: -2 } },
-  'Eat Snacks': { duration: 2000, effects: { hunger: +20, energy: +10, hygiene: -2 } },
-  'Eat Seafood': { duration: 3000, effects: { hunger: +25, energy: +15, happiness: +5 } },
-  
+		'Buy Bucket': {
+			duration: 1000,
+			effects: { happiness: +10, energy: -3 },
+			cost: 100,
+			unlock: 'Bucket',
+			onStart: () => showPopup('BuyBucket'),
+		},
+		'Buy Bait': {
+			duration: 1000,
+			effects: { happiness: +10, energy: -3 },
+			cost: 50,
+			unlock: 'Bait',
+			onStart: () => showPopup('BuyBait'),
+		},
+		'Buy Sandcastle Bucket': {
+			duration: 1000,
+			effects: { happiness: +10, energy: -3 },
+			cost: 120,
+			unlock: 'SandBucket',
+			onStart: () => showPopup('Sandcastle'),
+			unlock: 'sandcastle',
+		},
+		'Buy Sandals': {
+			duration: 1000,
+			effects: { happiness: +10, energy: -3 },
+			cost: 200,
+			onStart: () => showPopup('Sandal'),
+			unlock: 'Sandal',
+		},
+		'Talk to Fellow Campers': {
+			duration: 2000,
+			effects: { happiness: +15, energy: -3 },
+		},
 
-  'Buy Fishing Rod': { duration: 1000, effects: { happiness: +10 }, cost: 150 , onStart: () => showPopup('BuyFishingRod'),cost: 150, unlock: 'Fishing Rod' },
-  'Become Cashier': { duration: 2000, effects: { happiness: +10, energy: -3 }, earnings: 1000, onStart: () => showPopup('BecomeCashier') },
+		'Buy Souvenir': {
+			duration: 1000,
+			effects: { happiness: +10, energy: -2 },
+			cost: 80,
+		},
+		'Buy Magnifying Glass': {
+			duration: 1000,
+			effects: { happiness: +15, energy: -5 },
+			cost: 250,
+			unlock: 'Magnifying Glass',
+		},
+		'Buy Journal': {
+			duration: 1000,
+			effects: { happiness: +15, energy: -5 },
+			cost: 180,
+			unlock: 'Journal',
+		},
+		'Buy Drink': {
+			duration: 1000,
+			effects: { happiness: +10, energy: -5 },
+			cost: 50,
+		},
+		'Buy Binoculars': {
+			duration: 1000,
+			effects: { happiness: +15, energy: -5 },
+			cost: 350,
+			onStart: () => showPopup('BuyBinoculars'),
+			unlock: 'Binoculars',
+		},
 
-  'Write Travel Journal': { duration: 2000, effects: { happiness: +10 } },
-  'Hiking Journaling': { duration: 2000, effects: { happiness: +10 },  onStart: () => showPopup('Journal') },
+		Hiking: {
+			duration: 3000,
+			effects: { energy: -20, happiness: +15, hunger: -10 },
+		},
+		Fishing: {
+			duration: 3000,
+			effects: { hunger: -10, happiness: +15, energy: -5 },
+			onStart: () => showPopup('Fishing'),
+		},
+		'Rent a Boat': {
+			duration: 3000,
+			effects: { happiness: +20, energy: -10 },
+			onStart: () => showPopup('Rentboat'),
+		},
+		'Become a Tour Guide': {
+			duration: 3000,
+			effects: { happiness: +25, energy: -15 },
+			earnings: 5000,
+			onStart: () => showPopup('TourGuide'),
+		},
 
-  'Buy Bucket': { duration: 1000, effects: { happiness: +10, energy: -3 }, cost: 100,unlock: 'Bucket', onStart: () => showPopup('BuyBucket') },
-  'Buy Bait': { duration: 1000, effects: { happiness: +10, energy: -3 }, cost: 50,unlock: 'Bait', onStart: () => showPopup('BuyBait') },
-  'Buy Sandcastle Bucket': { duration: 1000, effects: { happiness: +10, energy: -3 }, cost: 120,unlock: 'SandBucket', onStart: () => showPopup('Sandcastle'), unlock: 'sandcastle' },
-  'Buy Sandals': { duration: 1000, effects: { happiness: +10, energy: -3 }, cost: 200,  onStart: () => showPopup('Sandal'), unlock: 'Sandal' },
-  'Talk to Fellow Campers': { duration: 2000, effects: { happiness: +15, energy: -3 } },
+		'Collect Firewood': {
+			duration: 2000,
+			effects: { energy: -15 },
+			onStart: () => showPopup('Wood'),
+			unlock: 'Wood',
+		},
+		'Build Campfire': {
+			duration: 2000,
+			effects: { energy: -15, happiness: +10 },
+		},
+		'Build a Campfire': {
+			duration: 2000,
+			effects: { energy: -15, happiness: +10 },
+		},
+		'Set Up Tent': { duration: 2000, effects: { energy: -10, hygiene: -3 } },
 
-  'Buy Souvenir': { duration: 1000, effects: { happiness: +10, energy: -2 }, cost: 80 },
-  'Buy Magnifying Glass': { duration: 1000, effects: { happiness: +15, energy: -5 }, cost: 250, unlock: 'Magnifying Glass' },
-  'Buy Journal': { duration: 1000, effects: { happiness: +15, energy: -5 }, cost: 180 ,unlock: 'Journal'},
-  'Buy Drink': { duration: 1000, effects: { happiness: +10, energy: -5 }, cost: 50 },
-  'Buy Binoculars': { duration: 1000, effects: { happiness: +15, energy: -5 }, cost: 350, onStart: () => showPopup('BuyBinoculars'), unlock: 'Binoculars' },
+		'Cook Food': {
+			duration: 3000,
+			effects: { hunger: +30, energy: -5 },
+			onStart: () => showPopup('Cook'),
+		},
+		'Observe Nature': {
+			duration: 2000,
+			effects: { happiness: +20, energy: -5, hygiene: +5 },
+		},
+		'Learn Coral Ecosystem': {
+			duration: 2000,
+			effects: { happiness: +20, energy: -5, hygiene: +5 },
+			onStart: () => showPopup('ObserveCoral'),
+		},
+		'Observe Small Marine Life': {
+			duration: 2000,
+			effects: { happiness: +20, energy: -5, hygiene: +5 },
+			onStart: () => showPopup('Crab'),
+		},
 
-  'Hiking': { duration: 3000, effects: { energy: -20, happiness: +15, hunger: -10 } },
-  'Fishing': { duration: 3000, effects: { hunger: -10, happiness: +15, energy: -5 }, onStart: () => showPopup('Fishing') },
-  'Rent a Boat': { duration: 3000, effects: { happiness: +20, energy: -10 }, onStart: () => showPopup('Rentboat') },
-  'Become a Tour Guide': { duration: 3000, effects: { happiness: +25, energy: -15 }, earnings: 5000, onStart: () => showPopup('TourGuide') },
+		'Gather Spring Water': {
+			duration: 2000,
+			effects: { hygiene: +15, energy: -3 },
+		},
+		Tanning: {
+			duration: 2000,
+			effects: { happiness: +10, hygiene: -5 },
+			onStart: () => showPopup('Tanning'),
+		},
+		'Build Sandcastles': {
+			duration: 2000,
+			effects: { happiness: +12, energy: -5 },
+			onStart: () => showPopup('BuildSandcastle'),
+		},
+		'Seashell Hunt': {
+			duration: 2000,
+			effects: { happiness: +15, energy: -7 },
+			onStart: () => showPopup('Seashell'),
+		},
+		'Visit Museum': { duration: 2000, effects: { happiness: +8, energy: -5 } },
 
-  'Collect Firewood': { duration: 2000, effects: { energy: -15 },onStart: () => showPopup('Wood'),unlock: 'Wood'},
-  'Build Campfire': { duration: 2000, effects: { energy: -15, happiness: +10 } },
-  'Build a Campfire': { duration: 2000, effects: { energy: -15, happiness: +10 } },
-  'Set Up Tent': { duration: 2000, effects: { energy: -10, hygiene: -3 } },
+		Eat: {
+			duration: 3000,
+			effects: { hunger: +30, energy: +10, hygiene: -5 },
+			onStart: () => showPopup('Eat'),
+		},
+		Sleep: {
+			duration: 4000,
+			effects: { energy: +50, hygiene: -10, happiness: +10 },
+			onStart: () => showPopup('sleep'),
+		},
+		Bath: {
+			duration: 2000,
+			effects: { hygiene: +30 },
+			onStart: () => showPopup('bath'),
+		},
+	};
 
-  'Cook Food': { duration: 3000, effects: { hunger: +30, energy: -5 }, onStart: () => showPopup('Cook') },
-  'Observe Nature': { duration: 2000, effects: { happiness: +20, energy: -5, hygiene: +5 } },
-  'Learn Coral Ecosystem': { duration: 2000, effects: { happiness: +20, energy: -5, hygiene: +5 }, onStart: () => showPopup('ObserveCoral') },
-  'Observe Small Marine Life': { duration: 2000, effects: { happiness: +20, energy: -5, hygiene: +5 },  onStart: () => showPopup('Crab') },
-
-  'Gather Spring Water': { duration: 2000, effects: { hygiene: +15, energy: -3 } },
-  'Tanning': { duration: 2000, effects: { happiness: +10, hygiene: -5 }, onStart: () => showPopup('Tanning') },
-  'Build Sandcastles': { duration: 2000, effects: { happiness: +12, energy: -5 }, onStart: () => showPopup('BuildSandcastle')},
-  'Seashell Hunt': { duration: 2000, effects: { happiness: +15, energy: -7 }, onStart: () => showPopup('Seashell') },
-  'Visit Museum': { duration: 2000, effects: { happiness: +8, energy: -5 } },
-
-  'Eat': { duration: 3000, effects: { hunger: +30, energy: +10, hygiene: -5 }, onStart: () => showPopup('Eat') },
-  'Sleep': { duration: 4000, effects: { energy: +50, hygiene: -10, happiness: +10 }, onStart: () => showPopup('sleep') },
-  'Bath': { duration: 2000, effects: { hygiene: +30 }, onStart: () => showPopup('bath')  },
-};
-	
-useEffect(() => {
-	const interval = setInterval(() => {
-		setPlayerStatus(prevStatus =>
-			prevStatus.map(stat => {
-				let newValue = stat.value;
+	useEffect(() => {
+		const interval = setInterval(() => {
+			setPlayerStatus((prevStatus) =>
+				prevStatus.map((stat) => {
+					let newValue = stat.value;
 
 					switch (stat.id) {
 						case 'hunger':
@@ -340,16 +515,15 @@ useEffect(() => {
 				message: 'You died!    💀 No more hearts left.      Game Over!',
 			});
 			setTimeout(() => {
-			const score = calculateLifeSatisfactionScore({
-				stats: playerStatus,
-				activities: activityLog,
-				items: unlockedItems,
-				areas: visitedMaps,
-			});
+				const score = calculateLifeSatisfactionScore({
+					stats: playerStatus,
+					activities: activityLog,
+					items: unlockedItems,
+					areas: visitedMaps,
+				});
 
-  navigate('/dead', { state: { score } });
-}, 2000);
-
+				navigate('/dead', { state: { score } });
+			}, 2000);
 		}
 	}, [playerStatus, hearts, difficulty, isDead, navigate]);
 
@@ -414,8 +588,14 @@ useEffect(() => {
 			activityInterval.current = null;
 		}
 
-  setPopup({ show: false, type: '', message: '', additionalMessage: '', image: '' });
-  setActionPopup({ show: false, message: '' });
+		setPopup({
+			show: false,
+			type: '',
+			message: '',
+			additionalMessage: '',
+			image: '',
+		});
+		setActionPopup({ show: false, message: '' });
 
 		Object.entries(currentActivity.effects).forEach(([key, delta]) => {
 			updateStats(key, delta);
@@ -425,20 +605,25 @@ useEffect(() => {
 		setCurrentActivity(null);
 	};
 
-	const calculateLifeSatisfactionScore = ({ stats, activities, items, areas }) => {
-    let score = 0;
-    const statTotal = stats.reduce((sum, stat) => sum + stat.value, 0);
-    score += (statTotal / 400) * 40;
-    const activityCount = activities.length;
-    const uniqueActivities = new Set(activities).size;
-    score += Math.min(activityCount * 1, 30);
-    score += Math.min(uniqueActivities * 2, 20);
-    const uniqueItems = new Set(items).size;
-    score += Math.min(uniqueItems * 2, 20);
-    const areaCount = new Set(areas).size;
-    score += Math.min(areaCount * 5, 20);
-    return Math.round(score);
-  };
+	const calculateLifeSatisfactionScore = ({
+		stats,
+		activities,
+		items,
+		areas,
+	}) => {
+		let score = 0;
+		const statTotal = stats.reduce((sum, stat) => sum + stat.value, 0);
+		score += (statTotal / 400) * 40;
+		const activityCount = activities.length;
+		const uniqueActivities = new Set(activities).size;
+		score += Math.min(activityCount * 1, 30);
+		score += Math.min(uniqueActivities * 2, 20);
+		const uniqueItems = new Set(items).size;
+		score += Math.min(uniqueItems * 2, 20);
+		const areaCount = new Set(areas).size;
+		score += Math.min(areaCount * 5, 20);
+		return Math.round(score);
+	};
 
 	const performActions = (action) => {
 		const label = typeof action === 'string' ? action : action.label;
@@ -456,7 +641,7 @@ useEffect(() => {
 	//Movement
 	const [isShaking, setIsShaking] = useState(false);
 	const triggerShake = () => {
-		if (isShaking) return; 
+		if (isShaking) return;
 		setIsShaking(true);
 		setTimeout(() => setIsShaking(false), 300);
 	};
@@ -474,8 +659,6 @@ useEffect(() => {
 		clearInterval(moveIntervalRef.current);
 		moveIntervalRef.current = null;
 	}
-
-	
 
 	//Date
 	const { gameTime, formattedDate, formattedTime, greeting } = useGameTime(10);
@@ -532,7 +715,7 @@ useEffect(() => {
 	let [offsetY, setOffsetY] = useState(0);
 
 	const width = window.innerWidth;
-	const clampY = maxY + 60;  
+	const clampY = maxY + 60;
 
 	const mapImages = {
 		default: '/images/background/GameDefaultMap.png',
@@ -541,7 +724,6 @@ useEffect(() => {
 		mountain: '/images/background/GameMountainMap.jpeg',
 		temple: '/images/background/GameTempleMap.jpg',
 	};
-	
 
 	if (width >= 1440) {
 		if (playerPosition.x > minScrollX) {
@@ -653,53 +835,57 @@ useEffect(() => {
 		}
 	}
 
-useEffect(() => {
-  const storedName = localStorage.getItem('playerName');
-  const storedBase = localStorage.getItem('PlayerImageBase');
+	useEffect(() => {
+		const storedName = localStorage.getItem('playerName');
+		const storedBase = localStorage.getItem('PlayerImageBase');
 
-  console.log("Loaded from localStorage → name:", storedName, "base:", storedBase);
+		console.log(
+			'Loaded from localStorage → name:',
+			storedName,
+			'base:',
+			storedBase
+		);
 
-  if (!storedName || !storedBase) {
-    alert('Missing character or name — redirecting to character selection');
-    navigate('/');
-    return;
-  }
+		if (!storedName || !storedBase) {
+			alert('Missing character or name — redirecting to character selection');
+			navigate('/');
+			return;
+		}
 
-  setPlayer({
-    name: storedName.trim(),
-    base: storedBase,
-    direction: 'right',
-  });
-}, []);
+		setPlayer({
+			name: storedName.trim(),
+			base: storedBase,
+			direction: 'right',
+		});
+	}, []);
 
+	function movePlayer(direction) {
+		setPlayer((prev) => ({
+			...prev,
+			direction,
+		}));
 
-		function movePlayer(direction) {
-			setPlayer((prev) => ({
-				...prev,
-				direction,
-			}));
+		setPlayerPosition((prev) => {
+			let { x, y } = prev;
+			const step = 20;
+			let newX = x;
+			let newY = y;
 
-			setPlayerPosition((prev) => {
-				let { x, y } = prev;
-				const step = 20;
-				let newX = x;
-				let newY = y;
+			if (direction === 'right') newX += step;
+			if (direction === 'left') newX -= step;
+			if (direction === 'up') newY -= step;
+			if (direction === 'down') newY += step;
 
-				if (direction === 'right') newX += step;
-				if (direction === 'left') newX -= step;
-				if (direction === 'up') newY -= step;
-				if (direction === 'down') newY += step;
+			const clampedX = Math.max(minX, Math.min(newX, maxX));
+			const clampedY = Math.max(minY, Math.min(newY, clampY));
 
-				const clampedX = Math.max(minX, Math.min(newX, maxX));
-				const clampedY = Math.max(minY, Math.min(newY, clampY));
-
-				if (clampedX !== newX || clampedY !== newY) {
+			if (clampedX !== newX || clampedY !== newY) {
 				triggerShake();
-				}
-
-				return { x: clampedX, y: clampedY };
-			});
 			}
+
+			return { x: clampedX, y: clampedY };
+		});
+	}
 
 	useEffect(() => {
 		if (!showWelcomePopup) {
@@ -746,8 +932,8 @@ useEffect(() => {
 				setMinX(10);
 				setMinY(10);
 
-				setMaxX(4790);
-				setMaxY(2610);
+				setMaxX(4670);
+				setMaxY(2700);
 
 				setMinScrollX(620);
 				setMinScrollY(300);
@@ -909,11 +1095,17 @@ useEffect(() => {
 			if (
 				playerPosition.x >= 740 &&
 				playerPosition.x <= 900 &&
-				playerPosition.y >= 260 && playerPosition.y <= 300
+				playerPosition.y >= 260 &&
+				playerPosition.y <= 300
 			) {
 				setActions(['Eat', 'Sleep', 'Bath']);
 				setLocationText('Welcome Home');
-			} else if (playerPosition.x >= 2460 && playerPosition.x <= 2660 && playerPosition.y >= 570 && playerPosition.y <= 620) {
+			} else if (
+				playerPosition.x >= 2460 &&
+				playerPosition.x <= 2660 &&
+				playerPosition.y >= 570 &&
+				playerPosition.y <= 620
+			) {
 				setActions(['Buy Bucket', 'Buy Fishing Rod', 'Buy Bait']);
 				setLocationText('Welcome to Bites Shop');
 			} else if (playerPosition.x === 3220 && playerPosition.y === 1500) {
@@ -976,7 +1168,8 @@ useEffect(() => {
 			if (
 				playerPosition.x >= 1820 &&
 				playerPosition.x <= 1940 &&
-				playerPosition.y >= 2180 && playerPosition.y <= 2220
+				playerPosition.y >= 2180 &&
+				playerPosition.y <= 2220
 			) {
 				setActions(['Buy Magnifying Glass', 'Buy Journal', 'Buy Drink']);
 				setLocationText(['You are near a shop']);
@@ -1041,11 +1234,6 @@ useEffect(() => {
 		}
 	}, [playerPosition, currentMap]);
 
-	
-	
-
-
-
 	return (
 		<div
 			id='bodyBackground'
@@ -1072,17 +1260,23 @@ useEffect(() => {
 			<GameStatusBar status={playerStatus} />
 
 			<div className='w-9/10 h-13/18 lg:h-14/18 mx-auto grid grid-rows-4 md:grid-cols-4 gap-2'>
-				<div className={`row-span-3 md:row-span-4 md:col-span-3 game-wrapper ${isShaking ? 'shake' : ''}`}>
+				<div
+					className={`row-span-3 md:row-span-4 md:col-span-3 game-wrapper ${
+						isShaking ? 'shake' : ''
+					}`}
+				>
 					<div className='w-fit h-fit m-2 p-2 text-[6px] md:text-[10px] rounded-lg fixed bg-white z-10'>
 						X: {playerPosition.x}, Y: {playerPosition.y}
 					</div>
-					
 
-				<div className='w-fit h-fit m-2 mt-12 p-2 text-[6px] md:text-[10px] rounded-lg fixed bg-white z-10 flex items-center gap-1'>
-  <img src="/images/symbol/money.png" alt="Coin" className="w-3 h-3 md:w-4 md:h-4" />
-  {rupiah}
-</div>
-
+					<div className='w-fit h-fit m-2 mt-12 p-2 text-[6px] md:text-[10px] rounded-lg fixed bg-white z-10 flex items-center gap-1'>
+						<img
+							src='/images/symbol/money.png'
+							alt='Coin'
+							className='w-3 h-3 md:w-4 md:h-4'
+						/>
+						{rupiah}
+					</div>
 
 					<div className='m-2 mt-68 p-2 rounded-lg fixed grid grid-cols-3 grid-rows-3 z-10'>
 						<div className='col-span-3 flex justify-center items-center '>
@@ -1159,7 +1353,6 @@ useEffect(() => {
 								transform: `translate(${-offsetX}px, ${-offsetY}px)`,
 								transition: 'transform 0.1s ease-out',
 							}}
-							
 						>
 							<div
 								className='text-center'
@@ -1177,15 +1370,12 @@ useEffect(() => {
 										'opacity 0.7s ease-out, transform 0.7s ease-out, left 0.1s, top 0.1s',
 								}}
 							>
-								
-								
 								<p>{player.name}</p>
 								<img
 									className='self-center'
 									src={`/images/characters/${player.base}_${player.direction}.png`}
 									alt='player'
 								/>
-								
 							</div>
 						</div>
 					</div>
@@ -1224,10 +1414,10 @@ useEffect(() => {
 			)}
 
 			<GamePopup
-			show={popup.show}
-			imageSrc={popup.image}
-			message={popup.message}
-			additionalMessage={popup.additionalMessage}
+				show={popup.show}
+				imageSrc={popup.image}
+				message={popup.message}
+				additionalMessage={popup.additionalMessage}
 			/>
 		</div>
 	);
