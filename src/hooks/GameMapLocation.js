@@ -11,12 +11,7 @@ export const getActionData = (actions) => {
 	}));
 };
 
-export const goBackToMainMap = (
-	setCurrentMap,
-	setPosition,
-	setActions,
-	setLocationText
-) => {
+export const goBackToMainMap = (setCurrentMap, setPosition, setActions, setLocationText) => {
 	setCurrentMap('default');
 	setPosition({ x: 1000, y: 750 });
 	setActions([]);

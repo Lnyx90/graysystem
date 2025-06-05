@@ -22,8 +22,7 @@ function Game() {
 	});
 	const [imageLoaded, setImageLoaded] = useState(false);
 	const [playerSize, setPlayerSize] = useState(65);
-	const { difficulty: initialDifficulty, hearts: initialHearts } =
-		location.state || {};
+	const { difficulty: initialDifficulty, hearts: initialHearts } = location.state || {};
 	const [difficulty, setDifficulty] = useState(initialDifficulty || null);
 	const [hearts, setHearts] = useState(initialHearts || 0);
 	const [unlockedItems, setUnlockedItems] = useState([]);
@@ -46,9 +45,7 @@ function Game() {
 	const updateStats = (key, delta) => {
 		setPlayerStatus((prev) =>
 			prev.map((stat) =>
-				stat.id === key
-					? { ...stat, value: Math.max(0, Math.min(100, stat.value + delta)) }
-					: stat
+				stat.id === key ? { ...stat, value: Math.max(0, Math.min(100, stat.value + delta)) } : stat
 			)
 		);
 	};
@@ -307,9 +304,8 @@ function Game() {
 			duration: 1000,
 			effects: { happiness: +10, energy: -3 },
 			cost: 120,
-			unlock: 'SandBucket',
+			unlock: 'Sand Bucket',
 			onStart: () => showPopup('Sandcastle'),
-			unlock: 'sandcastle',
 		},
 		'Buy Sandals': {
 			duration: 1000,
@@ -380,10 +376,6 @@ function Game() {
 			onStart: () => showPopup('Wood'),
 			unlock: 'Wood',
 		},
-		'Build Campfire': {
-			duration: 2000,
-			effects: { energy: -15, happiness: +10 },
-		},
 		'Build a Campfire': {
 			duration: 2000,
 			effects: { energy: -15, happiness: +10 },
@@ -430,6 +422,12 @@ function Game() {
 			onStart: () => showPopup('Seashell'),
 		},
 		'Visit Museum': { duration: 2000, effects: { happiness: +8, energy: -5 } },
+
+		'Buy Fauna Book': {
+			duration: 2000,
+			effects: { happiness: +8, energy: -5 },
+			unlock: 'Fauna Book',
+		},
 
 		Eat: {
 			duration: 3000,
@@ -605,12 +603,7 @@ function Game() {
 		setCurrentActivity(null);
 	};
 
-	const calculateLifeSatisfactionScore = ({
-		stats,
-		activities,
-		items,
-		areas,
-	}) => {
+	const calculateLifeSatisfactionScore = ({ stats, activities, items, areas }) => {
 		let score = 0;
 		const statTotal = stats.reduce((sum, stat) => sum + stat.value, 0);
 		score += (statTotal / 400) * 40;
@@ -689,6 +682,32 @@ function Game() {
 		setActionPopup({ show: true, message });
 		setTimeout(() => setActionPopup({ show: false, message: '' }), 3000);
 	};
+	const actionRequirements = {
+		Fishing: ['Fishing Rod', 'Bait', 'Bucket'],
+		'Take a Picture': 'Camera',
+		'Capture the Moment': 'Camera',
+		'Hiking Journaling': 'Journal',
+		Hiking: 'Shoe',
+		'Observe Nature': 'Binocular',
+		'Set Up Tent': ['Tent', 'Peg', 'Rope'],
+		'Build A Campfire': ['Wood', 'Matches'],
+		'Learn Coral Ecosystem': 'Fauna Book',
+		'Observe Small Marine Life': 'Magnifying Glass',
+		Tanning: 'Chair',
+		'Build Sandcastles': 'Sand Bucket',
+		'Rest & Eat Snacks': 'Snack',
+		'Seashell Hunt': 'Gloves',
+	};
+
+	const filteredActionData = actionData.filter((action) => {
+		const label = action.label || action;
+		const requiredItem = actionRequirements[label];
+		if (!requiredItem) return true;
+		if (Array.isArray(requiredItem)) {
+			return requiredItem.every((item) => unlockedItems.includes(item));
+		}
+		return unlockedItems.includes(requiredItem);
+	});
 
 	//Map
 	let [currentMap, setCurrentMap] = useState('default');
@@ -727,109 +746,73 @@ function Game() {
 
 	if (width >= 1440) {
 		if (playerPosition.x > minScrollX) {
-			offsetX = Math.max(
-				0,
-				Math.min(playerPosition.x - vwWidth / 2, maxScrollX)
-			);
+			offsetX = Math.max(0, Math.min(playerPosition.x - vwWidth / 2, maxScrollX));
 		} else {
 			offsetX = 840;
 		}
 
 		if (playerPosition.y > minScrollY) {
-			offsetY = Math.max(
-				0,
-				Math.min(playerPosition.y - vwHeight / 2, maxScrollY)
-			);
+			offsetY = Math.max(0, Math.min(playerPosition.y - vwHeight / 2, maxScrollY));
 		} else {
 			offsetY = 500;
 		}
 	} else if (width >= 1024) {
 		if (playerPosition.x > minScrollX) {
-			offsetX = Math.max(
-				0,
-				Math.min(playerPosition.x - vwWidth / 2, maxScrollX)
-			);
+			offsetX = Math.max(0, Math.min(playerPosition.x - vwWidth / 2, maxScrollX));
 		} else {
 			offsetX = 840;
 		}
 
 		if (playerPosition.y > minScrollY) {
-			offsetY = Math.max(
-				0,
-				Math.min(playerPosition.y - vwHeight / 2, maxScrollY)
-			);
+			offsetY = Math.max(0, Math.min(playerPosition.y - vwHeight / 2, maxScrollY));
 		} else {
 			offsetY = 500;
 		}
 	} else if (width >= 768) {
 		if (playerPosition.x > minScrollX) {
-			offsetX = Math.max(
-				0,
-				Math.min(playerPosition.x - vwWidth / 2, maxScrollX)
-			);
+			offsetX = Math.max(0, Math.min(playerPosition.x - vwWidth / 2, maxScrollX));
 		} else {
 			offsetX = 840;
 		}
 
 		if (playerPosition.y > minScrollY) {
-			offsetY = Math.max(
-				0,
-				Math.min(playerPosition.y - vwHeight / 2, maxScrollY)
-			);
+			offsetY = Math.max(0, Math.min(playerPosition.y - vwHeight / 2, maxScrollY));
 		} else {
 			offsetY = 500;
 		}
 	} else if (width >= 425) {
 		if (playerPosition.x > minScrollX) {
-			offsetX = Math.max(
-				0,
-				Math.min(playerPosition.x - vwWidth / 2, maxScrollX)
-			);
+			offsetX = Math.max(0, Math.min(playerPosition.x - vwWidth / 2, maxScrollX));
 		} else {
 			offsetX = 2500;
 		}
 
 		if (playerPosition.y > minScrollY) {
-			offsetY = Math.max(
-				0,
-				Math.min(playerPosition.y - vwHeight / 2, maxScrollY)
-			);
+			offsetY = Math.max(0, Math.min(playerPosition.y - vwHeight / 2, maxScrollY));
 		} else {
 			offsetY = 1500;
 		}
 	} else if (width >= 375) {
 		if (playerPosition.x > minScrollX) {
-			offsetX = Math.max(
-				0,
-				Math.min(playerPosition.x - vwWidth / 2, maxScrollX)
-			);
+			offsetX = Math.max(0, Math.min(playerPosition.x - vwWidth / 2, maxScrollX));
 		} else {
 			offsetX = 2500;
 		}
 
 		if (playerPosition.y > minScrollY) {
-			offsetY = Math.max(
-				0,
-				Math.min(playerPosition.y - vwHeight / 2, maxScrollY)
-			);
+			offsetY = Math.max(0, Math.min(playerPosition.y - vwHeight / 2, maxScrollY));
 		} else {
 			offsetY = 1500;
 		}
 	} else {
 		if (playerPosition.x > minScrollX) {
-			offsetX = Math.max(
-				0,
-				Math.min(playerPosition.x - vwWidth / 2, maxScrollX)
-			);
+			offsetX = Math.max(0, Math.min(playerPosition.x - vwWidth / 2, maxScrollX));
 		} else {
 			offsetX = 2500;
 		}
 
 		if (playerPosition.y > minScrollY) {
-			offsetY = Math.max(
-				0,
-				Math.min(playerPosition.y - vwHeight / 2, maxScrollY)
-			);
+			offsetY = Math.max(0, Math.min(playerPosition.y - vwHeight / 2, maxScrollY));
 		} else {
 			offsetY = 1500;
 		}
@@ -839,12 +822,7 @@ function Game() {
 		const storedName = localStorage.getItem('playerName');
 		const storedBase = localStorage.getItem('PlayerImageBase');
 
-		console.log(
-			'Loaded from localStorage → name:',
-			storedName,
-			'base:',
-			storedBase
-		);
+		console.log('Loaded from localStorage → name:', storedName, 'base:', storedBase);
 
 		if (!storedName || !storedBase) {
 			alert('Missing character or name — redirecting to character selection');
@@ -1124,11 +1102,7 @@ function Game() {
 				setLocationText('Welcome to Lake Toba');
 			}
 		} else if (currentMap === 'mountain') {
-			if (
-				Math.sqrt(
-					(playerPosition.x - 2460) ** 2 + (playerPosition.y - 80) ** 2
-				) < 80
-			) {
+			if (Math.sqrt((playerPosition.x - 2460) ** 2 + (playerPosition.y - 80) ** 2) < 80) {
 				setActions([
 					'Enjoy the View',
 					'Capture the Moment',
@@ -1136,29 +1110,11 @@ function Game() {
 					'Hiking Journaling',
 				]);
 				setLocationText('You are at the Mountain Peak');
-			} else if (
-				Math.sqrt(
-					(playerPosition.x - 2460) ** 2 + (playerPosition.y - 1800) ** 2
-				) < 120
-			) {
-				setActions([
-					'Hiking',
-					'Observe Nature',
-					'Collect Firewood',
-					'Gather Spring Water',
-				]);
+			} else if (Math.sqrt((playerPosition.x - 2460) ** 2 + (playerPosition.y - 1800) ** 2) < 120) {
+				setActions(['Hiking', 'Observe Nature', 'Collect Firewood', 'Gather Spring Water']);
 				setLocationText('You are on the Mountain Slope');
-			} else if (
-				Math.sqrt(
-					(playerPosition.x - 3860) ** 2 + (playerPosition.y - 2480) ** 2
-				) < 120
-			) {
-				setActions([
-					'Set Up Tent',
-					'Cook Food',
-					'Build a Campfire',
-					'Talk to Fellow Campers',
-				]);
+			} else if (Math.sqrt((playerPosition.x - 3860) ** 2 + (playerPosition.y - 2480) ** 2) < 120) {
+				setActions(['Set Up Tent', 'Cook Food', 'Build a Campfire', 'Talk to Fellow Campers']);
 				setLocationText('You are at the Campground');
 			} else {
 				setActions([]);
@@ -1173,12 +1129,8 @@ function Game() {
 			) {
 				setActions(['Buy Magnifying Glass', 'Buy Journal', 'Buy Drink']);
 				setLocationText(['You are near a shop']);
-			} else if (
-				playerPosition.x >= 3940 &&
-				playerPosition.x <= 4220 &&
-				playerPosition.y === 940
-			) {
-				setActions(['Visit Museum']);
+			} else if (playerPosition.x >= 3940 && playerPosition.x <= 4220 && playerPosition.y === 940) {
+				setActions(['Visit Museum', 'Buy Fauna Book']);
 				setLocationText(['You are at the temple']);
 			} else if (
 				playerPosition.x >= 2140 &&
@@ -1186,22 +1138,13 @@ function Game() {
 				playerPosition.y >= 880 &&
 				playerPosition.y <= 920
 			) {
-				setActions([
-					'Meditate',
-					'Observing Borobudur',
-					'Fly a Lanttern',
-					'Attend a Ceremony',
-				]);
+				setActions(['Meditate', 'Observing Borobudur', 'Fly a Lanttern', 'Attend a Ceremony']);
 			} else {
 				setActions([]);
 				setLocationText('Welcome to the Borobudur Temple');
 			}
 		} else if (currentMap === 'beach') {
-			if (
-				playerPosition.x >= 1299 &&
-				playerPosition.x <= 1380 &&
-				playerPosition.y === 1100
-			) {
+			if (playerPosition.x >= 1299 && playerPosition.x <= 1380 && playerPosition.y === 1100) {
 				setActions(['Buy Sandcastle Bucket', 'Become Cashier', 'Buy Sandals']);
 				setLocationText(['You are near a Seaside Shop']);
 			} else if (
@@ -1209,11 +1152,7 @@ function Game() {
 				playerPosition.x <= 4659 &&
 				playerPosition.y === 1540
 			) {
-				setActions([
-					'Take Picture',
-					'Learn Coral Ecosystem',
-					'Observe Small Marine Life',
-				]);
+				setActions(['Take Picture', 'Learn Coral Ecosystem', 'Observe Small Marine Life']);
 				setLocationText(['You are at the Beach']);
 			} else if (
 				playerPosition.x >= 4059 &&
@@ -1221,12 +1160,7 @@ function Game() {
 				playerPosition.y <= 2020 &&
 				playerPosition.y >= 1860
 			) {
-				setActions([
-					'Tanning',
-					'Build Sandcastles',
-					'Seashell Hunt',
-					'Sightseeing',
-				]);
+				setActions(['Tanning', 'Build Sandcastles', 'Seashell Hunt', 'Sightseeing']);
 			} else {
 				setActions([]);
 				setLocationText('Welcome to Kuta Beach');
@@ -1236,8 +1170,8 @@ function Game() {
 
 	return (
 		<div
-			id='bodyBackground'
-			className='relative w-screen h-screen px-2 py-2 md:py-4 md:px-4 lg:py-8 lg:px-8 overflow-hidden'
+			id="bodyBackground"
+			className="relative w-screen h-screen px-2 py-2 md:py-4 md:px-4 lg:py-8 lg:px-8 overflow-hidden"
 		>
 			<GameWelcomePopup
 				player={player}
@@ -1246,7 +1180,7 @@ function Game() {
 			/>
 
 			{actionPopup.show && (
-				<div className='fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-white text-black px-4 py-2 rounded-lg shadow-lg z-50 animate-fade'>
+				<div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-white text-black px-4 py-2 rounded-lg shadow-lg z-50 animate-fade">
 					{actionPopup.message}
 				</div>
 			)}
@@ -1259,27 +1193,23 @@ function Game() {
 
 			<GameStatusBar status={playerStatus} />
 
-			<div className='w-9/10 h-13/18 lg:h-14/18 mx-auto grid grid-rows-4 md:grid-cols-4 gap-2'>
+			<div className="w-9/10 h-13/18 lg:h-14/18 mx-auto grid grid-rows-4 md:grid-cols-4 gap-2">
 				<div
 					className={`row-span-3 md:row-span-4 md:col-span-3 game-wrapper ${
 						isShaking ? 'shake' : ''
 					}`}
 				>
-					<div className='w-fit h-fit m-2 p-2 text-[6px] md:text-[10px] rounded-lg fixed bg-white z-10'>
+					<div className="w-fit h-fit m-2 p-2 text-[6px] md:text-[10px] rounded-lg fixed bg-white z-10">
 						X: {playerPosition.x}, Y: {playerPosition.y}
 					</div>
 
-					<div className='w-fit h-fit m-2 mt-12 p-2 text-[6px] md:text-[10px] rounded-lg fixed bg-white z-10 flex items-center gap-1'>
-						<img
-							src='/images/symbol/money.png'
-							alt='Coin'
-							className='w-3 h-3 md:w-4 md:h-4'
-						/>
+					<div className="w-fit h-fit m-2 mt-12 p-2 text-[6px] md:text-[10px] rounded-lg fixed bg-white z-10 flex items-center gap-1">
+						<img src="/images/symbol/money.png" alt="Coin" className="w-3 h-3 md:w-4 md:h-4" />
 						{rupiah}
 					</div>
 
-					<div className='m-2 mt-68 p-2 rounded-lg fixed grid grid-cols-3 grid-rows-3 z-10'>
-						<div className='col-span-3 flex justify-center items-center '>
+					<div className="m-2 mt-68 p-2 rounded-lg fixed grid grid-cols-3 grid-rows-3 z-10">
+						<div className="col-span-3 flex justify-center items-center ">
 							<button
 								onMouseDown={() => startMoving('up')}
 								onMouseUp={stopMoving}
@@ -1287,14 +1217,11 @@ function Game() {
 								onTouchStart={() => startMoving('up')}
 								onTouchEnd={stopMoving}
 							>
-								<img
-									className='w-4 md:w-6 lg:w-8	'
-									src='/images/symbol/top.png'
-								/>
+								<img className="w-4 md:w-6 lg:w-8	" src="/images/symbol/top.png" />
 							</button>
 						</div>
 
-						<div className='flex justify-center items-center -rotate-90'>
+						<div className="flex justify-center items-center -rotate-90">
 							<button
 								onMouseDown={() => startMoving('left')}
 								onMouseUp={stopMoving}
@@ -1302,16 +1229,13 @@ function Game() {
 								onTouchStart={() => startMoving('left')}
 								onTouchEnd={stopMoving}
 							>
-								<img
-									className='w-4 md:w-6 lg:w-8'
-									src='/images/symbol/top.png'
-								/>
+								<img className="w-4 md:w-6 lg:w-8" src="/images/symbol/top.png" />
 							</button>
 						</div>
 
 						<div></div>
 
-						<div className='flex justify-center items-center rotate-90'>
+						<div className="flex justify-center items-center rotate-90">
 							<button
 								onMouseDown={() => startMoving('right')}
 								onMouseUp={stopMoving}
@@ -1319,14 +1243,11 @@ function Game() {
 								onTouchStart={() => startMoving('right')}
 								onTouchEnd={stopMoving}
 							>
-								<img
-									className='w-4 md:w-6 lg:w-8'
-									src='/images/symbol/top.png'
-								/>
+								<img className="w-4 md:w-6 lg:w-8" src="/images/symbol/top.png" />
 							</button>
 						</div>
 
-						<div className='col-span-3 flex justify-center items-center rotate-180'>
+						<div className="col-span-3 flex justify-center items-center rotate-180">
 							<button
 								onMouseDown={() => startMoving('down')}
 								onMouseUp={stopMoving}
@@ -1334,18 +1255,15 @@ function Game() {
 								onTouchStart={() => startMoving('down')}
 								onTouchEnd={stopMoving}
 							>
-								<img
-									className='w-4 md:w-6 lg:w-8'
-									src='/images/symbol/top.png'
-								/>
+								<img className="w-4 md:w-6 lg:w-8" src="/images/symbol/top.png" />
 							</button>
 						</div>
 					</div>
 
-					<div className='w-full h-full rounded-lg relative overflow-hidden'>
+					<div className="w-full h-full rounded-lg relative overflow-hidden">
 						<div
-							id='map'
-							className='z-5 absolute scale-y-50 scale-x-50 md:scale-y-75 md:scale-x-75'
+							id="map"
+							className="z-5 absolute scale-y-50 scale-x-50 md:scale-y-75 md:scale-x-75"
 							style={{
 								width: `${mapWidth}px`,
 								height: `${mapHeight}px`,
@@ -1355,7 +1273,7 @@ function Game() {
 							}}
 						>
 							<div
-								className='text-center'
+								className="text-center"
 								style={{
 									width: playerSize,
 									left: playerPosition.x,
@@ -1363,18 +1281,15 @@ function Game() {
 									position: 'fixed',
 									objectFit: 'cover',
 									opacity: imageLoaded ? 1 : 0,
-									transform: imageLoaded
-										? 'scale(1) translateY(0)'
-										: 'scale(0.5) translateY(1rem)',
-									transition:
-										'opacity 0.7s ease-out, transform 0.7s ease-out, left 0.1s, top 0.1s',
+									transform: imageLoaded ? 'scale(1) translateY(0)' : 'scale(0.5) translateY(1rem)',
+									transition: 'opacity 0.7s ease-out, transform 0.7s ease-out, left 0.1s, top 0.1s',
 								}}
 							>
 								<p>{player.name}</p>
 								<img
-									className='self-center'
+									className="self-center"
 									src={`/images/characters/${player.base}_${player.direction}.png`}
-									alt='player'
+									alt="player"
 								/>
 							</div>
 						</div>
@@ -1386,7 +1301,7 @@ function Game() {
 					locationText={locationText}
 					formattedTime={formattedTime}
 					greeting={greeting}
-					actionData={actionData}
+					actionData={filteredActionData}
 					setCurrentMap={setCurrentMap}
 					setPlayerPosition={setPlayerPosition}
 					setActions={setActions}
@@ -1398,13 +1313,13 @@ function Game() {
 				/>
 			</div>
 			{deathPopup.show && (
-				<div className='fixed inset-0 flex items-center justify-center bg-opacity-50 z-50 backdrop-blur-sm'>
-					<div className='ml-4 mr-4 bg-white rounded-lg p-6 max-w-xs text-center shadow-lg'>
-						<p className='text-lg font-semibold mb-2'>{deathPopup.message}</p>
+				<div className="fixed inset-0 flex items-center justify-center bg-opacity-50 z-50 backdrop-blur-sm">
+					<div className="ml-4 mr-4 bg-white rounded-lg p-6 max-w-xs text-center shadow-lg">
+						<p className="text-lg font-semibold mb-2">{deathPopup.message}</p>
 						{hearts > 0 && (
 							<button
 								onClick={() => setDeathPopup({ show: false, message: '' })}
-								className='mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600'
+								className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
 							>
 								Continue
 							</button>
