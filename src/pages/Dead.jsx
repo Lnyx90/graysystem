@@ -54,7 +54,7 @@ function Dead() {
 						GAME OVER!
 					</h2>
 					 <div className="text-center mt-20">
-						<p className="text-xl mt-4 text-red-800">Life Satisfaction Score: {score}/100</p>
+						<p className="text-sm sm:text-lg text-white font-bold glow-text">Life Satisfaction Score: {score}/100</p>
 						</div>
 				</div>
 				<button
