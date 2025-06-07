@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import GameBackpack from './GameBackpack';
 import IdentityCard from './GameIdentityCard';
 
-function GameTitleBar({ formattedDate, unlockedItems, unlockItem }) {
+function GameTitleBar({ formattedDate, unlockedItems, unlockItem, achievements }) {
 	const [showCard, setShowCard] = useState(false);
 	const [characterImage, setCharacterImage] = useState('');
 
@@ -43,6 +43,7 @@ function GameTitleBar({ formattedDate, unlockedItems, unlockItem }) {
 					userName={localStorage.getItem('playerName')}
 					onClose={() => setShowCard(false)}
 					characterImage={characterImage}
+					achievements={achievements}
 				/>
 			)}
 		</>
