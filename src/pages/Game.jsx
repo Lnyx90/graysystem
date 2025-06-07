@@ -15,6 +15,10 @@ import { getActionData, goBackToMainMap } from '../hooks/GameMapLocation';
 
 //CSS
 import '../styles/Game.css';
+import GamePopup from '../components/Gamepopup';
+import { obstacleZones } from '../hooks/block';
+
+
 
 //Game
 function Game() {
@@ -106,6 +110,15 @@ function Game() {
 
 	const moveIntervalRef = useRef(null);
 
+	 function isBlockedByObstacle(x, y, currentMap) {
+	const zones = obstacleZones[currentMap];
+	if (!zones) return false; 
+	return zones.some(({ x: ox, y: oy, width, height }) => (
+		x >= ox && x <= ox + width &&
+		y >= oy && y <= oy + height
+	));
+	}
+
 	useEffect(() => {
 		const timer = setTimeout(() => {
 			if (playerPosition.x !== 2500 || playerPosition.y !== 1500) {
@@ -137,6 +150,12 @@ function Game() {
 
 			if (clampedX !== newX || clampedY !== newY) {
 				triggerShake();
+			}
+
+			if (isBlockedByObstacle(newX, newY, currentMapRef.current)) {
+
+			triggerShake(); 
+			return prev; 
 			}
 
 			return { x: clampedX, y: clampedY };
@@ -739,6 +758,9 @@ function Game() {
 
 	//Map
 	let [currentMap, setCurrentMap] = useState('default');
+	const currentMapRef = useRef(currentMap);
+
+
 
 	const [mapWidth, setMapWidth] = useState(5000);
 	const [mapHeight, setMapHeight] = useState(3000);
@@ -760,6 +782,7 @@ function Game() {
 
 	let [offsetX, setOffsetX] = useState(0);
 	let [offsetY, setOffsetY] = useState(0);
+	
 
 	const width = window.innerWidth;
 	const clampY = maxY + 60;
@@ -771,6 +794,13 @@ function Game() {
 		mountain: '/images/background/GameMountainMap.jpeg',
 		temple: '/images/background/GameTempleMap.jpg',
 	};
+
+	useEffect(() => {
+  currentMapRef.current = currentMap;
+}, [currentMap]);
+
+
+	
 
 	if (width >= 1440) {
 		if (playerPosition.x > minScrollX) {
@@ -845,6 +875,100 @@ function Game() {
 			offsetY = 1500;
 		}
 	}
+
+	useEffect(() => {
+		const storedName = localStorage.getItem('playerName');
+		const storedBase = localStorage.getItem('PlayerImageBase');
+
+		console.log('Loaded from localStorage → name:', storedName, 'base:', storedBase);
+
+		if (!storedName || !storedBase) {
+			alert('Missing character or name — redirecting to character selection');
+			navigate('/');
+			return;
+		}
+
+		setPlayer({
+			name: storedName.trim(),
+			base: storedBase,
+			direction: 'right',
+		});
+	}, []);
+
+  function isBlockedByObstacle(x, y, currentMap) {
+  const zones = obstacleZones[currentMap];
+  if (!zones) return false; 
+  return zones.some(({ x: ox, y: oy, width, height }) => (
+    x >= ox && x <= ox + width &&
+    y >= oy && y <= oy + height
+  ));
+}
+
+
+
+	function movePlayer(direction) {
+		setPlayer((prev) => ({
+			...prev,
+			direction,
+		}));
+
+		setPlayerPosition((prev) => {
+			let { x, y } = prev;
+			const step = 20;
+			let newX = x;
+			let newY = y;
+
+			if (direction === 'right') newX += step;
+			if (direction === 'left') newX -= step;
+			if (direction === 'up') newY -= step;
+			if (direction === 'down') newY += step;
+
+			const clampedX = Math.max(minX, Math.min(newX, maxX));
+			const clampedY = Math.max(minY, Math.min(newY, clampY));
+
+			if (clampedX !== newX || clampedY !== newY) {
+				triggerShake();
+			}
+			if (isBlockedByObstacle(newX, newY, currentMapRef.current)) {
+
+			triggerShake(); 
+			return prev; 
+			}
+
+			return { x: clampedX, y: clampedY };
+		});
+	}
+
+	useEffect(() => {
+		if (!showWelcomePopup) {
+			const handleKeyDown = (e) => {
+				setPlayerPosition((prev) => {
+					let { x, y } = prev;
+					const step = 20;
+
+					if (e.key === 'ArrowRight') movePlayer('right');
+					if (e.key === 'ArrowLeft') movePlayer('left');
+					if (e.key === 'ArrowUp') movePlayer('up');
+					if (e.key === 'ArrowDown') movePlayer('down');
+
+					x = Math.max(minX, Math.min(x, maxX));
+					y = Math.max(minY, Math.min(y, maxY));
+
+					return { x, y };
+				});
+			};
+
+			window.addEventListener('keydown', handleKeyDown);
+			return () => window.removeEventListener('keydown', handleKeyDown);
+		}
+	}, [showWelcomePopup, maxScrollX, maxScrollY, vwWidth, vwHeight]);
+
+	useEffect(() => {
+		if (!showWelcomePopup) {
+			const timeoutId = setTimeout(() => setImageLoaded(true), 600);
+			return () => clearTimeout(timeoutId);
+		}
+	}, [showWelcomePopup]);
 
 	useEffect(() => {
 		const handleResize = () => {
@@ -984,7 +1108,7 @@ function Game() {
 				playerPosition.y <= 2610
 			) {
 				setCurrentMap('lake');
-				setPlayerPosition({ x: 100, y: 100 });
+				setPlayerPosition({ x: 760, y: 330 });
 				setActions([]);
 				setLocationText('Welcome to Lake Toba');
 			} else if (
@@ -1014,7 +1138,7 @@ function Game() {
 				playerPosition.y <= 1000
 			) {
 				setCurrentMap('temple');
-				setPlayerPosition({ x: 100, y: 100 });
+				setPlayerPosition({ x: 840, y: 720 });
 				setActions([]);
 				setLocationText('Welcome to the Borobudur Temple');
 			} else if (playerPosition.x === 2500 && playerPosition.y === 1500) {
@@ -1272,7 +1396,7 @@ function Game() {
 									width: playerSize,
 									left: playerPosition.x,
 									top: playerPosition.y,
-									position: 'fixed',
+									position: 'absolute',
 									objectFit: 'cover',
 									opacity: imageLoaded ? 1 : 0,
 									transform: imageLoaded ? 'scale(1) translateY(0)' : 'scale(0.5) translateY(1rem)',
