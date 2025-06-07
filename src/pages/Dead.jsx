@@ -40,7 +40,6 @@ function Dead() {
 				backgroundPosition: 'center',
 			}}
 		>
-			{/* Background music */}
 			<audio id='bgMusic' autoPlay loop>
 				<source src='./assets/bg-music/over.mp3' type='audio/mpeg' />
 			</audio>
