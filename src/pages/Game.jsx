@@ -134,6 +134,11 @@ function Game() {
 			direction,
 		}));
 
+		setHoleVisible((prev) => {
+		if (prev) return false;
+		return prev;
+		});
+
 		setPlayerPosition((prev) => {
 			let { x, y } = prev;
 			const step = 20;
@@ -192,7 +197,7 @@ function Game() {
 	const [showHole, setShowHole] = useState(true);
 	const [isSinking, setIsSinking] = useState(false);
 	const [holeOpacity, setHoleOpacity] = useState(1);
-	const [isHoleVisible, setIsHoleVisible] = useState(true);
+	const [isHoleVisible, setHoleVisible] = useState(false);
 
 	//Achievement
 	const [achievements, setAchievements] = useState({
@@ -220,41 +225,58 @@ function Game() {
 		}
 	}, [initialDifficulty, initialHearts]);
 
-	useEffect(() => {
-		console.log('Checking death:', playerStatus, hearts);
-		if (!difficulty || isDead) return;
+useEffect(() => {
+	console.log('Checking death:', playerStatus, hearts);
 
-		const dead = playerStatus.some((stat) => stat.value === 0);
-		if (!dead) return;
+	if (!difficulty || isDead) return;
 
-		setIsDead(true);
-		setShowHole(true);
-		setIsSinking(true);
-		setIsHoleVisible(true);
+	const dead = playerStatus.some((stat) => stat.value === 0);
+	if (!dead) return;
 
-		if (hearts > 1) {
-			const newHearts = hearts - 1;
-			setHearts(newHearts);
-			setDeathPopup({
-				show: true,
-				message: `You died!     ❤️ Remaining hearts: ${newHearts}`,
-			});
-			setTimeout(() => {
-				setPlayerStatus(defaultPlayerStatus);
-				setIsDead(false);
-				setIsSinking(false); // Reset sinking animation
-			}, 2000);
-		} else {
-			setDeathPopup({
-				show: true,
-				message: 'You died!    💀 No more hearts left.      Game Over!',
-			});
-			setTimeout(() => {
-				navigate('/dead');
-				setIsSinking(false); // Reset sinking animation
-			}, 2000);
-		}
-	}, [playerStatus, hearts, difficulty, isDead, navigate]);
+	setIsDead(true);
+	setShowHole(true);
+	setIsSinking(true);
+	setHoleVisible(true); // pakai setHoleVisible sesuai deklarasi
+
+	if (hearts > 1) {
+		const newHearts = hearts - 1;
+		setHearts(newHearts);
+		setDeathPopup({
+			show: true,
+			message: `You died!</br>❤️ Remaining hearts: ${newHearts}`,
+		});
+
+		setTimeout(() => {
+			setPlayerStatus(defaultPlayerStatus);
+			setIsDead(false);
+			setIsSinking(false);
+			setHoleVisible(false); 
+			setShowHole(false);
+		}, 2000);
+
+	} else {
+	setDeathPopup({ show: false, message: '' }); // sembunyikan popup dulu (optional)
+
+	setShowHole(true);
+	setHoleVisible(true);
+	setIsSinking(true); 
+
+	setTimeout(() => {
+		setDeathPopup({
+			show: true,
+			message: 'You died!</br>💀 No more hearts left.</br>Game Over!',
+		});
+
+		setIsSinking(false); 
+		setHoleVisible(false);
+		setShowHole(false);
+
+		setTimeout(() => {
+			navigate('/dead');
+		}, 1500);
+	}, 2000);
+}
+}, [playerStatus, hearts, difficulty, isDead, navigate]);
 
 	//Activities
 	const activityInterval = useRef(null);
@@ -414,6 +436,7 @@ function Game() {
 			unlock: 'Food',
 			onStart: () => showPopup('Cook'),
 		},
+		'Meditate': { duration: 5000, effects: { happiness: +5, energy: +20, hygiene: -10 } },
 		'Observe Nature': { duration: 2000, effects: { happiness: +20, energy: -5, hygiene: +5 } },
 		'Learn Coral Ecosystem': {
 			duration: 2000,
@@ -751,10 +774,15 @@ function Game() {
 
 	useEffect(() => {
 		if (!showWelcomePopup) {
-			const timeoutId = setTimeout(() => setImageLoaded(true), 600);
+			const timeoutId = setTimeout(() => {
+			setImageLoaded(true);
+			setHoleVisible(true);
+		}, 600);
 			return () => clearTimeout(timeoutId);
 		}
 	}, [showWelcomePopup]);
+
+	
 
 	//Map
 	let [currentMap, setCurrentMap] = useState('default');
@@ -1174,6 +1202,51 @@ function Game() {
 		}
 	}, [showWelcomePopup, maxScrollX, maxScrollY, vwWidth, vwHeight]);
 
+	const [trapPosition, setTrapPosition] = useState({ x: 200, y: 200 });
+	const [trapDirection, setTrapDirection] = useState(1);
+
+		useEffect(() => {
+			const interval = setInterval(() => {
+				const trapSize = 40;
+
+				const maxX = mapWidth - trapSize;
+				const maxY = mapHeight - trapSize;
+
+				const newX = Math.floor(Math.random() * maxX);
+				const newY = Math.floor(Math.random() * maxY);
+
+				setTrapPosition({ x: newX, y: newY });
+			}, 15000); 
+
+			return () => clearInterval(interval);
+		}, []); 
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			const trapSize = 40;
+			const playerWidth = playerSize;
+			const playerHeight = playerSize;
+
+			const isColliding =
+				trapPosition.x < playerPosition.x + playerWidth &&
+				trapPosition.x + trapSize > playerPosition.x &&
+				trapPosition.y < playerPosition.y + playerHeight &&
+				trapPosition.y + trapSize > playerPosition.y;
+
+			if (isColliding) {
+				setPlayerStatus((prev) =>
+					prev.map((stat) =>
+						stat.id === 'energy'
+							? { ...stat, value: Math.max(0, stat.value - 10) }
+							: stat
+					)
+				);
+			}
+		}, 15000); 
+
+		return () => clearInterval(interval);
+	}, [trapPosition, playerPosition]);
+	
 	//Return
 	return (
 		<div
@@ -1266,7 +1339,7 @@ function Game() {
 								<img className="w-4 md:w-6 lg:w-8" src="/images/symbol/top.png" />
 							</button>
 						</div>
-					</div>
+					</div> 
 
 					<div className="w-full h-full rounded-lg relative overflow-hidden">
 						<div
@@ -1280,37 +1353,51 @@ function Game() {
 								transition: 'left 0.3s ease-out top 0.3s ease-out',
 							}}
 						>
-							{showHole && (
+							<img
+								src="/images/symbol/trap.png"
+								alt="trap"
+								className="absolute z-10 w-20 h-20 transition-all duration-300"
+								style={{
+									left: `${trapPosition.x}px`,
+									top: `${trapPosition.y}px`,
+									position: 'absolute',
+								}}
+							/>
 								<img
-									src="/images/symbol/hole.png"
-									className={`relative w-15 h-15 z-0 transition-opacity duration-300 ${
-										isHoleVisible ? 'hole-fade-in' : 'hole-fade-out'
-									}`}
-									style={{
-										left: `${playerPosition.x + 30}px`,
-										top: `${playerPosition.y + playerSize + 60}px`,
-										transform: 'translateX(-50%)',
-										opacity: isHoleVisible ? 1 : 0,
-									}}
-									alt="hole"
-									onAnimationEnd={() => {
-										if (!isHoleVisible) setHoleOpacity(0);
-									}}
+								src="/images/symbol/hole.png"
+								className="relative w-15 h-15 z-0 transition-opacity duration-300"
+								style={{
+									left: `${playerPosition.x + 30}px`,
+									top: `${playerPosition.y + playerSize + 60}px`,
+									position: 'fixed',
+									opacity: isHoleVisible ? 1 : 0,
+									transform: 'translateX(-50%) scale(1) translateY(0)',
+								}}
+								alt="hole"
 								/>
-							)}
-							<div
+
+								<div
 								className="text-center"
 								style={{
 									width: playerSize,
-									left: playerPosition.x,
-									top: playerPosition.y,
-									position: 'absolute',
+									position: 'fixed',
 									objectFit: 'cover',
 									opacity: imageLoaded ? 1 : 0,
-									transform: imageLoaded ? 'scale(1) translateY(0)' : 'scale(0.5) translateY(1rem)',
-									transition: 'opacity 0.7s ease-out, transform 0.7s ease-out, left 0.1s, top 0.1s',
+									left: playerPosition.x, 
+									top: imageLoaded && !isSinking
+									? playerPosition.y 
+									: playerPosition.y + playerSize + 20, 
+									transform: isSinking
+									? 'scale(0) translateY(0)' 
+									: imageLoaded
+									? 'scale(1) translateY(0)'
+									: 'scale(0) translateY(0)', 
+									transition: isSinking
+									? 'opacity 0.7s ease-out, transform 1.5s ease-in-out, left 0.2s ease-in-out, top 1.2s ease-in-out'
+									: 'opacity 1.2s ease-in-out, transform 1.2s ease-in-out, left 0.2s ease-in-out, top 1.0s ease-in-out',
 								}}
-							>
+								>
+
 								<p>{player.name}</p>
 								<img
 									className="self-center"
@@ -1341,7 +1428,8 @@ function Game() {
 			{deathPopup.show && (
 				<div className="fixed inset-0 flex items-center justify-center bg-opacity-50 z-50 backdrop-blur-sm">
 					<div className="ml-4 mr-4 bg-white rounded-lg p-6 max-w-xs text-center shadow-lg">
-						<p className="text-lg font-semibold mb-2">{deathPopup.message}</p>
+						<p className="text-base font-semibold mb-2"
+  						dangerouslySetInnerHTML={{ __html: deathPopup.message }}></p>
 						{hearts > 0 && (
 							<button
 								onClick={() => setDeathPopup({ show: false, message: '' })}
