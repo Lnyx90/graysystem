@@ -1307,7 +1307,7 @@ useEffect(() => {
 								<img className="w-4 md:w-6 lg:w-8" src="/images/symbol/top.png" />
 							</button>
 						</div>
-					</div>
+					</div> 
 
 					<div className="w-full h-full rounded-lg relative overflow-hidden">
 						<div
