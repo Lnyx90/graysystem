@@ -92,8 +92,12 @@ function GameSideBar(props) {
 								className="mt-1 lg:mt-2 md:mt-3 flex justify-between items-center"
 							>
 								<button
-									onClick={() => performActions(action.label || action)}
-									className="h-fit w-9/10 p-1 mx-auto text-white  text-[5px] md:text-xs lg:text-sm rounded-lg bg-blue-500 hover:bg-blue-700"
+									onClick={() => !action.locked && performActions(action)}
+									className={`h-fit w-9/10 p-1 mx-auto text-white text-[5px] md:text-xs lg:text-sm rounded-lg  ${
+										action.locked
+											? 'bg-blue-400 cursor-not-allowed'
+											: 'bg-blue-500  hover:bg-blue-700'
+									}`}
 								>
 									{action.label}
 								</button>
