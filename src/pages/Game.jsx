@@ -12,9 +12,13 @@ import GamePopup from '../components/Gamepopup';
 //Hooks
 import useGameTime from '../hooks/GameTime';
 import { getActionData, goBackToMainMap } from '../hooks/GameMapLocation';
+import { obstacleZones } from '../hooks/block';
 
 //CSS
 import '../styles/Game.css';
+
+
+
 
 //Game
 function Game() {
@@ -106,6 +110,15 @@ function Game() {
 
 	const moveIntervalRef = useRef(null);
 
+	 function isBlockedByObstacle(x, y, currentMap) {
+	const zones = obstacleZones[currentMap];
+	if (!zones) return false; 
+	return zones.some(({ x: ox, y: oy, width, height }) => (
+		x >= ox && x <= ox + width &&
+		y >= oy && y <= oy + height
+	));
+	}
+
 	useEffect(() => {
 		const timer = setTimeout(() => {
 			if (playerPosition.x !== 2500 || playerPosition.y !== 1500) {
@@ -138,10 +151,16 @@ function Game() {
 			if (direction === 'down') newY += step;
 
 			const clampedX = Math.max(minX, Math.min(newX, maxX));
-			const clampedY = Math.max(minY, Math.min(newY, clampY));
+			const clampedY = Math.max(minY, Math.min(newY, maxY));
 
 			if (clampedX !== newX || clampedY !== newY) {
 				triggerShake();
+			}
+
+			if (isBlockedByObstacle(newX, newY, currentMapRef.current)) {
+
+			triggerShake(); 
+			return prev; 
 			}
 
 			return { x: clampedX, y: clampedY };
@@ -767,6 +786,9 @@ useEffect(() => {
 
 	//Map
 	let [currentMap, setCurrentMap] = useState('default');
+	const currentMapRef = useRef(currentMap);
+
+
 
 	const [mapWidth, setMapWidth] = useState(5000);
 	const [mapHeight, setMapHeight] = useState(3000);
@@ -788,9 +810,10 @@ useEffect(() => {
 
 	let [offsetX, setOffsetX] = useState(0);
 	let [offsetY, setOffsetY] = useState(0);
+	
 
 	const width = window.innerWidth;
-	const clampY = maxY + 60;
+
 
 	const mapImages = {
 		default: '/images/background/GameDefaultMap.png',
@@ -799,6 +822,13 @@ useEffect(() => {
 		mountain: '/images/background/GameMountainMap.jpeg',
 		temple: '/images/background/GameTempleMap.jpg',
 	};
+
+	useEffect(() => {
+  currentMapRef.current = currentMap;
+}, [currentMap]);
+
+
+	
 
 	if (width >= 1440) {
 		if (playerPosition.x > minScrollX) {
@@ -874,6 +904,7 @@ useEffect(() => {
 		}
 	}
 
+
 	useEffect(() => {
 		const handleResize = () => {
 			if (width >= 1440) {
@@ -889,14 +920,15 @@ useEffect(() => {
 				setMinY(10);
 
 				setMaxX(4790);
-				setMaxY(2610);
+				setMaxY(2600);
 
 				setMinScrollX(620);
 				setMinScrollY(300);
 
 				setMaxScrollX(4360);
 				setMaxScrollY(2560);
-			} else if (width >= 1024) {
+			}
+			else if (width >= 1024) {
 				setMapWidth(5000);
 				setMapHeight(3000);
 
@@ -909,7 +941,7 @@ useEffect(() => {
 				setMinY(10);
 
 				setMaxX(4310);
-				setMaxY(2500);
+				setMaxY(2520);
 
 				setMinScrollX(620);
 				setMinScrollY(300);
@@ -928,7 +960,7 @@ useEffect(() => {
 				setMinY(10);
 
 				setMaxX(4110);
-				setMaxY(2490);
+				setMaxY(2470);
 
 				setMinScrollX(620);
 				setMinScrollY(300);
@@ -948,7 +980,7 @@ useEffect(() => {
 				setMinY(10);
 
 				setMaxX(4670);
-				setMaxY(2590);
+				setMaxY(2560);
 
 				setMinScrollX(620);
 				setMinScrollY(300);
@@ -967,7 +999,7 @@ useEffect(() => {
 				setMinY(10);
 
 				setMaxX(4570);
-				setMaxY(2580);
+				setMaxY(2560);
 
 				setMinScrollX(620);
 				setMinScrollY(300);
@@ -987,7 +1019,7 @@ useEffect(() => {
 				setMinY(10);
 
 				setMaxX(4480);
-				setMaxY(2590);
+				setMaxY(2560);
 
 				setMinScrollX(620);
 				setMinScrollY(300);
@@ -1012,7 +1044,7 @@ useEffect(() => {
 				playerPosition.y <= 2610
 			) {
 				setCurrentMap('lake');
-				setPlayerPosition({ x: 100, y: 100 });
+				setPlayerPosition({ x: 760, y: 330 });
 				setActions([]);
 				setLocationText('Welcome to Lake Toba');
 			} else if (
@@ -1042,7 +1074,7 @@ useEffect(() => {
 				playerPosition.y <= 1000
 			) {
 				setCurrentMap('temple');
-				setPlayerPosition({ x: 100, y: 100 });
+				setPlayerPosition({ x: 840, y: 720 });
 				setActions([]);
 				setLocationText('Welcome to the Borobudur Temple');
 			} else if (playerPosition.x === 2500 && playerPosition.y === 1500) {

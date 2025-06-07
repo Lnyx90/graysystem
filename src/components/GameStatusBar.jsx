@@ -19,11 +19,13 @@ function GameStatusBar({ status }) {
 						<div className='w-full h-2 md:h-3 bg-gray-300 rounded-full overflow-hidden'>
 							<div
 								className={`h-2 md:h-3 ${color} transition-all duration-300`}
-								style={{ width: `${value}%` }}
+								style={{ width: `${Math.round(value)}%` }}
+
 							/>
 						</div>
 
-						<span className='text-[6px] md:text-[10px]'>{value}%</span>
+						<span className='text-[6px] md:text-[10px]'>{Math.round(value)}%</span>
+
 					</div>
 				))}
 			</div>
