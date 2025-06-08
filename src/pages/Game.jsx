@@ -17,9 +17,6 @@ import { obstacleZones } from '../hooks/block';
 //CSS
 import '../styles/Game.css';
 
-
-
-
 //Game
 function Game() {
 	//Player & Status
@@ -44,10 +41,11 @@ function Game() {
 
 	const [money, setMoney] = useState(100000);
 
-	const rupiah = new Intl.NumberFormat('id-ID', {
-		style: 'currency',
-		currency: 'IDR',
-	}).format(money);
+	const rupiah = (value) =>
+		new Intl.NumberFormat('id-ID', {
+			style: 'currency',
+			currency: 'IDR',
+		}).format(value);
 
 	const updateStats = (key, delta) => {
 		setPlayerStatus((prev) =>
@@ -110,13 +108,12 @@ function Game() {
 
 	const moveIntervalRef = useRef(null);
 
-	 function isBlockedByObstacle(x, y, currentMap) {
-	const zones = obstacleZones[currentMap];
-	if (!zones) return false; 
-	return zones.some(({ x: ox, y: oy, width, height }) => (
-		x >= ox && x <= ox + width &&
-		y >= oy && y <= oy + height
-	));
+	function isBlockedByObstacle(x, y, currentMap) {
+		const zones = obstacleZones[currentMap];
+		if (!zones) return false;
+		return zones.some(
+			({ x: ox, y: oy, width, height }) => x >= ox && x <= ox + width && y >= oy && y <= oy + height
+		);
 	}
 
 	useEffect(() => {
@@ -135,8 +132,8 @@ function Game() {
 		}));
 
 		setHoleVisible((prev) => {
-		if (prev) return false;
-		return prev;
+			if (prev) return false;
+			return prev;
 		});
 
 		setPlayerPosition((prev) => {
@@ -158,9 +155,8 @@ function Game() {
 			}
 
 			if (isBlockedByObstacle(newX, newY, currentMapRef.current)) {
-
-			triggerShake(); 
-			return prev; 
+				triggerShake();
+				return prev;
 			}
 
 			return { x: clampedX, y: clampedY };
@@ -203,9 +199,116 @@ function Game() {
 	const [achievements, setAchievements] = useState({
 		photography: false,
 		explorer: false,
+		crazyRich: false,
 		collector: false,
-		composting: false,
 	});
+
+	const [activityLog, setActivityLog] = useState([]);
+	const allGameActions = [
+		'Enjoy the View',
+		'Capture the Moment',
+		'Take a Picture',
+		'Sightseeing',
+		'Observing Borobudur',
+		'Fly a Lanttern',
+		'Attend a Ceremony',
+		'Rest & Eat Food',
+		'Eat Seafood',
+		'Buy Fishing Rod',
+		'Become Cashier',
+		'Write Travel Journal',
+		'Hiking Journaling',
+		'Buy Bucket',
+		'Buy Bait',
+		'Buy Sandcastle Bucket',
+		'Buy Sandal',
+		'Talk to Fellow Campers',
+		'Buy Souvenir',
+		'Buy Magnifying Glass',
+		'Buy Journal',
+		'Buy Drink',
+		'Buy a Binocular',
+		'Hiking',
+		'Fishing',
+		'Rent a Boat',
+		'Become a Tour Guide',
+		'Collect Firewood',
+		'Build a Campfire',
+		'Set Up Tent',
+		'Cook Food',
+		'Meditate',
+		'Observe Nature',
+		'Learn Coral Ecosystem',
+		'Observe Small Marine Life',
+		'Gather Spring Water',
+		'Tanning',
+		'Build Sandcastles',
+		'Seashell Hunt',
+		'Visit Museum',
+		'Eat',
+		'Sleep',
+		'Bath',
+	];
+
+	const [highestMoney, setHighestMoney] = useState(money);
+
+	const [completedPhotoActions, setCompletedPhotoActions] = useState([]);
+	const allPhotoActions = ['Take a Picture', 'Capture the Mement'];
+
+	const allItems = [
+		'Food',
+		'Bottle',
+		'Binocular',
+		'Fauna Book',
+		'Journal',
+		'Towel',
+		'Magnifying Glass',
+		'Camera',
+		'Wood',
+		'Matches',
+		'Drink',
+		'Fishing Rod',
+		'Peg',
+		'Knife',
+		'Sandal',
+		'Sand Bucket',
+		'Gloves',
+		'Shoes',
+		'Rope',
+		'Tent',
+		'Bait',
+		'Bucket',
+	];
+
+	useEffect(() => {
+		if (allPhotoActions.every((action) => completedPhotoActions.includes(action))) {
+			setAchievements((prev) => ({ ...prev, photography: true }));
+		}
+	}, [completedPhotoActions]);
+
+	useEffect(() => {
+		if (allGameActions.every((action) => activityLog.includes(action))) {
+			setAchievements((prev) => ({ ...prev, explorer: true }));
+		}
+	}, [activityLog]);
+
+	useEffect(() => {
+		if (money > highestMoney) {
+			setHighestMoney(money);
+		}
+	}, [money, highestMoney]);
+
+	useEffect(() => {
+		if (highestMoney >= 10000000) {
+			setAchievements((prev) => ({ ...prev, crazyRich: true }));
+		}
+	}, [highestMoney]);
+
+	useEffect(() => {
+		if (allItems.every((item) => unlockedItems.includes(item))) {
+			setAchievements((prev) => ({ ...prev, collector: true }));
+		}
+	}, [unlockedItems]);
 
 	//Time
 	const { gameTime, formattedDate, formattedTime, greeting } = useGameTime(10);
@@ -225,64 +328,62 @@ function Game() {
 		}
 	}, [initialDifficulty, initialHearts]);
 
-useEffect(() => {
-	console.log('Checking death:', playerStatus, hearts);
+	useEffect(() => {
+		console.log('Checking death:', playerStatus, hearts);
 
-	if (!difficulty || isDead) return;
+		if (!difficulty || isDead) return;
 
-	const dead = playerStatus.some((stat) => stat.value === 0);
-	if (!dead) return;
+		const dead = playerStatus.some((stat) => stat.value === 0);
+		if (!dead) return;
 
-	setIsDead(true);
-	setShowHole(true);
-	setIsSinking(true);
-	setHoleVisible(true); // pakai setHoleVisible sesuai deklarasi
+		setIsDead(true);
+		setShowHole(true);
+		setIsSinking(true);
+		setHoleVisible(true);
 
-	if (hearts > 1) {
-		const newHearts = hearts - 1;
-		setHearts(newHearts);
-		setDeathPopup({
-			show: true,
-			message: `You died!</br>❤️ Remaining hearts: ${newHearts}`,
-		});
+		if (hearts > 1) {
+			const newHearts = hearts - 1;
+			setHearts(newHearts);
+			setDeathPopup({
+				show: true,
+				message: `You died!</br>❤️ Remaining hearts: ${newHearts}`,
+			});
 
-		setTimeout(() => {
-			setPlayerStatus(defaultPlayerStatus);
-			setIsDead(false);
-			setIsSinking(false);
-			setHoleVisible(false); 
-			setShowHole(false);
-		}, 2000);
+			setTimeout(() => {
+				setPlayerStatus(defaultPlayerStatus);
+				setIsDead(false);
+				setIsSinking(false);
+				setHoleVisible(false);
+				setShowHole(false);
+			}, 2000);
+		} else {
+			setDeathPopup({ show: false, message: '' });
 
-	} else {
-	setDeathPopup({ show: false, message: '' }); // sembunyikan popup dulu (optional)
+			setShowHole(true);
+			setHoleVisible(true);
+			setIsSinking(true);
 
-	setShowHole(true);
-	setHoleVisible(true);
-	setIsSinking(true); 
+			setTimeout(() => {
+				setDeathPopup({
+					show: true,
+					message: 'You died!</br>💀 No more hearts left.</br>Game Over!',
+				});
 
-	setTimeout(() => {
-		setDeathPopup({
-			show: true,
-			message: 'You died!</br>💀 No more hearts left.</br>Game Over!',
-		});
+				setIsSinking(false);
+				setHoleVisible(false);
+				setShowHole(false);
 
-		setIsSinking(false); 
-		setHoleVisible(false);
-		setShowHole(false);
-
-		setTimeout(() => {
-			navigate('/dead');
-		}, 1500);
-	}, 2000);
-}
-}, [playerStatus, hearts, difficulty, isDead, navigate]);
+				setTimeout(() => {
+					navigate('/dead');
+				}, 1500);
+			}, 2000);
+		}
+	}, [playerStatus, hearts, difficulty, isDead, navigate]);
 
 	//Activities
 	const activityInterval = useRef(null);
 	const [currentActivity, setCurrentActivity] = useState(null);
 	const [activityInProgress, setActivityInProgress] = useState(false);
-	const [activityLog, setActivityLog] = useState([]);
 
 	const [actions, setActions] = useState([]);
 	const actionData = getActionData(actions);
@@ -295,6 +396,12 @@ useEffect(() => {
 	const performActions = (action) => {
 		const label = typeof action === 'string' ? action : action.label;
 		const timedAction = timedActions[label];
+
+		if (allPhotoActions.includes(label)) {
+			setCompletedPhotoActions((prev) => (prev.includes(label) ? prev : [...prev, label]));
+		}
+
+		setActivityLog((prev) => (prev.includes(label) ? prev : [...prev, label]));
 
 		if (timedAction) {
 			if (timedAction.unlock) {
@@ -395,7 +502,7 @@ useEffect(() => {
 			unlock: 'Journal',
 		},
 		'Buy Drink': { duration: 1000, effects: { happiness: +10, energy: -5 }, cost: 50 },
-		'Buy Binocular': {
+		'Buy a Binocular': {
 			duration: 1000,
 			effects: { happiness: +15, energy: -5 },
 			cost: 350,
@@ -417,7 +524,7 @@ useEffect(() => {
 		'Become a Tour Guide': {
 			duration: 3000,
 			effects: { happiness: +25, energy: -15 },
-			earnings: 5000,
+			earnings: 50000000,
 			onStart: () => showPopup('TourGuide'),
 		},
 
@@ -436,7 +543,7 @@ useEffect(() => {
 			unlock: 'Food',
 			onStart: () => showPopup('Cook'),
 		},
-		'Meditate': { duration: 5000, effects: { happiness: +5, energy: +20, hygiene: -10 } },
+		Meditate: { duration: 5000, effects: { happiness: +5, energy: +20, hygiene: -10 } },
 		'Observe Nature': { duration: 2000, effects: { happiness: +20, energy: -5, hygiene: +5 } },
 		'Learn Coral Ecosystem': {
 			duration: 2000,
@@ -524,6 +631,11 @@ useEffect(() => {
 			showActionPopup(`Purchased for ${rupiah(activity.cost)}`);
 		}
 
+		if (activity.earnings) {
+			setMoney((prev) => prev + activity.earnings);
+			showActionPopup(`Earned ${rupiah(activity.earnings)}!`);
+		}
+
 		const intervalId = setInterval(() => {
 			Object.entries(deltaPerStep).forEach(([key, delta]) => {
 				updateStats(key, delta);
@@ -573,6 +685,7 @@ useEffect(() => {
 		'Hiking Journaling': 'Journal',
 		Hiking: 'Shoes',
 		'Observe Nature': 'Binocular',
+		'Observing Borobudur': 'Binocular',
 		'Set Up Tent': ['Tent', 'Peg', 'Rope'],
 		'Build a Campfire': ['Wood', 'Matches'],
 		'Learn Coral Ecosystem': 'Fauna Book',
@@ -775,20 +888,16 @@ useEffect(() => {
 	useEffect(() => {
 		if (!showWelcomePopup) {
 			const timeoutId = setTimeout(() => {
-			setImageLoaded(true);
-			setHoleVisible(true);
-		}, 600);
+				setImageLoaded(true);
+				setHoleVisible(true);
+			}, 600);
 			return () => clearTimeout(timeoutId);
 		}
 	}, [showWelcomePopup]);
 
-	
-
 	//Map
 	let [currentMap, setCurrentMap] = useState('default');
 	const currentMapRef = useRef(currentMap);
-
-
 
 	const [mapWidth, setMapWidth] = useState(5000);
 	const [mapHeight, setMapHeight] = useState(3000);
@@ -810,10 +919,8 @@ useEffect(() => {
 
 	let [offsetX, setOffsetX] = useState(0);
 	let [offsetY, setOffsetY] = useState(0);
-	
 
 	const width = window.innerWidth;
-
 
 	const mapImages = {
 		default: '/images/background/GameDefaultMap.png',
@@ -824,11 +931,8 @@ useEffect(() => {
 	};
 
 	useEffect(() => {
-  currentMapRef.current = currentMap;
-}, [currentMap]);
-
-
-	
+		currentMapRef.current = currentMap;
+	}, [currentMap]);
 
 	if (width >= 1440) {
 		if (playerPosition.x > minScrollX) {
@@ -904,7 +1008,6 @@ useEffect(() => {
 		}
 	}
 
-
 	useEffect(() => {
 		const handleResize = () => {
 			if (width >= 1440) {
@@ -927,8 +1030,7 @@ useEffect(() => {
 
 				setMaxScrollX(4360);
 				setMaxScrollY(2560);
-			}
-			else if (width >= 1024) {
+			} else if (width >= 1024) {
 				setMapWidth(5000);
 				setMapHeight(3000);
 
@@ -1096,8 +1198,8 @@ useEffect(() => {
 			) {
 				setActions(['Buy Bucket', 'Buy Fishing Rod', 'Buy Bait']);
 				setLocationText('Welcome to Bites Shop');
-			} else if (playerPosition.x === 3220 && playerPosition.y === 1500) {
-				setActions(['Rent a Boat', 'Become a Tour Guide', 'Buy Binoculars']);
+			} else if (playerPosition.x >= 3200 && playerPosition.x <= 3300 && playerPosition.y >= 1500 && playerPosition.y <= 1600) {
+				setActions(['Rent a Boat', 'Become a Tour Guide', 'Buy a Binocular']);
 				setLocationText('Welcome to Dockside shop');
 			} else if (
 				playerPosition.x >= 2700 &&
@@ -1116,7 +1218,7 @@ useEffect(() => {
 				setActions([
 					'Enjoy the View',
 					'Capture the Moment',
-					'Rest & Eat Snacks',
+					'Rest & Eat Food',
 					'Hiking Journaling',
 				]);
 				setLocationText('You are at the Mountain Peak');
@@ -1139,7 +1241,11 @@ useEffect(() => {
 			) {
 				setActions(['Buy Magnifying Glass', 'Buy Journal', 'Buy Drink']);
 				setLocationText(['You are near a shop']);
-			} else if (playerPosition.x >= 3940 && playerPosition.x <= 4220 && playerPosition.y === 940) {
+			} else if (
+				playerPosition.x >= 3940 &&
+				playerPosition.x <= 4220 &&
+				playerPosition.y === 2380
+			) {
 				setActions(['Visit Museum']);
 				setLocationText(['You are at the temple']);
 			} else if (
@@ -1162,7 +1268,7 @@ useEffect(() => {
 				playerPosition.x <= 4659 &&
 				playerPosition.y === 1540
 			) {
-				setActions(['Take Picture', 'Learn Coral Ecosystem', 'Observe Small Marine Life']);
+				setActions(['Take a Picture', 'Learn Coral Ecosystem', 'Observe Small Marine Life']);
 				setLocationText(['You are at the Beach']);
 			} else if (
 				playerPosition.x >= 4059 &&
@@ -1205,21 +1311,21 @@ useEffect(() => {
 	const [trapPosition, setTrapPosition] = useState({ x: 200, y: 200 });
 	const [trapDirection, setTrapDirection] = useState(1);
 
-		useEffect(() => {
-			const interval = setInterval(() => {
-				const trapSize = 40;
+	useEffect(() => {
+		const interval = setInterval(() => {
+			const trapSize = 40;
 
-				const maxX = mapWidth - trapSize;
-				const maxY = mapHeight - trapSize;
+			const maxX = mapWidth - trapSize;
+			const maxY = mapHeight - trapSize;
 
-				const newX = Math.floor(Math.random() * maxX);
-				const newY = Math.floor(Math.random() * maxY);
+			const newX = Math.floor(Math.random() * maxX);
+			const newY = Math.floor(Math.random() * maxY);
 
-				setTrapPosition({ x: newX, y: newY });
-			}, 15000); 
+			setTrapPosition({ x: newX, y: newY });
+		}, 15000);
 
-			return () => clearInterval(interval);
-		}, []); 
+		return () => clearInterval(interval);
+	}, []);
 
 	useEffect(() => {
 		const interval = setInterval(() => {
@@ -1236,17 +1342,15 @@ useEffect(() => {
 			if (isColliding) {
 				setPlayerStatus((prev) =>
 					prev.map((stat) =>
-						stat.id === 'energy'
-							? { ...stat, value: Math.max(0, stat.value - 10) }
-							: stat
+						stat.id === 'energy' ? { ...stat, value: Math.max(0, stat.value - 10) } : stat
 					)
 				);
 			}
-		}, 15000); 
+		}, 15000);
 
 		return () => clearInterval(interval);
 	}, [trapPosition, playerPosition]);
-	
+
 	//Return
 	return (
 		<div
@@ -1286,7 +1390,7 @@ useEffect(() => {
 
 					<div className="w-fit h-fit m-2 mt-12 p-2 text-[6px] md:text-[10px] rounded-lg fixed bg-white z-10 flex items-center gap-1">
 						<img src="/images/symbol/money.png" alt="Coin" className="w-3 h-3 md:w-4 md:h-4" />
-						{rupiah}
+						{rupiah(money)}
 					</div>
 
 					<div className="m-2 mt-68 p-2 rounded-lg fixed grid grid-cols-3 grid-rows-3 z-10">
@@ -1339,7 +1443,7 @@ useEffect(() => {
 								<img className="w-4 md:w-6 lg:w-8" src="/images/symbol/top.png" />
 							</button>
 						</div>
-					</div> 
+					</div>
 
 					<div className="w-full h-full rounded-lg relative overflow-hidden">
 						<div
@@ -1363,7 +1467,7 @@ useEffect(() => {
 									position: 'absolute',
 								}}
 							/>
-								<img
+							<img
 								src="/images/symbol/hole.png"
 								className="relative w-15 h-15 z-0 transition-opacity duration-300"
 								style={{
@@ -1374,30 +1478,30 @@ useEffect(() => {
 									transform: 'translateX(-50%) scale(1) translateY(0)',
 								}}
 								alt="hole"
-								/>
+							/>
 
-								<div
+							<div
 								className="text-center"
 								style={{
 									width: playerSize,
 									position: 'fixed',
 									objectFit: 'cover',
 									opacity: imageLoaded ? 1 : 0,
-									left: playerPosition.x, 
-									top: imageLoaded && !isSinking
-									? playerPosition.y 
-									: playerPosition.y + playerSize + 20, 
+									left: playerPosition.x,
+									top:
+										imageLoaded && !isSinking
+											? playerPosition.y
+											: playerPosition.y + playerSize + 20,
 									transform: isSinking
-									? 'scale(0) translateY(0)' 
-									: imageLoaded
-									? 'scale(1) translateY(0)'
-									: 'scale(0) translateY(0)', 
+										? 'scale(0) translateY(0)'
+										: imageLoaded
+										? 'scale(1) translateY(0)'
+										: 'scale(0) translateY(0)',
 									transition: isSinking
-									? 'opacity 0.7s ease-out, transform 1.5s ease-in-out, left 0.2s ease-in-out, top 1.2s ease-in-out'
-									: 'opacity 1.2s ease-in-out, transform 1.2s ease-in-out, left 0.2s ease-in-out, top 1.0s ease-in-out',
+										? 'opacity 0.7s ease-out, transform 1.5s ease-in-out, left 0.2s ease-in-out, top 1.2s ease-in-out'
+										: 'opacity 1.2s ease-in-out, transform 1.2s ease-in-out, left 0.2s ease-in-out, top 1.0s ease-in-out',
 								}}
-								>
-
+							>
 								<p>{player.name}</p>
 								<img
 									className="self-center"
@@ -1428,8 +1532,10 @@ useEffect(() => {
 			{deathPopup.show && (
 				<div className="fixed inset-0 flex items-center justify-center bg-opacity-50 z-50 backdrop-blur-sm">
 					<div className="ml-4 mr-4 bg-white rounded-lg p-6 max-w-xs text-center shadow-lg">
-						<p className="text-base font-semibold mb-2"
-  						dangerouslySetInnerHTML={{ __html: deathPopup.message }}></p>
+						<p
+							className="text-base font-semibold mb-2"
+							dangerouslySetInnerHTML={{ __html: deathPopup.message }}
+						></p>
 						{hearts > 0 && (
 							<button
 								onClick={() => setDeathPopup({ show: false, message: '' })}
