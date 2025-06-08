@@ -6,7 +6,7 @@ import GameTitleBar from '../components/GameTitleBar';
 import GameWelcomePopup from '../components/GameWelcomePopup';
 import GameStatusBar from '../components/GameStatusBar';
 import GameSideBar from '../components/GameSideBar';
-import GamePopup from '../components/Gamepopup';
+import GamePopup from '../components/GamePopUp';
 import GameAchievementPopup from '../components/GameAchievementPopup';
 
 //Hooks
@@ -846,131 +846,126 @@ function Game() {
 	});
 
 	const popupConfigs = {
-		bath: {
-			image: '/images/symbol/bath.gif',
-			message: 'Bath Time!',
-			additionalMessage: 'You feel clean and refreshed!',
-		},
-		BuyFishingRod: {
-			image: '/images/items/pancing.png',
-			message: 'Here is Your Fishing Rod!',
-			additionalMessage: 'Check Your Backpack!',
-		},
-		Rentboat: {
-			image: '/images/symbol/boat.gif',
-			message: 'Get On Board!',
-			additionalMessage: 'Dont Forget Your Ticket!',
-		},
-		Takepic: {
-			image: '/images/items/kamera.png',
-			message: 'Say Cheese!',
-			additionalMessage: 'Damn, You look Amazing !',
-		},
-		FlyLantern: {
-			image: '/images/symbol/lantern.gif',
-			message: '',
-			additionalMessage: 'The lantern cant shine as bright as u',
-		},
-		Journal: {
-			image: '/images/symbol/Journal.gif',
-			message: 'Every Memory is Worth Written',
-			additionalMessage: '',
-		},
-		Wood: {
-			image: '/images/symbol/wood.gif',
-			message: 'Do it all for the flamin fire',
-			additionalMessage: '',
-		},
-		Cook: {
-			image: '/images/symbol/cook.gif',
-			message: 'Looking Delicious',
-			additionalMessage: '',
-		},
-		Sandal: {
-			image: '/images/symbol/sandal.avif',
-			message: 'Looking Good in Your New Sandals',
-			additionalMessage: '',
-		},
-		Crab: {
-			image: '/images/symbol/crab.gif',
-			message: 'Get to Know Your New Friend',
-			additionalMessage: 'Be careful of Its Claw',
-		},
-		Sandcastle: {
-			image: '/images/items/sandcastle.png',
-			message: 'You Bought a Sandcastle Bucket!',
-			additionalMessage: 'Check You Backpack!',
-		},
-		sleep: {
-			image: '/images/symbol/sleep.png',
-			message: 'Good Night!',
-			additionalMessage: 'Sleep Tight!',
-		},
-		Eat: {
-			image: '/images/items/makanan.png',
-			message: 'Bon Appétit!',
-			additionalMessage: 'Enjoy Your Meal!',
-		},
-		BuyBucket: {
-			image: '/images/items/wadah.png',
-			message: 'Bought a Bucket',
-			additionalMessage: 'Check Your Backpack!',
-		},
-		BuyBait: {
-			image: '/images/items/umpan.png',
-			message: 'Bought Bait',
-			additionalMessage: 'Check Your Backpack!',
-		},
-		TourGuide: {
-			image: '/images/symbol/tourguide.png',
-			message: 'You are now a Tour Guide!',
-			additionalMessage: 'Guide your friends to explore the world!',
-		},
-		BuyBinoculars: {
-			image: '/images/items/binokular.png',
-			message: 'Bought Binoculars',
-			additionalMessage: 'Check Your Backpack!',
-		},
-		Fishing: {
-			image: '/images/symbol/fish.png',
-			message: 'Fishing Time!',
-			additionalMessage: 'Relax and enjoy the moment!',
-		},
-		Sightseeing: {
-			image: '/images/symbol/sight.png',
-			message: 'Enjoy the Scenery!',
-			additionalMessage: 'Take a moment to appreciate nature!',
-		},
-		Takepic: {
-			image: '/images/items/kamera.png',
-			message: 'Capture the Moment!',
-			additionalMessage: 'Your memories are now preserved!',
-		},
-		BecomeCashier: {
-			image: '/images/symbol/cashier.png',
-			message: 'You are now a Cashier!',
-			additionalMessage: 'Manage your transactions wisely!',
-		},
-		ObserveCoral: {
-			image: '/images/symbol/coral.png',
-			message: 'Observe the Coral Ecosystem!',
-			additionalMessage: 'Learn about the beauty of marine life!',
-		},
-		BuildSandcastle: {
-			image: '/images/symbol/Sandcastle.gif',
-			message: 'Building Sandcastles is Fun!',
-			additionalMessage: 'Let your creativity shine!',
-		},
-		Seashell: {
-			image: '/images/symbol/seashell.png',
-			message: 'Seashell Hunt is Exciting!',
-			additionalMessage: 'Discover the treasures of the beach!',
-		},
-		Tanning: {
-			image: '/images/symbol/sun.png',
-			message: 'Enjoy the Sun!',
-			additionalMessage: 'Get that perfect tan!',
-		},
+	bath: {
+		image: '/images/symbol/bath.gif',
+		message: 'Bath Time!',
+		additionalMessage: 'You feel clean and refreshed!',
+	},
+	BuyFishingRod: {
+		image: '/images/items/pancing.png',
+		message: 'Here is Your Fishing Rod!',
+		additionalMessage: 'Check Your Backpack!',
+	},
+	Rentboat: {
+		image: '/images/symbol/boat.gif',
+		message: 'Get On Board!',
+		additionalMessage: 'Don’t Forget Your Ticket!',
+	},
+	Takepic: {
+		image: '/images/items/kamera.png',
+		message: 'Capture the Moment!',
+		additionalMessage: 'Your memories are now preserved!',
+	},
+	FlyLantern: {
+		image: '/images/symbol/lantern.gif',
+		message: '',
+		additionalMessage: 'The lantern can’t shine as bright as you',
+	},
+	Journal: {
+		image: '/images/symbol/Journal.gif',
+		message: 'Every Memory is Worth Written',
+		additionalMessage: '',
+	},
+	Wood: {
+		image: '/images/symbol/wood.gif',
+		message: 'Do it all for the flamin fire',
+		additionalMessage: '',
+	},
+	Cook: {
+		image: '/images/symbol/cook.gif',
+		message: 'Looking Delicious',
+		additionalMessage: '',
+	},
+	Sandal: {
+		image: '/images/symbol/sandal.avif',
+		message: 'Looking Good in Your New Sandals',
+		additionalMessage: '',
+	},
+	Crab: {
+		image: '/images/symbol/crab.gif',
+		message: 'Get to Know Your New Friend',
+		additionalMessage: 'Be careful of Its Claw',
+	},
+	Sandcastle: {
+		image: '/images/items/sandcastle.png',
+		message: 'You Bought a Sandcastle Bucket!',
+		additionalMessage: 'Check Your Backpack!',
+	},
+	sleep: {
+		image: '/images/symbol/sleep.png',
+		message: 'Good Night!',
+		additionalMessage: 'Sleep Tight!',
+	},
+	Eat: {
+		image: '/images/items/makanan.png',
+		message: 'Bon Appétit!',
+		additionalMessage: 'Enjoy Your Meal!',
+	},
+	BuyBucket: {
+		image: '/images/items/wadah.png',
+		message: 'Bought a Bucket',
+		additionalMessage: 'Check Your Backpack!',
+	},
+	BuyBait: {
+		image: '/images/items/umpan.png',
+		message: 'Bought Bait',
+		additionalMessage: 'Check Your Backpack!',
+	},
+	TourGuide: {
+		image: '/images/symbol/tourguide.png',
+		message: 'You are now a Tour Guide!',
+		additionalMessage: 'Guide your friends to explore the world!',
+	},
+	BuyBinoculars: {
+		image: '/images/items/binokular.png',
+		message: 'Bought Binoculars',
+		additionalMessage: 'Check Your Backpack!',
+	},
+	Fishing: {
+		image: '/images/symbol/fish.png',
+		message: 'Fishing Time!',
+		additionalMessage: 'Relax and enjoy the moment!',
+	},
+	Sightseeing: {
+		image: '/images/symbol/sight.png',
+		message: 'Enjoy the Scenery!',
+		additionalMessage: 'Take a moment to appreciate nature!',
+	},
+	BecomeCashier: {
+		image: '/images/symbol/cashier.png',
+		message: 'You are now a Cashier!',
+		additionalMessage: 'Manage your transactions wisely!',
+	},
+	ObserveCoral: {
+		image: '/images/symbol/coral.png',
+		message: 'Observe the Coral Ecosystem!',
+		additionalMessage: 'Learn about the beauty of marine life!',
+	},
+	BuildSandcastle: {
+		image: '/images/symbol/Sandcastle.gif',
+		message: 'Building Sandcastles is Fun!',
+		additionalMessage: 'Let your creativity shine!',
+	},
+	Seashell: {
+		image: '/images/symbol/seashell.png',
+		message: 'Seashell Hunt is Exciting!',
+		additionalMessage: 'Discover the treasures of the beach!',
+	},
+	Tanning: {
+		image: '/images/symbol/sun.png',
+		message: 'Enjoy the Sun!',
+		additionalMessage: 'Get that perfect tan!',
+	},
 	};
 
 	const showPopup = (type) => {
@@ -1475,11 +1470,12 @@ function Game() {
 				closePopUp={closePopUp}
 			/>
 
-			{actionPopup.show && (
-				<div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-white text-black px-4 py-2 rounded-lg shadow-lg z-50 animate-fade">
-					{actionPopup.message}
-				</div>
-			)}
+			<GamePopup
+				show={popup.show}
+				image={popup.image}
+				message={popup.message}
+				additionalMessage={popup.additionalMessage}
+			/>
 
 			<GameAchievementPopup
 				show={achievementPopup.show}
@@ -1507,7 +1503,7 @@ function Game() {
 						X: {playerPosition.x}, Y: {playerPosition.y}
 					</div>
 
-					<div className="w-fit h-fit m-2 mt-12 p-2 text-[6px] md:text-[10px] rounded-lg fixed bg-white z-10 flex items-center gap-1">
+					<div className="w-fit h-fit m-2 mt-12  text-[6px] md:text-[10px] text-white rounded-lg fixed z-10 flex items-center gap-1">
 						<img src="/images/symbol/money.png" alt="Coin" className="w-3 h-3 md:w-4 md:h-4" />
 						{rupiah(money)}
 					</div>
