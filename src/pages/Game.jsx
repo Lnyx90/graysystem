@@ -1463,7 +1463,7 @@ function Game() {
 	}, [showWelcomePopup, maxScrollX, maxScrollY, vwWidth, vwHeight]);
 
 	//Trap
-	const [trapPosition, setTrapPosition] = useState({ x: 2500, y: 1600 });
+	const [trapPosition, setTrapPosition] = useState({ x: 100, y: 100 });
 	const [trapDirection, setTrapDirection] = useState(1);
 
 	useEffect(() => {
