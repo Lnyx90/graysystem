@@ -16,6 +16,7 @@ function IdentityCard({ onClose, userName, achievements }) {
 				className="w-4/5 md:w-3/4 lg:w-4/7"
 			>
 				<div
+				
 					style={{
 						transformStyle: 'preserve-3d',
 						transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
@@ -100,7 +101,7 @@ function IdentityCard({ onClose, userName, achievements }) {
 		className={!achievements.explorer ? 'grayscale opacity-40 cursor-pointer' : ''}
 		onClick={() => {
 			if (!achievements.explorer) {
-				setLockedMessage('Visit all map areas to unlock the Map Explorer achievement.');
+				setLockedMessage('Visit all map areas to unlock this achievement.');
 				setShowLockedPopup(true);
 			}
 		}}
@@ -116,7 +117,7 @@ function IdentityCard({ onClose, userName, achievements }) {
 		className={!achievements.campSkills ? 'grayscale opacity-40 cursor-pointer' : ''}
 		onClick={() => {
 			if (!achievements.campSkills) {
-				setLockedMessage('Complete camp tasks like cooking and gathering to earn Camp Skills.');
+				setLockedMessage('Complete camp tasks like cooking, hiking and enjoying the view at the Mountain to earn this achievement.');
 				setShowLockedPopup(true);
 			}
 		}}
@@ -132,7 +133,7 @@ function IdentityCard({ onClose, userName, achievements }) {
 		className={!achievements.crazyRich ? 'grayscale opacity-40 cursor-pointer' : ''}
 		onClick={() => {
 			if (!achievements.crazyRich) {
-				setLockedMessage('Earn a large amount of money to unlock the Crazy Rich achievement.');
+				setLockedMessage('Earn a large amount of money to unlock this achievement.');
 				setShowLockedPopup(true);
 			}
 		}}
@@ -148,7 +149,7 @@ function IdentityCard({ onClose, userName, achievements }) {
 		className={!achievements.collector ? 'grayscale opacity-40 cursor-pointer' : ''}
 		onClick={() => {
 			if (!achievements.collector) {
-				setLockedMessage('Collect special items to unlock the Collector achievement.');
+				setLockedMessage('Collect all items in backpack to unlock this achievement.');
 				setShowLockedPopup(true);
 			}
 		}}
@@ -163,18 +164,21 @@ function IdentityCard({ onClose, userName, achievements }) {
 				</div>
 			</div>
 			{showLockedPopup && (
-				<div className="fixed inset-0 z-50 flex items-center justify-center">
-					<div className="bg-blue-600 text-white rounded-lg p-4 text-xs md:text-sm lg:text-base w-4/5 md:w-1/2 lg:w-1/3 text-center shadow-xl">
-						<p>{lockedMessage}</p>
-						<button
-							onClick={() => setShowLockedPopup(false)}
-							className="mt-4 px-4 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600"
-						>
-							OK
-						</button>
-					</div>
+	<div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/30">
+		<div className="bg-white text-gray-800 rounded-2xl p-6 shadow-2xl w-4/5 md:w-1/2 lg:w-1/3 text-center border border-blue-200">
+			<p className="text-sm md:text-base lg:text-lg font-medium">
+				{lockedMessage}
+			</p>
+			<button
+				onClick={() => setShowLockedPopup(false)}
+				className="mt-6 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition duration-200"
+			>
+				OK
+			</button>
+		</div>
 	</div>
 )}
+
 
 		</div>
 	);
