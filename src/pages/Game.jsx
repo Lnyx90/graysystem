@@ -596,15 +596,23 @@ function Game() {
 			duration: 1000,
 			effects: { happiness: +15, energy: -5 },
 			cost: 250,
+			onStart: () => showPopup('BuyMagnifyingGlass'),
 			unlock: 'Magnifying Glass',
 		},
 		'Buy Journal': {
 			duration: 1000,
 			effects: { happiness: +15, energy: -5 },
+			onStart: () => showPopup('Journal'),
 			cost: 180,
 			unlock: 'Journal',
 		},
-		'Buy Drink': { duration: 1000, effects: { happiness: +10, energy: -5 }, cost: 50 },
+		'Buy Drink': { 
+			duration: 1000,
+			effects: { happiness: +10, energy: -5, hygiene: +5 },
+			cost: 50,
+			onStart: () => showPopup('BuyDrink'),
+			unlock: 'Drink',
+		},
 		'Buy a Binocular': {
 			duration: 1000,
 			effects: { happiness: +15, energy: -5 },
@@ -683,6 +691,17 @@ function Game() {
 			duration: 2000,
 			effects: { happiness: +8, energy: -5 },
 			unlock: 'Fauna Book',
+			onStart: () => showPopup('Museum'),
+		},
+		'Meditate': {
+			duration: 3000,
+			effects: { happiness: +10, energy: +20, hygiene: -5 },
+			onStart: () => showPopup('Meditate'),
+		},
+		'Attend a Ceremony': {
+			duration: 3000,
+			effects: { happiness: +20, energy: -10, hygiene: -5 },
+			onStart: () => showPopup('AttendCeremony'),
 		},
 
 		Eat: {
@@ -872,7 +891,7 @@ function Game() {
 		additionalMessage: 'The lantern can’t shine as bright as you',
 	},
 	Journal: {
-		image: '/images/symbol/Journal.gif',
+		image: '/images/items/bukutulis.png',
 		message: 'Every Memory is Worth Written',
 		additionalMessage: '',
 	},
@@ -965,6 +984,31 @@ function Game() {
 		image: '/images/symbol/sun.png',
 		message: 'Enjoy the Sun!',
 		additionalMessage: 'Get that perfect tan!',
+	},
+	Meditate: {
+		image: '/images/symbol/meditate.jpg',
+		message: 'Find Your Inner Peace',
+		additionalMessage: 'Meditation brings clarity and calmness',
+	},
+	AttendCeremony: {
+		image: '/images/symbol/ceremony.jpg',
+		message: 'Participate in the Ceremony!',
+		additionalMessage: 'Embrace the cultural experience!',
+	},
+	BuyMagnifyingGlass: {
+		image: '/images/items/kacapembesar.png',
+		message: 'Bought a Magnifying Glass',
+		additionalMessage: 'Check Your Backpack!',
+	},
+	BuyDrink: {
+		image: '/images/items/minum.png',
+		message: 'Bought a Drink',
+		additionalMessage: 'Check Your Backpack!',
+	},
+	Museum: {
+		image: '/images/symbol/museum.png',
+		message: 'Visit the Museum!',
+		additionalMessage: 'Explore the wonders of history!',
 	},
 	};
 
