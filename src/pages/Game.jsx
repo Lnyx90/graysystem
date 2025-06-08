@@ -1538,7 +1538,7 @@ function Game() {
 	}, [showWelcomePopup, maxScrollX, maxScrollY, vwWidth, vwHeight]);
 
 	//Trap
-	const [trapPosition, setTrapPosition] = useState({ x: 200, y: 500 });
+	const [trapPosition, setTrapPosition] = useState({ x: 100, y: 100 });
 	const [trapDirection, setTrapDirection] = useState(1);
 
 	useEffect(() => {
