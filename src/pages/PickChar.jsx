@@ -96,22 +96,27 @@ function PickChar() {
   const handleLevelSelect = (level) => {
     playClickSound();
 
-
-    const existingMusic = document.getElementById("bgMusic");
-    if (existingMusic) {
-      existingMusic.pause();
-      existingMusic.currentTime = 0;
-    }
-
-    if (bgMusicRef.current) {
-      bgMusicRef.current.pause();
-      bgMusicRef.current.currentTime = 0;
-    }
-
     localStorage.setItem('PlayerImageBase', selectedCharacter);
     localStorage.setItem('playerName', playerName);
     localStorage.setItem('difficulty', level);
-    navigate('/game');
+
+    setNotificationMessage(`Level ${level} selected!`);
+    setShowNotification(true);
+
+    setTimeout(() => {
+      const existingMusic = document.getElementById("bgMusic");
+      if (existingMusic) {
+        existingMusic.pause();
+        existingMusic.currentTime = 0;
+      }
+
+      if (bgMusicRef.current) {
+        bgMusicRef.current.pause();
+        bgMusicRef.current.currentTime = 0;
+      }
+
+      navigate('/game');
+    }, 4000); 
   };
 
   return (
