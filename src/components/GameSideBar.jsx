@@ -38,29 +38,28 @@ function GameSideBar(props) {
 					</div>
 
 					{currentMap !== 'default' && (
-						<div className="w-full text-center">
-							<span className="block text-[5px] md:text-xs lg:text-sm">{greeting}</span>
+						<div className="w-full text-center flex flex-col items-center gap-1">
+							<span className="text-[5px] md:text-xs lg:text-sm">{greeting}</span>
 
 							<button
 								onClick={handleBackToMainMap}
-								className="mt-1 text-[4px] md:text-xs lg:text-sm px-2 py-1 w-2/3 bg-red-500 hover:bg-red-700 text-white rounded-md"
+								className="text-[6px] md:text-xs lg:text-sm px-2 py-1 w-2/3 bg-red-500 hover:bg-red-700 text-white rounded-md"
 							>
 								Back
 							</button>
 
 							{activityInProgress && (
-								<div className="mt-1">
-									<div className="text-[5px] md:text-xs lg:text-sm font-semibold animate-pulse ">
-										Doing: <br />
-										{currentActivity?.label}
+								<>
+									<div className="text-[5px] md:text-xs lg:text-sm animate-pulse ">
+										Doing: {currentActivity?.label}
 									</div>
 									<button
 										onClick={fastForward}
-										className="mt-1 text-[4px] md:text-xs lg:text-sm px-2 py-1 w-2/3 bg-red-500 hover:bg-red-700 text-white rounded-md"
+										className="text-[5px] md:text-xs lg:text-sm px-2 py-1 w-2/3 bg-red-500 hover:bg-red-700 text-white rounded-md"
 									>
 										Fast Forward
 									</button>
-								</div>
+								</>
 							)}
 						</div>
 					)}
