@@ -1259,7 +1259,7 @@ function Game() {
 				playerPosition.y <= 2550
 			) {
 				setCurrentMap('beach');
-				setPlayerPosition({ x: 100, y: 100 });
+				setPlayerPosition({ x: 1040, y: 720 });
 				setActions([]);
 				setLocationText('Welcome to Kuta Beach');
 			} else if (
@@ -1269,7 +1269,7 @@ function Game() {
 				playerPosition.y <= 760
 			) {
 				setCurrentMap('mountain');
-				setPlayerPosition({ x: 100, y: 100 });
+				setPlayerPosition({ x: 3390, y: 2450 });
 				setActions([]);
 				setLocationText('Welcome to the Mountain');
 			} else if (
@@ -1279,7 +1279,7 @@ function Game() {
 				playerPosition.y <= 1000
 			) {
 				setCurrentMap('temple');
-				setPlayerPosition({ x: 840, y: 720 });
+				setPlayerPosition({ x: 2240, y: 1620 });
 				setActions([]);
 				setLocationText('Welcome to the Borobudur Temple');
 			} else if (playerPosition.x === 2500 && playerPosition.y === 1500) {
