@@ -80,106 +80,104 @@ function IdentityCard({ onClose, userName, achievements }) {
 
 						<div className="w-full grid grid-cols-2 grid-rows-3 gap-y-4 px-2 md:px-0">
 						<div className="w-12 md:w-24 flex flex-col items-center mx-auto">
-	<img
-		src="/images/achivements/GameAchievementCapture.png"
-		className={!achievements.photography ? 'grayscale opacity-40 cursor-pointer' : ''}
-		onClick={() => {
-			if (!achievements.photography) {
-				setLockedMessage('Take photos in different locations to unlock this achievement.');
-				setShowLockedPopup(true);
-			}
-		}}
-	/>
-	<h3 className={`text-sm mt-1 ${!achievements.photography ? 'text-[8px] md:text-sm lg:text-base text-gray-400' : ''}`}>
-		Photography
-	</h3>
-</div>
-
-<div className="w-12 md:w-24 flex flex-col items-center mx-auto">
-	<img
-		src="/images/achivements/GameAchievementExplorer.png"
-		className={!achievements.explorer ? 'grayscale opacity-40 cursor-pointer' : ''}
-		onClick={() => {
-			if (!achievements.explorer) {
-				setLockedMessage('Visit all map areas to unlock this achievement.');
-				setShowLockedPopup(true);
-			}
-		}}
-	/>
-	<h3 className={`text-sm mt-1 whitespace-nowrap ${!achievements.explorer ? 'text-[8px] md:text-sm lg:text-base text-gray-400' : ''}`}>
-		Map Explorer
-	</h3>
-</div>
-
-<div className="col-span-2 flex flex-col items-center mx-auto w-12 md:w-24">
-	<img
-		src="/images/achivements/GameAchievementCampSkills.png"
-		className={!achievements.campSkills ? 'grayscale opacity-40 cursor-pointer' : ''}
-		onClick={() => {
-			if (!achievements.campSkills) {
-				setLockedMessage('Complete camp tasks like cooking, hiking and enjoying the view at the Mountain to earn this achievement.');
-				setShowLockedPopup(true);
-			}
-		}}
-	/>
-	<h3 className={`text-sm mt-1 whitespace-nowrap ${!achievements.campSkills ? 'text-[8px] md:text-sm lg:text-base text-gray-400' : ''}`}>
-		Camp Skills
-	</h3>
-</div>
-
-<div className="w-12 md:w-24 flex flex-col items-center mx-auto">
-	<img
-		src="/images/achivements/GameAchievementCrazyRich.png"
-		className={!achievements.crazyRich ? 'grayscale opacity-40 cursor-pointer' : ''}
-		onClick={() => {
-			if (!achievements.crazyRich) {
-				setLockedMessage('Earn a large amount of money to unlock this achievement.');
-				setShowLockedPopup(true);
-			}
-		}}
-	/>
-	<h3 className={`text-sm mt-1 whitespace-nowrap ${!achievements.crazyRich ? 'text-[8px] md:text-sm lg:text-base text-gray-400' : ''}`}>
-		Crazy Rich
-	</h3>
-</div>
-
-<div className="w-12 md:w-24 flex flex-col items-center mx-auto">
-	<img
-		src="/images/achivements/GameAchievementCollector.png"
-		className={!achievements.collector ? 'grayscale opacity-40 cursor-pointer' : ''}
-		onClick={() => {
-			if (!achievements.collector) {
-				setLockedMessage('Collect all items in backpack to unlock this achievement.');
-				setShowLockedPopup(true);
-			}
-		}}
-	/>
-	<h3 className={`text-sm mt-1 ${!achievements.collector ? 'text-[8px] md:text-sm lg:text-base text-gray-400' : ''}`}>
-		Collector
-	</h3>
-</div>
-
+							<img
+								src="/images/achivements/GameAchievementCapture.png"
+								className={!achievements.photography ? 'grayscale opacity-40 cursor-pointer' : ''}
+								onClick={() => {
+									if (!achievements.photography) {
+										setLockedMessage('Take photos in different locations to unlock this achievement.');
+										setShowLockedPopup(true);
+									}
+								}}
+							/>
+							<h3 className={`text-sm mt-1 ${!achievements.photography ? 'text-[8px] md:text-sm lg:text-base text-gray-400' : ''}`}>
+								Photography
+							</h3>
 						</div>
-					</div>
-				</div>
-			</div>
-			{showLockedPopup && (
-	<div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/30">
-		<div className="bg-white text-gray-800 rounded-2xl p-6 shadow-2xl w-4/5 md:w-1/2 lg:w-1/3 text-center border border-blue-200">
-			<p className="text-sm md:text-base lg:text-lg font-medium">
-				{lockedMessage}
-			</p>
-			<button
-				onClick={() => setShowLockedPopup(false)}
-				className="mt-6 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition duration-200"
-			>
-				OK
-			</button>
-		</div>
-	</div>
-)}
 
+						<div className="w-12 md:w-24 flex flex-col items-center mx-auto">
+							<img
+								src="/images/achivements/GameAchievementExplorer.png"
+								className={!achievements.explorer ? 'grayscale opacity-40 cursor-pointer' : ''}
+								onClick={() => {
+									if (!achievements.explorer) {
+										setLockedMessage('Visit all map areas to unlock this achievement.');
+										setShowLockedPopup(true);
+									}
+								}}
+							/>
+							<h3 className={`text-sm mt-1 whitespace-nowrap ${!achievements.explorer ? 'text-[8px] md:text-sm lg:text-base text-gray-400' : ''}`}>
+								Map Explorer
+							</h3>
+						</div>
 
+						<div className="col-span-2 flex flex-col items-center mx-auto w-12 md:w-24">
+							<img
+								src="/images/achivements/GameAchievementCampSkills.png"
+								className={!achievements.campSkills ? 'grayscale opacity-40 cursor-pointer' : ''}
+								onClick={() => {
+									if (!achievements.campSkills) {
+										setLockedMessage('Complete camp tasks like cooking, hiking and enjoying the view at the Mountain to earn this achievement.');
+										setShowLockedPopup(true);
+									}
+								}}
+							/>
+							<h3 className={`text-sm mt-1 whitespace-nowrap ${!achievements.campSkills ? 'text-[8px] md:text-sm lg:text-base text-gray-400' : ''}`}>
+								Camp Skills
+							</h3>
+						</div>
+
+						<div className="w-12 md:w-24 flex flex-col items-center mx-auto">
+							<img
+								src="/images/achivements/GameAchievementCrazyRich.png"
+								className={!achievements.crazyRich ? 'grayscale opacity-40 cursor-pointer' : ''}
+								onClick={() => {
+									if (!achievements.crazyRich) {
+										setLockedMessage('Earn a large amount of money to unlock this achievement.');
+										setShowLockedPopup(true);
+									}
+								}}
+							/>
+							<h3 className={`text-sm mt-1 whitespace-nowrap ${!achievements.crazyRich ? 'text-[8px] md:text-sm lg:text-base text-gray-400' : ''}`}>
+								Crazy Rich
+							</h3>
+						</div>
+
+						<div className="w-12 md:w-24 flex flex-col items-center mx-auto">
+							<img
+								src="/images/achivements/GameAchievementCollector.png"
+								className={!achievements.collector ? 'grayscale opacity-40 cursor-pointer' : ''}
+								onClick={() => {
+									if (!achievements.collector) {
+										setLockedMessage('Collect all items in backpack to unlock this achievement.');
+										setShowLockedPopup(true);
+									}
+								}}
+							/>
+							<h3 className={`text-sm mt-1 ${!achievements.collector ? 'text-[8px] md:text-sm lg:text-base text-gray-400' : ''}`}>
+								Collector
+							</h3>
+						</div>
+
+												</div>
+											</div>
+										</div>
+									</div>
+									{showLockedPopup && (
+							<div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/30">
+								<div className="bg-white text-gray-800 rounded-2xl p-6 shadow-2xl w-4/5 md:w-1/2 lg:w-1/3 text-center border border-blue-200">
+									<p className="text-sm md:text-base lg:text-lg font-medium">
+										{lockedMessage}
+									</p>
+									<button
+										onClick={() => setShowLockedPopup(false)}
+										className="mt-6 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition duration-200"
+									>
+										OK
+									</button>
+								</div>
+							</div>
+						)}
 		</div>
 	);
 }
