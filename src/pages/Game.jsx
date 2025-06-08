@@ -6,8 +6,8 @@ import GameTitleBar from '../components/GameTitleBar';
 import GameWelcomePopup from '../components/GameWelcomePopup';
 import GameStatusBar from '../components/GameStatusBar';
 import GameSideBar from '../components/GameSideBar';
-import LevelSelection from '../components/PickCharLevelSelection';
 import GamePopup from '../components/Gamepopup';
+import GameAchievementPopup from '../components/GameAchievementPopup';
 
 //Hooks
 import useGameTime from '../hooks/GameTime';
@@ -196,6 +196,25 @@ function Game() {
 	const [isHoleVisible, setHoleVisible] = useState(false);
 
 	//Achievement
+	const [achievementPopup, setAchievementPopup] = useState({
+		show: false,
+		icon: '',
+		title: '',
+		desc: '',
+	});
+
+	function showAchievementPopup({ icon, title, desc }) {
+		setAchievementPopup({
+			show: true,
+			icon,
+			title,
+			desc,
+		});
+		setTimeout(() => {
+			setAchievementPopup((prev) => ({ ...prev, show: false }));
+		}, 3000);
+	}
+
 	const [achievements, setAchievements] = useState({
 		photography: false,
 		explorer: false,
@@ -309,6 +328,53 @@ function Game() {
 			setAchievements((prev) => ({ ...prev, collector: true }));
 		}
 	}, [unlockedItems]);
+
+	useEffect(() => {
+		if (
+			allPhotoActions.every((action) => completedPhotoActions.includes(action)) &&
+			!achievements.photography
+		) {
+			setAchievements((prev) => ({ ...prev, photography: true }));
+			showAchievementPopup({
+				icon: '/images/achivements/GameAchievementCapture.png',
+				title: 'Achievement Unlocked!',
+				desc: 'You unlocked Photography!',
+			});
+		}
+	}, [completedPhotoActions, achievements.photography]);
+
+	useEffect(() => {
+		if (allGameActions.every((action) => activityLog.includes(action)) && !achievements.explorer) {
+			setAchievements((prev) => ({ ...prev, explorer: true }));
+			showAchievementPopup({
+				icon: '/images/achivements/GameAchievementExplorer.png',
+				title: 'Achievement Unlocked!',
+				desc: 'You unlocked Map Explorer!',
+			});
+		}
+	}, [activityLog, achievements.explorer]);
+
+	useEffect(() => {
+		if (highestMoney >= 10000000 && !achievements.crazyRich) {
+			setAchievements((prev) => ({ ...prev, crazyRich: true }));
+			showAchievementPopup({
+				icon: '/images/achivements/GameAchievementCrazyRich.png',
+				title: 'Achievement Unlocked!',
+				desc: 'You unlocked Crazy Rich!',
+			});
+		}
+	}, [highestMoney, achievements.crazyRich]);
+
+	useEffect(() => {
+		if (allItems.every((item) => unlockedItems.includes(item)) && !achievements.collector) {
+			setAchievements((prev) => ({ ...prev, collector: true }));
+			showAchievementPopup({
+				icon: '/images/achivements/GameAchievementCollector.png',
+				title: 'Achievement Unlocked!',
+				desc: 'You unlocked Collector!',
+			});
+		}
+	}, [unlockedItems, achievements.collector]);
 
 	//Time
 	const { gameTime, formattedDate, formattedTime, greeting } = useGameTime(10);
@@ -1198,7 +1264,12 @@ function Game() {
 			) {
 				setActions(['Buy Bucket', 'Buy Fishing Rod', 'Buy Bait']);
 				setLocationText('Welcome to Bites Shop');
-			} else if (playerPosition.x >= 3200 && playerPosition.x <= 3300 && playerPosition.y >= 1500 && playerPosition.y <= 1600) {
+			} else if (
+				playerPosition.x >= 3200 &&
+				playerPosition.x <= 3300 &&
+				playerPosition.y >= 1500 &&
+				playerPosition.y <= 1600
+			) {
 				setActions(['Rent a Boat', 'Become a Tour Guide', 'Buy a Binocular']);
 				setLocationText('Welcome to Dockside shop');
 			} else if (
@@ -1308,12 +1379,13 @@ function Game() {
 		}
 	}, [showWelcomePopup, maxScrollX, maxScrollY, vwWidth, vwHeight]);
 
-	const [trapPosition, setTrapPosition] = useState({ x: 200, y: 200 });
+	//Trap
+	const [trapPosition, setTrapPosition] = useState({ x: 2500, y: 1600 });
 	const [trapDirection, setTrapDirection] = useState(1);
 
 	useEffect(() => {
 		const interval = setInterval(() => {
-			const trapSize = 40;
+			const trapSize = 80;
 
 			const maxX = mapWidth - trapSize;
 			const maxY = mapHeight - trapSize;
@@ -1329,27 +1401,27 @@ function Game() {
 
 	useEffect(() => {
 		const interval = setInterval(() => {
-			const trapSize = 40;
+			const trapSize = 80;
 			const playerWidth = playerSize;
 			const playerHeight = playerSize;
 
 			const isColliding =
-				trapPosition.x < playerPosition.x + playerWidth &&
-				trapPosition.x + trapSize > playerPosition.x &&
-				trapPosition.y < playerPosition.y + playerHeight &&
-				trapPosition.y + trapSize > playerPosition.y;
+				trapPosition.x <= playerPosition.x + playerWidth &&
+				trapPosition.x + trapSize >= playerPosition.x + playerWidth &&
+				trapPosition.y <= playerPosition.y + playerHeight &&
+				trapPosition.y + trapSize >= playerPosition.y + playerHeight;
 
 			if (isColliding) {
 				setPlayerStatus((prev) =>
 					prev.map((stat) =>
-						stat.id === 'energy' ? { ...stat, value: Math.max(0, stat.value - 10) } : stat
+						stat.id === 'energy' ? { ...stat, value: Math.max(0, stat.value - 20) } : stat
 					)
 				);
 			}
-		}, 15000);
+		}, 1000);
 
 		return () => clearInterval(interval);
-	}, [trapPosition, playerPosition]);
+	}, [trapPosition, playerPosition, playerSize]);
 
 	//Return
 	return (
@@ -1368,6 +1440,13 @@ function Game() {
 					{actionPopup.message}
 				</div>
 			)}
+
+			<GameAchievementPopup
+				show={achievementPopup.show}
+				icon={achievementPopup.icon}
+				title={achievementPopup.title}
+				desc={achievementPopup.desc}
+			/>
 
 			<GameTitleBar
 				formattedDate={formattedDate}
