@@ -1665,7 +1665,7 @@ useEffect(() => {
 											<img
 												src={`/images/characters/${player.base}_${player.direction}.png`}
 												alt="Player Marker"
-												className="absolute w-4"
+												className="absolute w-2 md:w-4 lg:w-5"
 												style={{
 													left: `${(playerPosition.x / mapWidth) * 100}%`,
 													top: `${(playerPosition.y / mapHeight) * 100}%`,
