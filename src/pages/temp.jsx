@@ -1112,7 +1112,7 @@ function Game() {
 				playerPosition.x <= 4659 &&
 				playerPosition.y === 1540
 			) {
-				setActions(['Take Picture', 'Learn Coral Ecosystem', 'Observe Small Marine Life']);
+				setActions(['Take a Picture', 'Learn Coral Ecosystem', 'Observe Small Marine Life']);
 				setLocationText(['You are at the Beach']);
 			} else if (
 				playerPosition.x >= 4059 &&

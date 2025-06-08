@@ -85,23 +85,23 @@ function IdentityCard({ onClose, userName, achievements }) {
 							<div className="rouded-full w-3/14 flex flex-col justify-center items-center mx-auto">
 								<img
 									src="/images/achivements/GameAchievementExplorer.png"
-									className={!achievements.photography ? 'grayscale opacity-40' : ''}
+									className={!achievements.explorer ? 'grayscale opacity-40' : ''}
 								/>
-								<h3 className={!achievements.photography ? 'text-gray-400' : ''}>Map Explorer</h3>
+								<h3 className={!achievements.explorer ? 'text-gray-400' : ''}>Map Explorer</h3>
 							</div>
 							<div className="rouded-full w-3/14 flex flex-col justify-center items-center mx-auto">
 								<img
-									src="/images/achivements/GameAchievementTreasure.png"
-									className={!achievements.photography ? 'grayscale opacity-40' : ''}
+									src="/images/achivements/GameAchievementCrazyRich.png"
+									className={!achievements.crazyRich ? 'grayscale opacity-40' : ''}
 								/>
-								<h3 className={!achievements.photography ? 'text-gray-400' : ''}>Collector</h3>
+								<h3 className={!achievements.crazyRich ? 'text-gray-400' : ''}>Crazy Rich</h3>
 							</div>
 							<div className="rouded-full w-3/14 flex flex-col justify-center items-center mx-auto">
 								<img
-									src="/images/achivements/GameAchievementComposting.png"
-									className={!achievements.photography ? 'grayscale opacity-40' : ''}
+									src="/images/achivements/GameAchievementCollector.png"
+									className={!achievements.collector ? 'grayscale opacity-40' : ''}
 								/>
-								<h3 className={!achievements.photography ? 'text-gray-400' : ''}>Compostion</h3>
+								<h3 className={!achievements.collector ? 'text-gray-400' : ''}>Collector</h3>
 							</div>
 						</div>
 					</div>
