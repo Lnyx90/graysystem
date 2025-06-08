@@ -1,5 +1,7 @@
 import React from 'react';
 
+
+
 function GameSideBar(props) {
 	const {
 		currentMap,
@@ -90,14 +92,21 @@ function GameSideBar(props) {
 								key={action.id}
 								className="mt-1 lg:mt-2 md:mt-3 flex justify-between items-center"
 							>
-								<button
-									onClick={() => !action.locked && performActions(action)}
-									className={`h-fit w-9/10 p-1 mx-auto text-white text-[5px] md:text-xs lg:text-sm rounded-lg  ${
-										action.locked
-											? 'bg-blue-400 cursor-not-allowed'
-											: 'bg-blue-500  hover:bg-blue-700'
-									}`}
-								>
+							<button
+								onClick={() => !action.locked && performActions(action)}
+								className={`h-fit w-9/10 p-1 mx-auto text-white text-[5px] md:text-xs lg:text-sm rounded-lg ${
+									action.locked
+										? 'bg-blue-400 cursor-not-allowed'
+										: action.earnings > 0
+										? 'bg-orange-500 hover:bg-orange-500'
+										: action.cost > 0
+										? 'bg-yellow-500 hover:bg-yellow-500'
+										: 'bg-blue-500 hover:bg-blue-700'
+								}`}
+							>
+
+
+
 									{action.label}
 								</button>
 							</div>

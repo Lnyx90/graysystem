@@ -820,18 +820,24 @@ function Game() {
 	};
 
 	const mappedActionData = actionData.map((action) => {
-		const label = action.label || action;
-		const requiredItem = actionRequirements[label];
-		let locked = false;
-		if (requiredItem) {
-			if (Array.isArray(requiredItem)) {
-				locked = !requiredItem.every((item) => unlockedItems.includes(item));
-			} else {
-				locked = !unlockedItems.includes(requiredItem);
-			}
+	const label = action.label || action;
+	const requiredItem = actionRequirements[label];
+	let locked = false;
+
+	if (requiredItem) {
+		if (Array.isArray(requiredItem)) {
+			locked = !requiredItem.every((item) => unlockedItems.includes(item));
+		} else {
+			locked = !unlockedItems.includes(requiredItem);
 		}
-		return { ...action, label, locked };
-	});
+	}
+
+	const cost = timedActions[label]?.cost || 0;
+	const earnings = timedActions[label]?.earnings || 0;
+
+	return { ...action, label, locked, cost ,earnings}; 
+});
+
 
 	//Life Satisfication Score
 	const calculateLifeSatisfactionScore = ({ stats, activities, items, areas }) => {
