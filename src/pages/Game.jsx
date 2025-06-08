@@ -800,6 +800,25 @@ function Game() {
 		setCurrentActivity(null);
 	};
 
+	const getUnlockedMaps = (difficulty, completedActions) => {
+	const hasLearnedCoral = completedActions.includes('Learn Coral Ecosystem');
+	const hasVisited = completedActions.includes('Visit Museum');
+	const hasBecomeGuide = completedActions.includes('Become a Tour Guide');
+
+	const unlocked = ['default', 'lake'];
+
+	if (hearts > 2) {
+		if (hasVisited) unlocked.push('mountain');
+	} else if (hearts > 1) {
+		if (hasLearnedCoral && hasVisited) unlocked.push('temple', 'mountain');
+	} else {
+		if (hasBecomeGuide && hasLearnedCoral && hasVisited)
+		unlocked.push('beach', 'temple', 'mountain');
+	}
+
+	return unlocked;
+	};
+
 	const actionRequirements = {
 		Fishing: ['Fishing Rod', 'Bait', 'Bucket'],
 		'Take a Picture': 'Camera',
@@ -1068,6 +1087,7 @@ function Game() {
 	let [offsetY, setOffsetY] = useState(0);
 
 	const [isMapPopupOpen, setIsMapPopupOpen] = useState(false);
+  	const [completedActions, setCompletedActions] = useState([]);
 
 	const width = window.innerWidth;
 
@@ -1079,9 +1099,19 @@ function Game() {
 		temple: '/images/background/GameTempleMap.jpg',
 	};
 
+	const [unlockedMaps, setUnlockedMaps] = useState(() => getUnlockedMaps(difficulty, actions));
+
 	useEffect(() => {
-		currentMapRef.current = currentMap;
-	}, [currentMap]);
+		setUnlockedMaps(getUnlockedMaps(difficulty, actions));
+	}, [actions, difficulty]);
+
+	const handleChangeMap = (newMap) => {
+		if (!unlockedMaps.includes(newMap)) {
+		alert('This location is locked. Complete the required actions to unlock it!');
+		return;
+		}
+		setCurrentMap(newMap);
+	};
 
 	if (width >= 1440) {
 		if (playerPosition.x > minScrollX) {
@@ -1437,6 +1467,51 @@ function Game() {
 			}
 		}
 	}, [playerPosition, currentMap]);
+
+	 useEffect(() => {
+		setUnlockedMaps(getUnlockedMaps(difficulty, actions));
+	}, [actions, difficulty]);
+
+	 useEffect(() => {
+		if (currentMap === 'default') {
+		const transitions = [
+			{
+			mapName: 'lake', bounds: { xMin: 3540, xMax: 4790, yMin: 2310, yMax: 2610 }, newPosition: { x: 760, y: 330 }, welcomeText: 'Welcome to Lake Toba'
+			},
+			{
+			mapName: 'beach', bounds: { xMin: 1330, xMax: 1480, yMin: 2340, yMax: 2550 }, newPosition: { x: 1040, y: 720 }, welcomeText: 'Welcome to Kuta Beach'
+			},
+			{
+			mapName: 'mountain', bounds: { xMin: 400, xMax: 1700, yMin: 0, yMax: 760 }, newPosition: { x: 3390, y: 2450 }, welcomeText: 'Welcome to the Mountain'
+			},
+			{
+			mapName: 'temple', bounds: { xMin: 3060, xMax: 3420, yMin: 780, yMax: 1000 }, newPosition: { x: 2240, y: 1620 }, welcomeText: 'Welcome to the Borobudur Temple'
+			},
+		];
+
+		for (const { mapName, bounds, newPosition, welcomeText } of transitions) {
+			const { xMin, xMax, yMin, yMax } = bounds;
+			const isInsideBounds = (
+			playerPosition.x >= xMin && playerPosition.x <= xMax &&
+			playerPosition.y >= yMin && playerPosition.y <= yMax
+			);
+
+			if (isInsideBounds) {
+			if (!unlockedMaps.includes(mapName)) {
+				alert(`${mapName.charAt(0).toUpperCase() + mapName.slice(1)} is still locked!`);
+				return;
+			}
+
+			setCurrentMap(mapName);
+			setPlayerPosition(newPosition);
+			setActions([]);
+			setLocationText(welcomeText);
+			break;
+			}
+		}
+		}
+	}, [playerPosition, currentMap, unlockedMaps]);
+
 
 	useEffect(() => {
 		if (!showWelcomePopup) {
