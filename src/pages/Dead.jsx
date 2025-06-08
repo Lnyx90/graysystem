@@ -49,11 +49,11 @@ function Dead() {
 				className='flex flex-col items-center justify-center text-center w-full max-w-md sm:mt-[-30px] mt-[-20px] space-y-6'
 			>
 				<div className='flex flex-col'>
-					<h2 className='text-3xl sm:text-4xl text-black font-bold glow-text'>
+					<h2 className='text-3xl md:text-4xl lg:text-4xl text-black font-bold glow-text'>
 						GAME OVER!
 					</h2>
 					 <div className="text-center mt-20">
-						<p className="text-sm sm:text-lg text-white font-bold glow-text">Life Satisfaction Score: {score}/100</p>
+						<p className="text-[10px] md:text-sm lg:text-base text-white font-bold glow-text">Life Satisfaction Score: {score}/100</p>
 						</div>
 				</div>
 				<button
