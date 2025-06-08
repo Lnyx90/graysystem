@@ -21,40 +21,40 @@ import '../styles/Game.css';
 function Game() {
 	//Music
 	useEffect(() => {
-	const bgMusic = document.getElementById("bgMusic");
-	if (bgMusic) {
-		bgMusic.volume = 0.3; 
-	}
-
-	const tryPlayMusic = () => {
-		if (bgMusic && bgMusic.paused) {
-		bgMusic.play().catch(error => console.log("Autoplay prevented:", error));
+		const bgMusic = document.getElementById('bgMusic');
+		if (bgMusic) {
+			bgMusic.volume = 0.3;
 		}
-	};
 
-	document.body.addEventListener("click", tryPlayMusic);
+		const tryPlayMusic = () => {
+			if (bgMusic && bgMusic.paused) {
+				bgMusic.play().catch((error) => console.log('Autoplay prevented:', error));
+			}
+		};
 
-	return () => {
-		document.body.removeEventListener("click", tryPlayMusic);
-	};
+		document.body.addEventListener('click', tryPlayMusic);
+
+		return () => {
+			document.body.removeEventListener('click', tryPlayMusic);
+		};
 	}, []);
 
-  useEffect(() => {
-  const volumeSlider = document.getElementById("volumeSlider");
-  const bgMusic = document.getElementById("bgMusic");
+	useEffect(() => {
+		const volumeSlider = document.getElementById('volumeSlider');
+		const bgMusic = document.getElementById('bgMusic');
 
-  if (volumeSlider && bgMusic) {
-    volumeSlider.addEventListener("input", (e) => {
-      bgMusic.volume = e.target.value;
-    });
-  }
+		if (volumeSlider && bgMusic) {
+			volumeSlider.addEventListener('input', (e) => {
+				bgMusic.volume = e.target.value;
+			});
+		}
 
-  return () => {
-    if (volumeSlider) {
-      volumeSlider.removeEventListener("input", () => {});
-    }
-  };
-}, []);
+		return () => {
+			if (volumeSlider) {
+				volumeSlider.removeEventListener('input', () => {});
+			}
+		};
+	}, []);
 
 	//Player & Status
 	const [player, setPlayer] = useState({ name: '', base: '', direction: 'right' });
@@ -606,7 +606,7 @@ function Game() {
 			cost: 180,
 			unlock: 'Journal',
 		},
-		'Buy Drink': { 
+		'Buy Drink': {
 			duration: 1000,
 			effects: { happiness: +10, energy: -5, hygiene: +5 },
 			cost: 50,
@@ -693,7 +693,7 @@ function Game() {
 			unlock: 'Fauna Book',
 			onStart: () => showPopup('Museum'),
 		},
-		'Meditate': {
+		Meditate: {
 			duration: 3000,
 			effects: { happiness: +10, energy: +20, hygiene: -5 },
 			onStart: () => showPopup('Meditate'),
@@ -820,24 +820,23 @@ function Game() {
 	};
 
 	const mappedActionData = actionData.map((action) => {
-	const label = action.label || action;
-	const requiredItem = actionRequirements[label];
-	let locked = false;
+		const label = action.label || action;
+		const requiredItem = actionRequirements[label];
+		let locked = false;
 
-	if (requiredItem) {
-		if (Array.isArray(requiredItem)) {
-			locked = !requiredItem.every((item) => unlockedItems.includes(item));
-		} else {
-			locked = !unlockedItems.includes(requiredItem);
+		if (requiredItem) {
+			if (Array.isArray(requiredItem)) {
+				locked = !requiredItem.every((item) => unlockedItems.includes(item));
+			} else {
+				locked = !unlockedItems.includes(requiredItem);
+			}
 		}
-	}
 
-	const cost = timedActions[label]?.cost || 0;
-	const earnings = timedActions[label]?.earnings || 0;
+		const cost = timedActions[label]?.cost || 0;
+		const earnings = timedActions[label]?.earnings || 0;
 
-	return { ...action, label, locked, cost ,earnings}; 
-});
-
+		return { ...action, label, locked, cost, earnings };
+	});
 
 	//Life Satisfication Score
 	const calculateLifeSatisfactionScore = ({ stats, activities, items, areas }) => {
@@ -871,151 +870,151 @@ function Game() {
 	});
 
 	const popupConfigs = {
-	bath: {
-		image: '/images/symbol/bath.gif',
-		message: 'Bath Time!',
-		additionalMessage: 'You feel clean and refreshed!',
-	},
-	BuyFishingRod: {
-		image: '/images/items/pancing.png',
-		message: 'Here is Your Fishing Rod!',
-		additionalMessage: 'Check Your Backpack!',
-	},
-	Rentboat: {
-		image: '/images/symbol/boat.gif',
-		message: 'Get On Board!',
-		additionalMessage: 'Don’t Forget Your Ticket!',
-	},
-	Takepic: {
-		image: '/images/items/kamera.png',
-		message: 'Capture the Moment!',
-		additionalMessage: 'Your memories are now preserved!',
-	},
-	FlyLantern: {
-		image: '/images/symbol/lantern.gif',
-		message: '',
-		additionalMessage: 'The lantern can’t shine as bright as you',
-	},
-	Journal: {
-		image: '/images/items/bukutulis.png',
-		message: 'Every Memory is Worth Written',
-		additionalMessage: '',
-	},
-	Wood: {
-		image: '/images/symbol/wood.gif',
-		message: 'Do it all for the flamin fire',
-		additionalMessage: '',
-	},
-	Cook: {
-		image: '/images/symbol/cook.gif',
-		message: 'Looking Delicious',
-		additionalMessage: '',
-	},
-	Sandal: {
-		image: '/images/symbol/sandal.avif',
-		message: 'Looking Good in Your New Sandals',
-		additionalMessage: '',
-	},
-	Crab: {
-		image: '/images/symbol/crab.gif',
-		message: 'Get to Know Your New Friend',
-		additionalMessage: 'Be careful of Its Claw',
-	},
-	Sandcastle: {
-		image: '/images/items/sandcastle.png',
-		message: 'You Bought a Sandcastle Bucket!',
-		additionalMessage: 'Check Your Backpack!',
-	},
-	sleep: {
-		image: '/images/symbol/sleep.png',
-		message: 'Good Night!',
-		additionalMessage: 'Sleep Tight!',
-	},
-	Eat: {
-		image: '/images/items/makanan.png',
-		message: 'Bon Appétit!',
-		additionalMessage: 'Enjoy Your Meal!',
-	},
-	BuyBucket: {
-		image: '/images/items/wadah.png',
-		message: 'Bought a Bucket',
-		additionalMessage: 'Check Your Backpack!',
-	},
-	BuyBait: {
-		image: '/images/items/umpan.png',
-		message: 'Bought Bait',
-		additionalMessage: 'Check Your Backpack!',
-	},
-	TourGuide: {
-		image: '/images/symbol/tourguide.png',
-		message: 'You are now a Tour Guide!',
-		additionalMessage: 'Guide your friends to explore the world!',
-	},
-	BuyBinoculars: {
-		image: '/images/items/binokular.png',
-		message: 'Bought Binoculars',
-		additionalMessage: 'Check Your Backpack!',
-	},
-	Fishing: {
-		image: '/images/symbol/fish.png',
-		message: 'Fishing Time!',
-		additionalMessage: 'Relax and enjoy the moment!',
-	},
-	Sightseeing: {
-		image: '/images/symbol/sight.png',
-		message: 'Enjoy the Scenery!',
-		additionalMessage: 'Take a moment to appreciate nature!',
-	},
-	BecomeCashier: {
-		image: '/images/symbol/cashier.png',
-		message: 'You are now a Cashier!',
-		additionalMessage: 'Manage your transactions wisely!',
-	},
-	ObserveCoral: {
-		image: '/images/symbol/coral.png',
-		message: 'Observe the Coral Ecosystem!',
-		additionalMessage: 'Learn about the beauty of marine life!',
-	},
-	BuildSandcastle: {
-		image: '/images/symbol/Sandcastle.gif',
-		message: 'Building Sandcastles is Fun!',
-		additionalMessage: 'Let your creativity shine!',
-	},
-	Seashell: {
-		image: '/images/symbol/seashell.png',
-		message: 'Seashell Hunt is Exciting!',
-		additionalMessage: 'Discover the treasures of the beach!',
-	},
-	Tanning: {
-		image: '/images/symbol/sun.png',
-		message: 'Enjoy the Sun!',
-		additionalMessage: 'Get that perfect tan!',
-	},
-	Meditate: {
-		image: '/images/symbol/meditate.jpg',
-		message: 'Find Your Inner Peace',
-		additionalMessage: 'Meditation brings clarity and calmness',
-	},
-	AttendCeremony: {
-		image: '/images/symbol/ceremony.jpg',
-		message: 'Participate in the Ceremony!',
-		additionalMessage: 'Embrace the cultural experience!',
-	},
-	BuyMagnifyingGlass: {
-		image: '/images/items/kacapembesar.png',
-		message: 'Bought a Magnifying Glass',
-		additionalMessage: 'Check Your Backpack!',
-	},
-	BuyDrink: {
-		image: '/images/items/minum.png',
-		message: 'Bought a Drink',
-		additionalMessage: 'Check Your Backpack!',
-	},
-	Museum: {
-		image: '/images/symbol/museum.png',
-		message: 'Visit the Museum!',
-		additionalMessage: 'Explore the wonders of history!',
-	},
+		bath: {
+			image: '/images/symbol/bath.gif',
+			message: 'Bath Time!',
+			additionalMessage: 'You feel clean and refreshed!',
+		},
+		BuyFishingRod: {
+			image: '/images/items/pancing.png',
+			message: 'Here is Your Fishing Rod!',
+			additionalMessage: 'Check Your Backpack!',
+		},
+		Rentboat: {
+			image: '/images/symbol/boat.gif',
+			message: 'Get On Board!',
+			additionalMessage: 'Don’t Forget Your Ticket!',
+		},
+		Takepic: {
+			image: '/images/items/kamera.png',
+			message: 'Capture the Moment!',
+			additionalMessage: 'Your memories are now preserved!',
+		},
+		FlyLantern: {
+			image: '/images/symbol/lantern.gif',
+			message: '',
+			additionalMessage: 'The lantern can’t shine as bright as you',
+		},
+		Journal: {
+			image: '/images/items/bukutulis.png',
+			message: 'Every Memory is Worth Written',
+			additionalMessage: '',
+		},
+		Wood: {
+			image: '/images/symbol/wood.gif',
+			message: 'Do it all for the flamin fire',
+			additionalMessage: '',
+		},
+		Cook: {
+			image: '/images/symbol/cook.gif',
+			message: 'Looking Delicious',
+			additionalMessage: '',
+		},
+		Sandal: {
+			image: '/images/symbol/sandal.avif',
+			message: 'Looking Good in Your New Sandals',
+			additionalMessage: '',
+		},
+		Crab: {
+			image: '/images/symbol/crab.gif',
+			message: 'Get to Know Your New Friend',
+			additionalMessage: 'Be careful of Its Claw',
+		},
+		Sandcastle: {
+			image: '/images/items/sandcastle.png',
+			message: 'You Bought a Sandcastle Bucket!',
+			additionalMessage: 'Check Your Backpack!',
+		},
+		sleep: {
+			image: '/images/symbol/sleep.png',
+			message: 'Good Night!',
+			additionalMessage: 'Sleep Tight!',
+		},
+		Eat: {
+			image: '/images/items/makanan.png',
+			message: 'Bon Appétit!',
+			additionalMessage: 'Enjoy Your Meal!',
+		},
+		BuyBucket: {
+			image: '/images/items/wadah.png',
+			message: 'Bought a Bucket',
+			additionalMessage: 'Check Your Backpack!',
+		},
+		BuyBait: {
+			image: '/images/items/umpan.png',
+			message: 'Bought Bait',
+			additionalMessage: 'Check Your Backpack!',
+		},
+		TourGuide: {
+			image: '/images/symbol/tourguide.png',
+			message: 'You are now a Tour Guide!',
+			additionalMessage: 'Guide your friends to explore the world!',
+		},
+		BuyBinoculars: {
+			image: '/images/items/binokular.png',
+			message: 'Bought Binoculars',
+			additionalMessage: 'Check Your Backpack!',
+		},
+		Fishing: {
+			image: '/images/symbol/fish.png',
+			message: 'Fishing Time!',
+			additionalMessage: 'Relax and enjoy the moment!',
+		},
+		Sightseeing: {
+			image: '/images/symbol/sight.png',
+			message: 'Enjoy the Scenery!',
+			additionalMessage: 'Take a moment to appreciate nature!',
+		},
+		BecomeCashier: {
+			image: '/images/symbol/cashier.png',
+			message: 'You are now a Cashier!',
+			additionalMessage: 'Manage your transactions wisely!',
+		},
+		ObserveCoral: {
+			image: '/images/symbol/coral.png',
+			message: 'Observe the Coral Ecosystem!',
+			additionalMessage: 'Learn about the beauty of marine life!',
+		},
+		BuildSandcastle: {
+			image: '/images/symbol/Sandcastle.gif',
+			message: 'Building Sandcastles is Fun!',
+			additionalMessage: 'Let your creativity shine!',
+		},
+		Seashell: {
+			image: '/images/symbol/seashell.png',
+			message: 'Seashell Hunt is Exciting!',
+			additionalMessage: 'Discover the treasures of the beach!',
+		},
+		Tanning: {
+			image: '/images/symbol/sun.png',
+			message: 'Enjoy the Sun!',
+			additionalMessage: 'Get that perfect tan!',
+		},
+		Meditate: {
+			image: '/images/symbol/meditate.jpg',
+			message: 'Find Your Inner Peace',
+			additionalMessage: 'Meditation brings clarity and calmness',
+		},
+		AttendCeremony: {
+			image: '/images/symbol/ceremony.jpg',
+			message: 'Participate in the Ceremony!',
+			additionalMessage: 'Embrace the cultural experience!',
+		},
+		BuyMagnifyingGlass: {
+			image: '/images/items/kacapembesar.png',
+			message: 'Bought a Magnifying Glass',
+			additionalMessage: 'Check Your Backpack!',
+		},
+		BuyDrink: {
+			image: '/images/items/minum.png',
+			message: 'Bought a Drink',
+			additionalMessage: 'Check Your Backpack!',
+		},
+		Museum: {
+			image: '/images/symbol/museum.png',
+			message: 'Visit the Museum!',
+			additionalMessage: 'Explore the wonders of history!',
+		},
 	};
 
 	const showPopup = (type) => {
@@ -1481,29 +1480,33 @@ function Game() {
 		return () => clearInterval(interval);
 	}, []);
 
+	const [trapHitCooldown, setTrapHitCooldown] = useState(false);
+
 	useEffect(() => {
+		const trapSize = 80;
 		const interval = setInterval(() => {
-			const trapSize = 80;
 			const playerWidth = playerSize;
-			const playerHeight = playerSize;
+			const playerHeight = 150;
 
 			const isColliding =
-				trapPosition.x <= playerPosition.x + playerWidth &&
-				trapPosition.x + trapSize >= playerPosition.x + playerWidth &&
-				trapPosition.y <= playerPosition.y + playerHeight &&
-				trapPosition.y + trapSize >= playerPosition.y + playerHeight;
+				trapPosition.x < playerPosition.x + playerWidth &&
+				trapPosition.x + trapSize > playerPosition.x &&
+				trapPosition.y < playerPosition.y + playerHeight &&
+				trapPosition.y + trapSize > playerPosition.y;
 
-			if (isColliding) {
+			if (isColliding && !trapHitCooldown) {
 				setPlayerStatus((prev) =>
 					prev.map((stat) =>
 						stat.id === 'energy' ? { ...stat, value: Math.max(0, stat.value - 20) } : stat
 					)
 				);
+				setTrapHitCooldown(true);
+				setTimeout(() => setTrapHitCooldown(false), 5000);
 			}
-		}, 1000);
+		}, 100);
 
 		return () => clearInterval(interval);
-	}, [trapPosition, playerPosition, playerSize]);
+	}, [trapPosition, playerPosition, playerSize, trapHitCooldown]);
 
 	//Return
 	return (
@@ -1512,7 +1515,7 @@ function Game() {
 			className="relative w-screen h-screen px-2 py-2 md:py-4 md:px-4 lg:py-8 lg:px-8 overflow-hidden"
 		>
 			<audio id="bgMusic" autoPlay loop volume={0.3}>
-			<source src="/images/music/game.mp3" type="audio/mpeg" />
+				<source src="/images/music/game.mp3" type="audio/mpeg" />
 			</audio>
 			<GameWelcomePopup
 				player={player}
@@ -1687,16 +1690,15 @@ function Game() {
 							<input
 								type="range"
 								id="volumeSlider"
-						min="0"
-						max="1"
-						step="0.01"
-						defaultValue="0.3"
-						className="w-full md:w-auto accent-blue-500 transform rotate-90 md:rotate-0 mr-20 md:mr-0 lg:mr-0"
-						style={{ height: '10px', weight: '0px' }} 
-						/>
+								min="0"
+								max="1"
+								step="0.01"
+								defaultValue="0.3"
+								className="w-full md:w-auto accent-blue-500 transform rotate-90 md:rotate-0 mr-20 md:mr-0 lg:mr-0"
+								style={{ height: '10px', weight: '0px' }}
+							/>
+						</div>
 					</div>
-					</div>
-
 				</div>
 
 				<GameSideBar
