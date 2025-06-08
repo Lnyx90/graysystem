@@ -11,9 +11,9 @@ function Dead() {
 
 	useEffect(() => {
 		// Play background music when component mounts
-		const bgMusic = document.getElementById('bgMusic');
-		if (bgMusic) {
-			bgMusic.play().catch((error) => {
+		const music = document.getElementById('music');
+		if (music) {
+			music.play().catch((error) => {
 				console.log('Auto-play prevented:', error);
 				// Handle cases where autoplay is blocked
 			});
@@ -21,8 +21,8 @@ function Dead() {
 
 		return () => {
 			// Pause music when component unmounts
-			if (bgMusic) {
-				bgMusic.pause();
+			if (music) {
+				music.pause();
 			}
 		};
 	}, []);
@@ -41,7 +41,7 @@ function Dead() {
 			}}
 		>
 			<audio id='bgMusic' autoPlay loop>
-				<source src='./assets/bg-music/over.mp3' type='audio/mpeg' />
+				<source src='images/music/over.mp3' type='audio/mpeg' />
 			</audio>
 
 			<div

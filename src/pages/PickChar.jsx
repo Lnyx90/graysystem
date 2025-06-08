@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import PickCharAudio from '../hooks/PickCharAudio';
@@ -19,7 +19,46 @@ function PickChar() {
   const [isFading, setIsFading] = useState(false);
   const navigate = useNavigate();
 
+
   const { bgMusicRef, clickSoundRef, playClickSound } = PickCharAudio();
+
+  useEffect(() => {
+    let existingMusic = document.getElementById("bgMusic");
+
+    if (!existingMusic) {
+      const newMusic = document.createElement("audio");
+      newMusic.id = "bgMusic";
+      newMusic.loop = true;
+      newMusic.innerHTML = `<source src="images/music/homepage.mp3" type="audio/mpeg">`;
+
+      document.body.appendChild(newMusic);
+
+      let savedTime = parseFloat(localStorage.getItem("musicTime")) || 0;
+      newMusic.currentTime = savedTime;
+
+      newMusic.play().catch(err => {
+        console.log("Autoplay prevented:", err);
+      });
+
+      newMusic.ontimeupdate = () => {
+        localStorage.setItem("musicTime", newMusic.currentTime);
+      };
+
+      const handleClick = () => {
+        if (newMusic.paused) {
+          newMusic.play().catch(err => console.log("Manual play failed:", err));
+        }
+      };
+      document.addEventListener("click", handleClick);
+
+      return () => {
+        document.removeEventListener("click", handleClick);
+        newMusic.pause();
+        newMusic.currentTime = 0;
+        newMusic.remove();
+      };
+    }
+  }, []);
 
   const updateCharacter = (newIndex) => {
     setIsFading(true);
@@ -56,7 +95,19 @@ function PickChar() {
 
   const handleLevelSelect = (level) => {
     playClickSound();
-    console.log('Saving to localStorage:', selectedCharacter, playerName, level);
+
+
+    const existingMusic = document.getElementById("bgMusic");
+    if (existingMusic) {
+      existingMusic.pause();
+      existingMusic.currentTime = 0;
+    }
+
+    if (bgMusicRef.current) {
+      bgMusicRef.current.pause();
+      bgMusicRef.current.currentTime = 0;
+    }
+
     localStorage.setItem('PlayerImageBase', selectedCharacter);
     localStorage.setItem('playerName', playerName);
     localStorage.setItem('difficulty', level);

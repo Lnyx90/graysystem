@@ -6,11 +6,11 @@ function IdentityCard({ onClose, userName, achievements }) {
 	const characterImage = `/images/characters/${imageBase}_right.png`;
 
 	return (
-		<div className="mt-20 fixed flex inset-0 justify-center items-center text-center z-10">
+		<div className="mt-20 fixed flex inset-0 justify-center items-center text-center z-15">
 			<div
 				onClick={() => setFlipped(!flipped)}
 				style={{ perspective: '1000px' }}
-				className="w-4/5 md:w-3/4 lg:w-1/2"
+				className="w-4/5 md:w-3/4 lg:w-4/7"
 			>
 				<div
 					style={{
@@ -33,7 +33,7 @@ function IdentityCard({ onClose, userName, achievements }) {
 							</div>
 						)}
 
-						<div className="flex items-center justify-center">
+						<div className="text-[10px] md:text-base lg:text-lg flex items-center justify-center">
 							<h2>ID Card</h2>
 						</div>
 
@@ -41,12 +41,12 @@ function IdentityCard({ onClose, userName, achievements }) {
 							<div className="flex items-center justify-center">
 								<img
 									src={characterImage}
-									className="w-2/8 p-0.5 md:p-1 lg:p-2"
+									className="w-3/9 md:w-2/7 lg:w-4/12 xl:2/12 p-0.5 md:p-1 lg:p-2"
 									alt="Player Character"
 								/>
 							</div>
-							<div className="flex flex-col items-start justify-center">
-								<p className="">Name: {userName}</p>
+							<div className="text-[8px] md:text-base lg:text-lg flex flex-col items-start justify-center">
+								<p className="">Name : {userName}</p>
 								<p className="">Level: 1</p>
 							</div>
 						</div>
@@ -70,39 +70,58 @@ function IdentityCard({ onClose, userName, achievements }) {
 							</button>
 						</div>
 
-						<div className="flex items-center justify-center">
-							<h2>Achievements</h2>
+						<div className="text-[8px] md:text-sm lg:text-base flex items-center justify-center mb-4 ">
+							<h2>ACHIEVEMENTS</h2>
 						</div>
 
-						<div className="w-full grid grid-cols-2 grid-rows-2">
-							<div className="rouded-full w-3/14 flex flex-col justify-center items-center mx-auto">
-								<img
-									src="/images/achivements/GameAchievementCapture.png"
-									className={!achievements.photography ? 'grayscale opacity-40' : ''}
-								/>
-								<h3 className={!achievements.photography ? 'text-gray-400' : ''}>Photography</h3>
-							</div>
-							<div className="rouded-full w-3/14 flex flex-col justify-center items-center mx-auto">
-								<img
-									src="/images/achivements/GameAchievementExplorer.png"
-									className={!achievements.explorer ? 'grayscale opacity-40' : ''}
-								/>
-								<h3 className={!achievements.explorer ? 'text-gray-400' : ''}>Map Explorer</h3>
-							</div>
-							<div className="rouded-full w-3/14 flex flex-col justify-center items-center mx-auto">
-								<img
-									src="/images/achivements/GameAchievementCrazyRich.png"
-									className={!achievements.crazyRich ? 'grayscale opacity-40' : ''}
-								/>
-								<h3 className={!achievements.crazyRich ? 'text-gray-400' : ''}>Crazy Rich</h3>
-							</div>
-							<div className="rouded-full w-3/14 flex flex-col justify-center items-center mx-auto">
-								<img
-									src="/images/achivements/GameAchievementCollector.png"
-									className={!achievements.collector ? 'grayscale opacity-40' : ''}
-								/>
-								<h3 className={!achievements.collector ? 'text-gray-400' : ''}>Collector</h3>
-							</div>
+						<div className="w-full grid grid-cols-2 grid-rows-3 gap-y-4 px-2 md:px-0">
+						<div className="w-12 md:w-24 flex flex-col items-center mx-auto">
+							<img src="/images/achivements/GameAchievementCapture.png"
+								className={!achievements.photography ? 'grayscale opacity-40' : ''}
+							/>
+							<h3 className={`text-sm mt-1 ${!achievements.photography ? 'text-[8px] md:text-sm lg:text-base text-gray-400' : ''}`}>Photography</h3>
+						</div>
+
+						<div className="w-12 md:w-24 flex flex-col items-center mx-auto">
+							<img
+								src="/images/achivements/GameAchievementExplorer.png"
+								className={!achievements.explorer ? 'grayscale opacity-40' : ''}
+							/>
+							<h3 className={`text-sm mt-1 whitespace-nowrap ${!achievements.explorer ? 'text-[8px] md:text-sm lg:text-base text-gray-400' : ''}`}>
+								Map Explorer
+							</h3>
+						</div>
+
+						<div className="col-span-2 flex flex-col items-center mx-auto w-12 md:w-24">
+							<img
+								src="/images/achivements/GameAchievementCampSkills.png"
+								className={!achievements.campSkills ? 'grayscale opacity-40' : ''}
+							/>
+							<h3 className={`text-sm mt-1 whitespace-nowrap ${!achievements.campSkills ? 'text-[8px] md:text-sm lg:text-base text-gray-400' : ''}`}>
+								Camp Skills
+							</h3>
+						</div>
+
+						<div className="w-12 md:w-24 flex flex-col items-center mx-auto">
+							<img
+								src="/images/achivements/GameAchievementCrazyRich.png"
+								className={!achievements.crazyRich ? 'grayscale opacity-40' : ''}
+							/>
+							<h3 className={`text-sm mt-1 whitespace-nowrap ${!achievements.crazyRich ? 'text-[8px] md:text-sm lg:text-base text-gray-400' : ''}`}>
+								Crazy Rich
+							</h3>
+						</div>
+
+
+						<div className="w-12 md:w-24 flex flex-col items-center mx-auto">
+							<img
+								src="/images/achivements/GameAchievementCollector.png"
+								className={!achievements.collector ? 'grayscale opacity-40' : ''}
+							/>
+							<h3 className={`text-sm mt-1 ${!achievements.collector ? 'text-[8px] md:text-sm lg:text-base text-gray-400' : ''}`}>
+								Collector
+							</h3>
+						</div>
 						</div>
 					</div>
 				</div>

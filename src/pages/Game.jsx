@@ -19,6 +19,43 @@ import '../styles/Game.css';
 
 //Game
 function Game() {
+	//Music
+	useEffect(() => {
+	const bgMusic = document.getElementById("bgMusic");
+	if (bgMusic) {
+		bgMusic.volume = 0.3; 
+	}
+
+	const tryPlayMusic = () => {
+		if (bgMusic && bgMusic.paused) {
+		bgMusic.play().catch(error => console.log("Autoplay prevented:", error));
+		}
+	};
+
+	document.body.addEventListener("click", tryPlayMusic);
+
+	return () => {
+		document.body.removeEventListener("click", tryPlayMusic);
+	};
+	}, []);
+
+  useEffect(() => {
+  const volumeSlider = document.getElementById("volumeSlider");
+  const bgMusic = document.getElementById("bgMusic");
+
+  if (volumeSlider && bgMusic) {
+    volumeSlider.addEventListener("input", (e) => {
+      bgMusic.volume = e.target.value;
+    });
+  }
+
+  return () => {
+    if (volumeSlider) {
+      volumeSlider.removeEventListener("input", () => {});
+    }
+  };
+}, []);
+
 	//Player & Status
 	const [player, setPlayer] = useState({ name: '', base: '', direction: 'right' });
 	const [playerSize, setPlayerSize] = useState(65);
@@ -1429,6 +1466,9 @@ function Game() {
 			id="bodyBackground"
 			className="relative w-screen h-screen px-2 py-2 md:py-4 md:px-4 lg:py-8 lg:px-8 overflow-hidden"
 		>
+			<audio id="bgMusic" autoPlay loop volume={0.3}>
+			<source src="/images/music/game.mp3" type="audio/mpeg" />
+			</audio>
 			<GameWelcomePopup
 				player={player}
 				showWelcomePopup={showWelcomePopup}
@@ -1590,6 +1630,27 @@ function Game() {
 							</div>
 						</div>
 					</div>
+					<div className="absolute mt-2 left-0 md:left-2 lg:left-2p-2 rounded-md z-20 w-24 md:w-48 lg:w-48">
+						<div className="flex flex-col md:flex-row items-center md:space-x-3 w-full">
+							<label
+								htmlFor="volumeSlider"
+								className="text-xs font-medium text-white hidden md:block"
+							>
+								Volume
+							</label>
+							<input
+								type="range"
+								id="volumeSlider"
+						min="0"
+						max="1"
+						step="0.01"
+						defaultValue="0.3"
+						className="w-full md:w-auto accent-blue-500 transform rotate-90 md:rotate-0 mr-20 md:mr-0 lg:mr-0"
+						style={{ height: '10px', weight: '0px' }} 
+						/>
+					</div>
+					</div>
+
 				</div>
 
 				<GameSideBar
