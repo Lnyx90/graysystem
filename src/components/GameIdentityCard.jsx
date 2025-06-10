@@ -50,7 +50,7 @@ function IdentityCard({ onClose, userName, achievements, level, exp }) {
 							<div className="text-[8px] md:text-base lg:text-lg flex flex-col items-start justify-center">
 								<p className="">Name : {userName}</p>
 								<p className="">Level: {level}</p>
-								<p className="">Exp: {exp}/100</p>
+								<p className="whitespace-pre">Exp  : {exp}/100</p>
 							</div>
 						</div>
 					</div>

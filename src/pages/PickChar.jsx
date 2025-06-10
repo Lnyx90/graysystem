@@ -85,8 +85,10 @@ function PickChar() {
 
   const handleSelectAndNavigate = () => {
     if (!playerName.trim()) {
+      playClickSound();
       setNotificationMessage('Please enter your name!');
       setShowNotification(true);
+      setTimeout(() => setShowNotification(false), 2000);
       return;
     }
     playClickSound();
@@ -127,7 +129,9 @@ function PickChar() {
       }}
     >
       <audio ref={bgMusicRef} src="/audio/bgm.mp3" loop />
-      <audio ref={clickSoundRef} src="/audio/click.mp3" />
+      <audio ref={clickSoundRef} preload='auto'>
+				<source src='/images/music/click.mp3' type='audio/mpeg' />
+			</audio>
 
       <div className="flex flex-col items-center text-center px-4 w-full max-w-4xl z-10">
         <h1 className="text-xl sm:text-3xl md:text-5xl text-glow-pickchar text-white leading-tight text-pulse-pickchar mb-6" style={{ fontFamily: "'Press Start 2P', cursive" }}>
