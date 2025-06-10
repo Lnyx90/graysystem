@@ -527,7 +527,7 @@ function Game() {
 			effects: { happiness: +15, energy: -5 },
 			onStart: () => showPopup('Sightseeing'),
 		},
-		'Observing Borobudur': { duration: 2000, effects: { happiness: +15, energy: -5 } },
+		'Observing Borobudur': { duration: 2000, effects: { happiness: +15, energy: -5 }, onStart: () => showPopup('ObserveBorobudur') },
 		'Fly a Lanttern': {
 			duration: 2000,
 			effects: { happiness: +15, energy: -5 },
@@ -654,7 +654,7 @@ function Game() {
 			onStart: () => showPopup('Cook'),
 		},
 		Meditate: { duration: 5000, effects: { happiness: +5, energy: +20, hygiene: -10 } },
-		'Observe Nature': { duration: 2000, effects: { happiness: +20, energy: -5, hygiene: +5 } },
+		'Observe Nature': { duration: 2000, effects: { happiness: +20, energy: -5, hygiene: +5 }, onStart: () => showPopup('ObserveNature') },
 		'Learn Coral Ecosystem': {
 			duration: 2000,
 			effects: { happiness: +20, energy: -5, hygiene: +5 },
@@ -669,6 +669,7 @@ function Game() {
 		'Gather Spring Water': {
 			duration: 2000,
 			effects: { hygiene: +15, energy: -3 },
+			onStart: () => showPopup('GatherWater'),
 			unlock: 'Drink',
 		},
 		Tanning: {
@@ -1073,6 +1074,21 @@ function Game() {
 			image: '/images/symbol/campfire.gif',
 			message: 'Build a Campfire!',
 			additionalMessage: 'Gather around and enjoy the warmth!',
+		},
+		ObserveBorobudur: {
+			image: '/images/symbol/borobudur.png',
+			message: 'Observe Borobudur!',
+			additionalMessage: 'Nice ancient architecture!',
+		},
+		GatherWater: {
+			image: '/images/symbol/springwater.png',
+			message: 'Gather Spring Water!',
+			additionalMessage: 'Stay hydrated and refreshed!',
+		},
+		ObserveNature: {
+			image: '/images/symbol/nature.png',
+			message: 'Observe Nature!',
+			additionalMessage: 'Appreciate the beauty of the environment!',
 		},
 	};
 
