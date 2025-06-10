@@ -1,7 +1,5 @@
 import React from 'react';
 
-
-
 function GameSideBar(props) {
 	const {
 		currentMap,
@@ -52,7 +50,7 @@ function GameSideBar(props) {
 
 							{activityInProgress && (
 								<>
-									<div className="text-[5px] md:text-xs lg:text-sm animate-pulse ">
+									<div className="text-[5px] md:text-xs lg:text-sm animate-pulse">
 										Doing: {currentActivity?.label}
 									</div>
 									<button
@@ -82,31 +80,75 @@ function GameSideBar(props) {
 				)}
 
 				<div className="flex flex-col gap-2">
-					{actionData.length === 0 ? (
-						<div className="text-gray-600 text-[6px] md:text-sm lg:text-base">
-							No actions available here
+					{currentMap === 'default' ? (
+						<div className="flex flex-col items-center gap-2 ">
+							<button
+								onClick={() => {
+									setCurrentMap('lake');
+									setPlayerPosition({ x: 760, y: 330 });
+									setActions([]);
+									setLocationText('Welcome to Lake Toba');
+								}}
+								className="flex flex-col items-center hover:scale-105 transition"
+							>
+								<img src="/images/symbol/lake.jpg" alt="Lake Icon" className="w-8 md:w-25 lg:w-30 rounded-lg" />
+								<span className="text-[6px] md:text-xs">Lake Toba</span>
+							</button>
+
+							<button
+								onClick={() => {
+									setCurrentMap('mountain');
+									setPlayerPosition({ x: 3390, y: 2450 });
+									setActions([]);
+									setLocationText('Welcome to the Mountain');
+								}}
+								className="flex flex-col items-center hover:scale-105 transition"
+							>
+								<img src="/images/symbol/mountain.jpg" alt="Mountain Icon" className="w-8 md:w-25 lg:w-30 rounded-lg" />
+								<span className="text-[6px] md:text-xs"> Bromo Mountain</span>
+							</button>
+
+							<button
+								onClick={() => {
+									setCurrentMap('beach');
+									setPlayerPosition({ x: 1040, y: 720 });
+									setActions([]);
+									setLocationText('Welcome to Kuta Beach');
+								}}
+								className="flex flex-col items-center hover:scale-105 transition"
+							>
+								<img src="/images/symbol/beach.jpg" alt="Beach Icon" className="w-8 md:w-25 lg:w-30 rounded-lg" />
+								<span className="text-[6px] md:text-xs">Kuta Beach</span>
+							</button>
+
+							<button
+								onClick={() => {
+									setCurrentMap('temple');
+									setPlayerPosition({ x: 2240, y: 1620 });
+									setActions([]);
+									setLocationText('Welcome to the Borobudur Temple');
+								}}
+								className="flex flex-col items-center hover:scale-105 transition"
+							>
+								<img src="/images/symbol/temple.jpg" alt="Temple Icon" className="w-8 md:w-25 lg:w-30 rounded-lg" />
+								<span className="text-[6px] md:text-xs">Borobudur Temple</span>
+							</button>
 						</div>
 					) : (
 						actionData.map((action) => (
-							<div
-								key={action.id}
-								className="mt-1 lg:mt-2 md:mt-3 flex justify-between items-center"
-							>
-							<button
-								onClick={() => !action.locked && performActions(action)}
-								className={`h-fit w-9/10 p-1 mx-auto text-white text-[5px] md:text-xs lg:text-sm rounded-lg ${
-									action.locked
-										? 'bg-blue-400 cursor-not-allowed'
-										: action.earnings > 0
-										? 'bg-orange-500 hover:bg-orange-500'
-										: action.cost > 0
-										? 'bg-yellow-500 hover:bg-yellow-500'
-										: 'bg-blue-500 hover:bg-blue-700'
-								}`}
-							>
-
-
-
+							<div key={action.id} className="mt-1 lg:mt-2 md:mt-3 flex justify-between items-center">
+								<button
+									onClick={() => !action.locked && performActions(action)}
+									className={`h-fit w-9/10 p-1 mx-auto text-white text-[5px] md:text-xs lg:text-sm rounded-lg ${
+										action.locked
+											? 'bg-blue-400 cursor-not-allowed'
+											: action.earnings > 0
+											? 'bg-orange-500 hover:bg-orange-500'
+											: action.cost > 0
+											? 'bg-yellow-500 hover:bg-yellow-500'
+											: 'bg-blue-500 hover:bg-blue-700'
+									}`}
+								>
 									{action.label}
 								</button>
 							</div>
