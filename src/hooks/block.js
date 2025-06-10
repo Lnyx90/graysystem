@@ -191,7 +191,7 @@ export const obstacleZones = {
   { x: 284, y: 792, width: 300, height: 276 },
   { x: 92, y: 978, width: 108, height: 222 },
   { x: 710, y: 1020, width: 174, height: 192 },
-  { x: 1276, y: 900, width: 282, height: 184 },
+  { x: 1256, y: 900, width: 282, height: 184 },
   { x: 1540, y: 774, width: 78, height: 120 },
   { x: 1528, y: 1236, width: 96, height: 72 },
   { x: 1842, y: 1122, width: 222, height: 228 },

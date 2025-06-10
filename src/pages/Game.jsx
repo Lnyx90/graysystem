@@ -1571,6 +1571,12 @@ function Game() {
 		setUnlockedMaps(getUnlockedMaps(difficulty, actions));
 	}, [actions, difficulty]);
 
+
+	useEffect(() => {
+  currentMapRef.current = currentMap;
+}, [currentMap]);
+
+
 	useEffect(() => {
 		if (currentMap === 'default') {
 			const transitions = [
@@ -1854,6 +1860,9 @@ function Game() {
 								transition: 'left 0.3s ease-out top 0.3s ease-out',
 							}}
 						>
+						
+
+		
 							<img
 								src="/images/symbol/trap.png"
 								alt="trap"
