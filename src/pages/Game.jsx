@@ -516,8 +516,7 @@ function Game() {
 	};
 
 	const timedActions = {
-		'Enjoy the View': { duration: 2000, effects: { happiness: +15, energy: -5 } },
-		'Capture the Moment': { duration: 2000, effects: { happiness: +15, energy: -5 } },
+		'Capture the Moment': { duration: 2000, effects: { happiness: +15, energy: -5 }, onStart: () => showPopup('CaptureMoment') },
 		'Take a Picture': {
 			duration: 2000,
 			effects: { happiness: +15, energy: -5 },
@@ -536,7 +535,7 @@ function Game() {
 		},
 		'Attend a Ceremony': { duration: 2000, effects: { happiness: +15, energy: -5 } },
 
-		'Rest & Eat Food': { duration: 2000, effects: { hunger: +20, energy: +10, hygiene: -2 } },
+		'Rest & Eat Food': { duration: 2000, effects: { hunger: +20, energy: +10, hygiene: -2 }, onStart: () => showPopup('RestEat') },
 		'Eat Seafood': { duration: 3000, effects: { hunger: +25, energy: +15, happiness: +5 } },
 
 		'Buy Fishing Rod': {
@@ -589,7 +588,7 @@ function Game() {
 			onStart: () => showPopup('Sandal'),
 			unlock: 'Sandal',
 		},
-		'Talk to Fellow Campers': { duration: 2000, effects: { happiness: +15, energy: -3 } },
+		'Talk to Fellow Campers': { duration: 2000, effects: { happiness: +15, energy: -3 }, onStart: () => showPopup('TalkCampers') },
 
 		'Buy Souvenir': { duration: 1000, effects: { happiness: +10, energy: -2 }, cost: 80 },
 		'Buy Magnifying Glass': {
@@ -621,7 +620,7 @@ function Game() {
 			unlock: 'Binoculars',
 		},
 
-		Hiking: { duration: 3000, effects: { energy: -20, happiness: +15, hunger: -10 } },
+		Hiking: { duration: 3000, effects: { energy: -20, happiness: +15, hunger: -10 }, onStart: () => showPopup('Hiking') },
 		Fishing: {
 			duration: 3000,
 			effects: { hunger: -10, happiness: +15, energy: -5 },
@@ -645,8 +644,8 @@ function Game() {
 			onStart: () => showPopup('Wood'),
 			unlock: 'Wood',
 		},
-		'Build a Campfire': { duration: 2000, effects: { energy: -15, happiness: +10 } },
-		'Set Up Tent': { duration: 2000, effects: { energy: -10, hygiene: -3 } },
+		'Build a Campfire': { duration: 2000, effects: { energy: -15, happiness: +10 }, onStart: () => showPopup('Campfire') },
+		'Set Up Tent': { duration: 2000, effects: { energy: -10, hygiene: -3 }, onStart: () => showPopup('SetTent') },
 
 		'Cook Food': {
 			duration: 3000,
@@ -703,6 +702,12 @@ function Game() {
 			effects: { happiness: +20, energy: -10, hygiene: -5 },
 			onStart: () => showPopup('AttendCeremony'),
 		},
+		'Enjoy the View': {
+			duration: 2000,
+			effects: { happiness: +15, energy: -5 },
+			onStart: () => showPopup('EnjoyView'),
+		},
+		
 
 		Eat: {
 			duration: 3000,
@@ -1033,6 +1038,41 @@ function Game() {
 			image: '/images/symbol/museum.png',
 			message: 'Visit the Museum!',
 			additionalMessage: 'Explore the wonders of history!',
+		},
+		EnjoyView: {
+			image: '/images/symbol/view.png',
+			message: 'Enjoy the View!',
+			additionalMessage: 'Take a moment to appreciate the beauty around you!',
+		},
+		CaptureMoment: {
+			image: '/images/items/kamera.png',
+			message: 'Capture the Moment!',
+			additionalMessage: 'Your memories are now preserved!',
+		},
+		RestEat: {
+			image: '/images/items/makanan.png',
+			message: 'Rest and Eat!',
+			additionalMessage: 'Take a break and enjoy your meal!',
+		},
+		Hiking: {
+			image: '/images/symbol/hiking.png',
+			message: 'Hiking Adventure!',
+			additionalMessage: 'Explore the great outdoors!',
+		},
+		SetTent: {
+			image: '/images/items/tenda.png',
+			message: 'Set Up Your Tent!',
+			additionalMessage: 'Get ready for a cozy night under the stars!',
+		},
+		TalkCampers: {
+			image: '/images/symbol/talkcampers.png',
+			message: 'Talk to Fellow Campers!',
+			additionalMessage: 'Share stories and make new friends!',
+		},
+		Campfire: {
+			image: '/images/symbol/campfire.gif',
+			message: 'Build a Campfire!',
+			additionalMessage: 'Gather around and enjoy the warmth!',
 		},
 	};
 
