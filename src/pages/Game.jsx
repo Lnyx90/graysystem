@@ -8,8 +8,13 @@ import GameStatusBar from '../components/GameStatusBar';
 import GameSideBar from '../components/GameSideBar';
 import GamePopup from '../components/GamePopUp';
 import GameAchievementPopup from '../components/GameAchievementPopup';
+import GameMinimap from '../components/GameMinimap';
+import GameArrowKey from '../components/GameArrowKey';
+import GameDeathPopup from '../components/GameDeathPopup';
+import GameVolume from '../components/GameVolume';
 
 //Hooks
+import PickCharAudio from '../hooks/PickCharAudio';
 import useGameTime from '../hooks/GameTime';
 import { getActionData, goBackToMainMap } from '../hooks/GameMapLocation';
 import { obstacleZones } from '../hooks/block';
@@ -20,6 +25,8 @@ import '../styles/Game.css';
 //Game
 function Game() {
 	//Music
+	const { clickSoundRef, playClickSound } = PickCharAudio();
+
 	useEffect(() => {
 		const bgMusic = document.getElementById('bgMusic');
 		if (bgMusic) {
@@ -516,8 +523,6 @@ function Game() {
 
 		setActivityLog((prev) => (prev.includes(label) ? prev : [...prev, label]));
 
-		setExp((prev) => prev + 10);
-
 		if (timedAction) {
 			if (timedAction.unlock) {
 				unlockItem(timedAction.unlock);
@@ -528,60 +533,88 @@ function Game() {
 	};
 
 	const timedActions = {
-		'Capture the Moment': {
-			duration: 2000,
-			effects: { happiness: +15, energy: -5 },
-			onStart: () => showPopup('CaptureMoment'),
+		'Capture the Moment': { 
+			duration: 2000, 
+			effects: { happiness: +15, energy: -5 }, 
+			onStart: () => { 
+				showPopup('CaptureMoment'); 
+				setExp(prev => prev + 5);
+			} 
 		},
+
 		'Take a Picture': {
 			duration: 2000,
 			effects: { happiness: +15, energy: -5 },
-			onStart: () => showPopup('Takepic'),
+			onStart: () => {
+				showPopup('Takepic');
+				setExp(prev => prev + 4);
+			},
 		},
+
 		Sightseeing: {
 			duration: 2000,
 			effects: { happiness: +15, energy: -5 },
-			onStart: () => showPopup('Sightseeing'),
+			onStart: () => {
+				showPopup('Sightseeing');
+				setExp(prev => prev + 5);
+			},
 		},
-		'Observing Borobudur': {
-			duration: 2000,
-			effects: { happiness: +15, energy: -5 },
-			onStart: () => showPopup('ObserveBorobudur'),
+
+		'Observing Borobudur': { 
+			duration: 2000, 
+			effects: { happiness: +15, energy: -5 }, 
+			onStart: () => {
+				showPopup('ObserveBorobudur');
+				setExp(prev => prev + 6);
+			}
 		},
+
 		'Fly a Lanttern': {
 			duration: 2000,
 			effects: { happiness: +15, energy: -5 },
-			onStart: () => showPopup('FlyLantern'),
+			onStart: () => {
+				showPopup('FlyLantern');
+				setExp(prev => prev + 6);
+			},
 		},
-		'Attend a Ceremony': { duration: 2000, effects: { happiness: +15, energy: -5 } },
 
-		'Rest & Eat Food': {
-			duration: 2000,
-			effects: { hunger: +20, energy: +10, hygiene: -2 },
-			onStart: () => showPopup('RestEat'),
+		'Rest & Eat Food': { 
+			duration: 2000, 
+			effects: { hunger: +20, energy: +10, hygiene: -2 }, 
+			onStart: () => {
+				showPopup('RestEat');
+				setExp(prev => prev + 4);
+			}
 		},
-		'Eat Seafood': { duration: 3000, effects: { hunger: +25, energy: +15, happiness: +5 } },
 
 		'Buy Fishing Rod': {
 			duration: 1000,
 			effects: { happiness: +10 },
 			cost: 150,
-			onStart: () => showPopup('BuyFishingRod'),
-			cost: 150,
+			onStart: () => {
+				showPopup('BuyFishingRod');
+				setExp(prev => prev + 3);
+			},
 			unlock: 'Fishing Rod',
 		},
+
 		'Become Cashier': {
 			duration: 2000,
 			effects: { happiness: +10, energy: -3 },
 			earnings: 1000,
-			onStart: () => showPopup('BecomeCashier'),
+			onStart: () => {
+				showPopup('BecomeCashier');
+				setExp(prev => prev + 9);
+			},
 		},
 
-		'Write Travel Journal': { duration: 2000, effects: { happiness: +10 } },
 		'Hiking Journaling': {
 			duration: 2000,
 			effects: { happiness: +10 },
-			onStart: () => showPopup('Journal'),
+			onStart: () => {
+				showPopup('Journal');
+				setExp(prev => prev + 6);
+			},
 		},
 
 		'Buy Bucket': {
@@ -589,187 +622,303 @@ function Game() {
 			effects: { happiness: +10, energy: -3 },
 			cost: 100,
 			unlock: 'Bucket',
-			onStart: () => showPopup('BuyBucket'),
+			onStart: () => {
+				showPopup('BuyBucket');
+				setExp(prev => prev + 3);
+			},
 		},
+
 		'Buy Bait': {
 			duration: 1000,
 			effects: { happiness: +10, energy: -3 },
 			cost: 50,
 			unlock: 'Bait',
-			onStart: () => showPopup('BuyBait'),
+			onStart: () => {
+				showPopup('BuyBait');
+				setExp(prev => prev + 3);
+			},
 		},
+
 		'Buy Sandcastle Bucket': {
 			duration: 1000,
 			effects: { happiness: +10, energy: -3 },
 			cost: 120,
 			unlock: 'Sand Bucket',
-			onStart: () => showPopup('Sandcastle'),
+			onStart: () => {
+				showPopup('Sandcastle');
+				setExp(prev => prev + 3);
+			},
 		},
+
 		'Buy Sandal': {
 			duration: 1000,
 			effects: { happiness: +10, energy: -3 },
 			cost: 200,
-			onStart: () => showPopup('Sandal'),
+			onStart: () => {
+				showPopup('Sandal');
+				setExp(prev => prev + 3);
+			},
 			unlock: 'Sandal',
 		},
-		'Talk to Fellow Campers': {
-			duration: 2000,
-			effects: { happiness: +15, energy: -3 },
-			onStart: () => showPopup('TalkCampers'),
+
+		'Talk to Fellow Campers': { 
+			duration: 2000, 
+			effects: { happiness: +15, energy: -3 }, 
+			onStart: () => {
+				showPopup('TalkCampers');
+				setExp(prev => prev + 7);
+			}
 		},
 
-		'Buy Souvenir': { duration: 1000, effects: { happiness: +10, energy: -2 }, cost: 80 },
 		'Buy Magnifying Glass': {
 			duration: 1000,
 			effects: { happiness: +15, energy: -5 },
 			cost: 250,
-			onStart: () => showPopup('BuyMagnifyingGlass'),
+			onStart: () => {
+				showPopup('BuyMagnifyingGlass');
+				setExp(prev => prev + 5);
+			},
 			unlock: 'Magnifying Glass',
 		},
+
 		'Buy Journal': {
 			duration: 1000,
 			effects: { happiness: +15, energy: -5 },
-			onStart: () => showPopup('Journal'),
+			onStart: () => {
+				showPopup('Journal');
+				setExp(prev => prev + 5);
+			},
 			cost: 180,
 			unlock: 'Journal',
 		},
+
 		'Buy Drink': {
 			duration: 1000,
 			effects: { happiness: +10, energy: -5, hygiene: +5 },
 			cost: 50,
-			onStart: () => showPopup('BuyDrink'),
+			onStart: () => {
+				showPopup('BuyDrink');
+				setExp(prev => prev + 3);
+			},
 			unlock: 'Drink',
 		},
+
 		'Buy a Binocular': {
 			duration: 1000,
 			effects: { happiness: +15, energy: -5 },
 			cost: 350,
-			onStart: () => showPopup('BuyBinoculars'),
+			onStart: () => {
+				showPopup('BuyBinoculars');
+				setExp(prev => prev + 5);
+			},
 			unlock: 'Binoculars',
 		},
 
-		Hiking: {
-			duration: 3000,
-			effects: { energy: -20, happiness: +15, hunger: -10 },
-			onStart: () => showPopup('Hiking'),
+		Hiking: { 
+			duration: 3000, 
+			effects: { energy: -20, happiness: +15, hunger: -10 }, 
+			onStart: () => {
+				showPopup('Hiking');
+				setExp(prev => prev + 10);
+			} 
 		},
+
 		Fishing: {
 			duration: 3000,
 			effects: { hunger: -10, happiness: +15, energy: -5 },
-			onStart: () => showPopup('Fishing'),
+			onStart: () => {
+				showPopup('Fishing');
+				setExp(prev => prev + 10);
+			},
 		},
+
 		'Rent a Boat': {
 			duration: 3000,
 			effects: { happiness: +20, energy: -10 },
-			onStart: () => showPopup('Rentboat'),
+			onStart: () => {
+				showPopup('Rentboat');
+				setExp(prev => prev + 12);
+			},
 		},
+
 		'Become a Tour Guide': {
 			duration: 3000,
 			effects: { happiness: +25, energy: -15 },
 			earnings: 50000000,
-			onStart: () => showPopup('TourGuide'),
+			onStart: () => {
+				showPopup('TourGuide');
+				setExp(prev => prev + 15);
+			},
 		},
 
 		'Collect Firewood': {
 			duration: 2000,
 			effects: { energy: -15 },
-			onStart: () => showPopup('Wood'),
+			onStart: () => {
+				showPopup('Wood');
+				setExp(prev => prev + 8);
+			},
 			unlock: 'Wood',
 		},
-		'Build a Campfire': {
-			duration: 2000,
-			effects: { energy: -15, happiness: +10 },
-			onStart: () => showPopup('Campfire'),
+
+		'Build a Campfire': { 
+			duration: 2000, 
+			effects: { energy: -15, happiness: +10 }, 
+			onStart: () => {
+				showPopup('Campfire');
+				setExp(prev => prev + 8);
+			} 
 		},
-		'Set Up Tent': {
-			duration: 2000,
-			effects: { energy: -10, hygiene: -3 },
-			onStart: () => showPopup('SetTent'),
+
+		'Set Up Tent': { 
+			duration: 2000, 
+			effects: { energy: -10, hygiene: -3 }, 
+			onStart: () => {
+				showPopup('SetTent');
+				setExp(prev => prev + 7);
+			} 
 		},
 
 		'Cook Food': {
 			duration: 3000,
 			effects: { hunger: +30, energy: -5 },
 			unlock: 'Food',
-			onStart: () => showPopup('Cook'),
+			onStart: () => {
+				showPopup('Cook');
+				setExp(prev => prev + 10);
+			},
 		},
-		Meditate: { duration: 5000, effects: { happiness: +5, energy: +20, hygiene: -10 } },
-		'Observe Nature': {
-			duration: 2000,
-			effects: { happiness: +20, energy: -5, hygiene: +5 },
-			onStart: () => showPopup('ObserveNature'),
+
+		'Observe Nature': { 
+			duration: 2000, 
+			effects: { happiness: +20, energy: -5, hygiene: +5 }, 
+			onStart: () => {
+				showPopup('ObserveNature');
+				setExp(prev => prev + 8);
+			} 
 		},
+
 		'Learn Coral Ecosystem': {
 			duration: 2000,
 			effects: { happiness: +20, energy: -5, hygiene: +5 },
-			onStart: () => showPopup('ObserveCoral'),
+			onStart: () => {
+				showPopup('ObserveCoral');
+				setExp(prev => prev + 8);
+			},
 		},
+
 		'Observe Small Marine Life': {
 			duration: 2000,
 			effects: { happiness: +20, energy: -5, hygiene: +5 },
-			onStart: () => showPopup('Crab'),
+			onStart: () => {
+				showPopup('Crab');
+				setExp(prev => prev + 8);
+			},
 		},
 
 		'Gather Spring Water': {
 			duration: 2000,
 			effects: { hygiene: +15, energy: -3 },
-			onStart: () => showPopup('GatherWater'),
+			onStart: () => {
+				showPopup('GatherWater');
+				setExp(prev => prev + 6);
+			},
 			unlock: 'Drink',
 		},
+
 		Tanning: {
 			duration: 2000,
 			effects: { happiness: +10, hygiene: -5 },
-			onStart: () => showPopup('Tanning'),
+			onStart: () => {
+				showPopup('Tanning');
+				setExp(prev => prev + 4);
+			},
 		},
+
 		'Build Sandcastles': {
 			duration: 2000,
 			effects: { happiness: +12, energy: -5 },
-			onStart: () => showPopup('BuildSandcastle'),
+			onStart: () => {
+				showPopup('BuildSandcastle');
+				setExp(prev => prev + 5);
+			},
 		},
+
 		'Seashell Hunt': {
 			duration: 2000,
 			effects: { happiness: +15, energy: -7 },
-			onStart: () => showPopup('Seashell'),
+			onStart: () => {
+				showPopup('Seashell');
+				setExp(prev => prev + 6);
+			},
 		},
+
 		'Visit Museum': {
 			duration: 2000,
 			effects: { happiness: +8, energy: -5 },
 			unlock: 'Fauna Book',
-			onStart: () => showPopup('Museum'),
+			onStart: () => {
+				showPopup('Museum');
+				setExp(prev => prev + 5);
+			},
 		},
+
 		Meditate: {
 			duration: 3000,
 			effects: { happiness: +10, energy: +20, hygiene: -5 },
-			onStart: () => showPopup('Meditate'),
+			onStart: () => {
+				showPopup('Meditate');
+				setExp(prev => prev + 6);
+			},
 		},
+
 		'Attend a Ceremony': {
 			duration: 3000,
 			effects: { happiness: +20, energy: -10, hygiene: -5 },
-			onStart: () => showPopup('AttendCeremony'),
+			onStart: () => {
+				showPopup('AttendCeremony');
+				setExp(prev => prev + 10);
+			},
 		},
+
 		'Enjoy the View': {
 			duration: 2000,
 			effects: { happiness: +15, energy: -5 },
-			onStart: () => showPopup('EnjoyView'),
+			onStart: () => {
+				showPopup('EnjoyView');
+				setExp(prev => prev + 6);
+			},
 		},
-
+		
 		Eat: {
 			duration: 3000,
 			effects: { hunger: +30, energy: +10, hygiene: -5 },
-			onStart: () => showPopup('Eat'),
+			onStart: () => {
+				showPopup('Eat');
+				setExp(prev => prev + 7);
+			},
 			unlock: 'Bottle',
 		},
+
 		Sleep: {
 			duration: 4000,
 			effects: { energy: +50, hygiene: -10, happiness: +10 },
-			onStart: () => showPopup('sleep'),
+			onStart: () => {
+				showPopup('sleep');
+				setExp(prev => prev + 5);
+			},
 		},
+
 		Bath: {
 			duration: 2000,
 			effects: { hygiene: +30 },
-			onStart: () => showPopup('bath'),
+			onStart: () => {
+				showPopup('bath');
+				setExp(prev => prev + 6);
+			},
 			unlock: 'Towel',
 		},
+
 	};
 
 	const startTimedActivity = (activity) => {
@@ -1586,18 +1735,21 @@ function Game() {
 					newPosition: { x: 760, y: 330 },
 					welcomeText: 'Welcome to Lake Toba',
 				},
+
 				{
 					mapName: 'beach',
 					bounds: { xMin: 1330, xMax: 1480, yMin: 2340, yMax: 2550 },
 					newPosition: { x: 1040, y: 720 },
 					welcomeText: 'Welcome to Kuta Beach',
 				},
+
 				{
 					mapName: 'mountain',
 					bounds: { xMin: 400, xMax: 1700, yMin: 0, yMax: 760 },
 					newPosition: { x: 3390, y: 2450 },
 					welcomeText: 'Welcome to the Mountain',
 				},
+
 				{
 					mapName: 'temple',
 					bounds: { xMin: 3060, xMax: 3420, yMin: 780, yMax: 1000 },
@@ -1708,9 +1860,14 @@ function Game() {
 			id="bodyBackground"
 			className="relative w-screen h-screen px-2 py-2 md:py-4 md:px-4 lg:py-8 lg:px-8 overflow-hidden"
 		>
+			<audio ref={clickSoundRef} preload='auto'>
+				<source src='/images/music/click.mp3' type='audio/mpeg' />
+			</audio>
+
 			<audio id="bgMusic" autoPlay loop volume={0.3}>
 				<source src="/images/music/game.mp3" type="audio/mpeg" />
 			</audio>
+
 			<GameWelcomePopup
 				player={player}
 				showWelcomePopup={showWelcomePopup}
@@ -1748,105 +1905,25 @@ function Game() {
 						isShaking ? 'shake' : ''
 					}`}
 				>
-					<div className="w-fit h-fit m-2 p-2 text-[6px] md:text-[10px] rounded-lg fixed bg-white z-10">
-						X: {playerPosition.x}, Y: {playerPosition.y}
-					</div>
 
-					<div className="w-fit h-fit m-2 mt-12  text-[6px] md:text-[10px] text-white rounded-lg fixed z-10 flex items-center gap-1">
+					<div className="w-fit h-fit m-2 text-[6px] md:text-[10px] text-white rounded-lg fixed z-10 flex items-center gap-1">
 						<img src="/images/symbol/money.png" alt="Coin" className="w-3 h-3 md:w-4 md:h-4" />
 						{rupiah(money)}
 					</div>
 
-					<button
-						onClick={() => setIsMapPopupOpen(true)}
-						className=" w-fit h-fit left-[75%] md:left-[62%] lg:left-[63%] xl:left-[66%] rounded-lg fixed z-10  gap-1 p-2 hover:scale-105 transition"
-					>
-						<img src="/images/symbol/map.png" alt="Map Icon" className="w-15 md:w-18 lg:w-20" />
-					</button>
+					<GameMinimap
+						isOpen={isMapPopupOpen}
+						onOpen={() => setIsMapPopupOpen(true)}
+						onClose={() => setIsMapPopupOpen(false)}
+						mapImages={mapImages}
+						currentMap={currentMap}
+						player={player}
+						playerPosition={playerPosition}
+						mapWidth={mapWidth}
+						mapHeight={mapHeight}
+					/>
 
-					{isMapPopupOpen && (
-						<div className="fixed inset-0 z-50 backdrop-blur-sm flex items-center justify-center">
-							<div className="relative  rounded-lg p-4 max-w-3xl w-[90%]">
-								<button
-									onClick={() => setIsMapPopupOpen(false)}
-									className="absolute top-4 right-4 text-white hover:text-red-600 text-xl z-10"
-								>
-									&times;
-								</button>
-
-								<div className="relative w-full h-auto">
-									<img
-										src={mapImages[currentMap]}
-										alt="Full Map"
-										className="w-full h-auto rounded-md object-contain"
-									/>
-
-									<img
-										src={`/images/characters/${player.base}_${player.direction}.png`}
-										alt="Player Marker"
-										className="absolute w-2 md:w-4 lg:w-5"
-										style={{
-											left: `${(playerPosition.x / mapWidth) * 100}%`,
-											top: `${(playerPosition.y / mapHeight) * 100}%`,
-											transform: 'translate(-50%, -50%)',
-										}}
-									/>
-								</div>
-							</div>
-						</div>
-					)}
-
-					<div className="m-2 mt-68 p-2 rounded-lg fixed grid grid-cols-3 grid-rows-3 z-10">
-						<div className="col-span-3 flex justify-center items-center ">
-							<button
-								onMouseDown={() => startMoving('up')}
-								onMouseUp={stopMoving}
-								onMouseLeave={stopMoving}
-								onTouchStart={() => startMoving('up')}
-								onTouchEnd={stopMoving}
-							>
-								<img className="w-4 md:w-6 lg:w-8	" src="/images/symbol/top.png" />
-							</button>
-						</div>
-
-						<div className="flex justify-center items-center -rotate-90">
-							<button
-								onMouseDown={() => startMoving('left')}
-								onMouseUp={stopMoving}
-								onMouseLeave={stopMoving}
-								onTouchStart={() => startMoving('left')}
-								onTouchEnd={stopMoving}
-							>
-								<img className="w-4 md:w-6 lg:w-8" src="/images/symbol/top.png" />
-							</button>
-						</div>
-
-						<div></div>
-
-						<div className="flex justify-center items-center rotate-90">
-							<button
-								onMouseDown={() => startMoving('right')}
-								onMouseUp={stopMoving}
-								onMouseLeave={stopMoving}
-								onTouchStart={() => startMoving('right')}
-								onTouchEnd={stopMoving}
-							>
-								<img className="w-4 md:w-6 lg:w-8" src="/images/symbol/top.png" />
-							</button>
-						</div>
-
-						<div className="col-span-3 flex justify-center items-center rotate-180">
-							<button
-								onMouseDown={() => startMoving('down')}
-								onMouseUp={stopMoving}
-								onMouseLeave={stopMoving}
-								onTouchStart={() => startMoving('down')}
-								onTouchEnd={stopMoving}
-							>
-								<img className="w-4 md:w-6 lg:w-8" src="/images/symbol/top.png" />
-							</button>
-						</div>
-					</div>
+					<GameArrowKey startMoving={startMoving} stopMoving={stopMoving} />
 
 					<div className="w-full h-full rounded-lg relative overflow-hidden">
 						<div
@@ -1917,26 +1994,7 @@ function Game() {
 							</div>
 						</div>
 					</div>
-					<div className="absolute mt-2 left-0 md:left-2 lg:left-2p-2 rounded-md z-20 w-24 md:w-48 lg:w-48">
-						<div className="flex flex-col md:flex-row items-center md:space-x-3 w-full">
-							<label
-								htmlFor="volumeSlider"
-								className="text-xs font-medium text-white hidden md:block"
-							>
-								Volume
-							</label>
-							<input
-								type="range"
-								id="volumeSlider"
-								min="0"
-								max="1"
-								step="0.01"
-								defaultValue="0.3"
-								className="w-full md:w-auto accent-blue-500 transform rotate-90 md:rotate-0 mr-20 md:mr-0 lg:mr-0"
-								style={{ height: '10px', weight: '0px' }}
-							/>
-						</div>
-					</div>
+					 <GameVolume />
 				</div>
 
 				<GameSideBar
@@ -1955,24 +2013,12 @@ function Game() {
 					fastForward={fastForward}
 				/>
 			</div>
-			{deathPopup.show && (
-				<div className="fixed inset-0 flex items-center justify-center bg-opacity-50 z-50 backdrop-blur-sm">
-					<div className="ml-4 mr-4 bg-white rounded-lg p-6 max-w-xs text-center shadow-lg">
-						<p
-							className="text-base font-semibold mb-2"
-							dangerouslySetInnerHTML={{ __html: deathPopup.message }}
-						></p>
-						{hearts > 0 && (
-							<button
-								onClick={() => setDeathPopup({ show: false, message: '' })}
-								className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-							>
-								Continue
-							</button>
-						)}
-					</div>
-				</div>
-			)}
+			<GameDeathPopup
+				deathPopup={deathPopup}
+				setDeathPopup={setDeathPopup}
+				hearts={hearts}
+				playClickSound={playClickSound}
+			/>
 
 			<GamePopup
 				show={popup.show}

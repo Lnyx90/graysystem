@@ -31,7 +31,6 @@ function HomePage() {
 			localStorage.setItem('musicTime', bgMusic.currentTime);
 		};
 
-		// Fallback: play when user clicks anywhere
 		const handleClick = () => {
 			if (bgMusic.paused) {
 				bgMusic.play().catch(err => console.log('Manual play failed:', err));
@@ -49,7 +48,6 @@ function HomePage() {
 		<div className='w-screen h-screen flex items-center justify-center'>
 			<audio ref={bgMusicRef} autoPlay loop>
 				<source src='images/music/homepage.mp3' type='audio/mpeg' />
-				Your browser does not support the audio element.
 			</audio>
 
 			<div className='text-center'>
