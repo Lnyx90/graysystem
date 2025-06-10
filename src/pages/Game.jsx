@@ -92,6 +92,9 @@ function Game() {
 		);
 	};
 
+	const [exp, setExp] = useState(0);
+	const [level, setLevel] = useState(1);
+
 	useEffect(() => {
 		const interval = setInterval(() => {
 			setPlayerStatus((prevStatus) =>
@@ -133,6 +136,13 @@ function Game() {
 			direction: 'right',
 		});
 	}, []);
+
+	useEffect(() => {
+		const expToLevelUp = 100;
+		if (exp >= level * expToLevelUp) {
+			setLevel((prev) => prev + 1);
+		}
+	}, [exp, level]);
 
 	//Position, Location & Movement
 	const [locationText, setLocationText] = useState('');
@@ -506,6 +516,8 @@ function Game() {
 
 		setActivityLog((prev) => (prev.includes(label) ? prev : [...prev, label]));
 
+		setExp((prev) => prev + 10);
+
 		if (timedAction) {
 			if (timedAction.unlock) {
 				unlockItem(timedAction.unlock);
@@ -516,7 +528,11 @@ function Game() {
 	};
 
 	const timedActions = {
-		'Capture the Moment': { duration: 2000, effects: { happiness: +15, energy: -5 }, onStart: () => showPopup('CaptureMoment') },
+		'Capture the Moment': {
+			duration: 2000,
+			effects: { happiness: +15, energy: -5 },
+			onStart: () => showPopup('CaptureMoment'),
+		},
 		'Take a Picture': {
 			duration: 2000,
 			effects: { happiness: +15, energy: -5 },
@@ -527,7 +543,11 @@ function Game() {
 			effects: { happiness: +15, energy: -5 },
 			onStart: () => showPopup('Sightseeing'),
 		},
-		'Observing Borobudur': { duration: 2000, effects: { happiness: +15, energy: -5 }, onStart: () => showPopup('ObserveBorobudur') },
+		'Observing Borobudur': {
+			duration: 2000,
+			effects: { happiness: +15, energy: -5 },
+			onStart: () => showPopup('ObserveBorobudur'),
+		},
 		'Fly a Lanttern': {
 			duration: 2000,
 			effects: { happiness: +15, energy: -5 },
@@ -535,7 +555,11 @@ function Game() {
 		},
 		'Attend a Ceremony': { duration: 2000, effects: { happiness: +15, energy: -5 } },
 
-		'Rest & Eat Food': { duration: 2000, effects: { hunger: +20, energy: +10, hygiene: -2 }, onStart: () => showPopup('RestEat') },
+		'Rest & Eat Food': {
+			duration: 2000,
+			effects: { hunger: +20, energy: +10, hygiene: -2 },
+			onStart: () => showPopup('RestEat'),
+		},
 		'Eat Seafood': { duration: 3000, effects: { hunger: +25, energy: +15, happiness: +5 } },
 
 		'Buy Fishing Rod': {
@@ -588,7 +612,11 @@ function Game() {
 			onStart: () => showPopup('Sandal'),
 			unlock: 'Sandal',
 		},
-		'Talk to Fellow Campers': { duration: 2000, effects: { happiness: +15, energy: -3 }, onStart: () => showPopup('TalkCampers') },
+		'Talk to Fellow Campers': {
+			duration: 2000,
+			effects: { happiness: +15, energy: -3 },
+			onStart: () => showPopup('TalkCampers'),
+		},
 
 		'Buy Souvenir': { duration: 1000, effects: { happiness: +10, energy: -2 }, cost: 80 },
 		'Buy Magnifying Glass': {
@@ -620,7 +648,11 @@ function Game() {
 			unlock: 'Binoculars',
 		},
 
-		Hiking: { duration: 3000, effects: { energy: -20, happiness: +15, hunger: -10 }, onStart: () => showPopup('Hiking') },
+		Hiking: {
+			duration: 3000,
+			effects: { energy: -20, happiness: +15, hunger: -10 },
+			onStart: () => showPopup('Hiking'),
+		},
 		Fishing: {
 			duration: 3000,
 			effects: { hunger: -10, happiness: +15, energy: -5 },
@@ -644,8 +676,16 @@ function Game() {
 			onStart: () => showPopup('Wood'),
 			unlock: 'Wood',
 		},
-		'Build a Campfire': { duration: 2000, effects: { energy: -15, happiness: +10 }, onStart: () => showPopup('Campfire') },
-		'Set Up Tent': { duration: 2000, effects: { energy: -10, hygiene: -3 }, onStart: () => showPopup('SetTent') },
+		'Build a Campfire': {
+			duration: 2000,
+			effects: { energy: -15, happiness: +10 },
+			onStart: () => showPopup('Campfire'),
+		},
+		'Set Up Tent': {
+			duration: 2000,
+			effects: { energy: -10, hygiene: -3 },
+			onStart: () => showPopup('SetTent'),
+		},
 
 		'Cook Food': {
 			duration: 3000,
@@ -654,7 +694,11 @@ function Game() {
 			onStart: () => showPopup('Cook'),
 		},
 		Meditate: { duration: 5000, effects: { happiness: +5, energy: +20, hygiene: -10 } },
-		'Observe Nature': { duration: 2000, effects: { happiness: +20, energy: -5, hygiene: +5 }, onStart: () => showPopup('ObserveNature') },
+		'Observe Nature': {
+			duration: 2000,
+			effects: { happiness: +20, energy: -5, hygiene: +5 },
+			onStart: () => showPopup('ObserveNature'),
+		},
 		'Learn Coral Ecosystem': {
 			duration: 2000,
 			effects: { happiness: +20, energy: -5, hygiene: +5 },
@@ -708,7 +752,6 @@ function Game() {
 			effects: { happiness: +15, energy: -5 },
 			onStart: () => showPopup('EnjoyView'),
 		},
-		
 
 		Eat: {
 			duration: 3000,
@@ -807,22 +850,22 @@ function Game() {
 	};
 
 	const getUnlockedMaps = (difficulty, completedActions) => {
-	const hasLearnedCoral = completedActions.includes('Learn Coral Ecosystem');
-	const hasVisited = completedActions.includes('Visit Museum');
-	const hasBecomeGuide = completedActions.includes('Become a Tour Guide');
+		const hasLearnedCoral = completedActions.includes('Learn Coral Ecosystem');
+		const hasVisited = completedActions.includes('Visit Museum');
+		const hasBecomeGuide = completedActions.includes('Become a Tour Guide');
 
-	const unlocked = ['default', 'lake'];
+		const unlocked = ['default', 'lake'];
 
-	if (hearts > 2) {
-		if (hasVisited) unlocked.push('mountain');
-	} else if (hearts > 1) {
-		if (hasLearnedCoral && hasVisited) unlocked.push('temple', 'mountain');
-	} else {
-		if (hasBecomeGuide && hasLearnedCoral && hasVisited)
-		unlocked.push('beach', 'temple', 'mountain');
-	}
+		if (hearts > 2) {
+			if (hasVisited) unlocked.push('mountain');
+		} else if (hearts > 1) {
+			if (hasLearnedCoral && hasVisited) unlocked.push('temple', 'mountain');
+		} else {
+			if (hasBecomeGuide && hasLearnedCoral && hasVisited)
+				unlocked.push('beach', 'temple', 'mountain');
+		}
 
-	return unlocked;
+		return unlocked;
 	};
 
 	const actionRequirements = {
@@ -1143,7 +1186,7 @@ function Game() {
 	let [offsetY, setOffsetY] = useState(0);
 
 	const [isMapPopupOpen, setIsMapPopupOpen] = useState(false);
-  	const [completedActions, setCompletedActions] = useState([]);
+	const [completedActions, setCompletedActions] = useState([]);
 
 	const width = window.innerWidth;
 
@@ -1163,8 +1206,8 @@ function Game() {
 
 	const handleChangeMap = (newMap) => {
 		if (!unlockedMaps.includes(newMap)) {
-		alert('This location is locked. Complete the required actions to unlock it!');
-		return;
+			alert('This location is locked. Complete the required actions to unlock it!');
+			return;
 		}
 		setCurrentMap(newMap);
 	};
@@ -1524,50 +1567,62 @@ function Game() {
 		}
 	}, [playerPosition, currentMap]);
 
-	 useEffect(() => {
+	useEffect(() => {
 		setUnlockedMaps(getUnlockedMaps(difficulty, actions));
 	}, [actions, difficulty]);
 
-	 useEffect(() => {
+	useEffect(() => {
 		if (currentMap === 'default') {
-		const transitions = [
-			{
-			mapName: 'lake', bounds: { xMin: 3540, xMax: 4790, yMin: 2310, yMax: 2610 }, newPosition: { x: 760, y: 330 }, welcomeText: 'Welcome to Lake Toba'
-			},
-			{
-			mapName: 'beach', bounds: { xMin: 1330, xMax: 1480, yMin: 2340, yMax: 2550 }, newPosition: { x: 1040, y: 720 }, welcomeText: 'Welcome to Kuta Beach'
-			},
-			{
-			mapName: 'mountain', bounds: { xMin: 400, xMax: 1700, yMin: 0, yMax: 760 }, newPosition: { x: 3390, y: 2450 }, welcomeText: 'Welcome to the Mountain'
-			},
-			{
-			mapName: 'temple', bounds: { xMin: 3060, xMax: 3420, yMin: 780, yMax: 1000 }, newPosition: { x: 2240, y: 1620 }, welcomeText: 'Welcome to the Borobudur Temple'
-			},
-		];
+			const transitions = [
+				{
+					mapName: 'lake',
+					bounds: { xMin: 3540, xMax: 4790, yMin: 2310, yMax: 2610 },
+					newPosition: { x: 760, y: 330 },
+					welcomeText: 'Welcome to Lake Toba',
+				},
+				{
+					mapName: 'beach',
+					bounds: { xMin: 1330, xMax: 1480, yMin: 2340, yMax: 2550 },
+					newPosition: { x: 1040, y: 720 },
+					welcomeText: 'Welcome to Kuta Beach',
+				},
+				{
+					mapName: 'mountain',
+					bounds: { xMin: 400, xMax: 1700, yMin: 0, yMax: 760 },
+					newPosition: { x: 3390, y: 2450 },
+					welcomeText: 'Welcome to the Mountain',
+				},
+				{
+					mapName: 'temple',
+					bounds: { xMin: 3060, xMax: 3420, yMin: 780, yMax: 1000 },
+					newPosition: { x: 2240, y: 1620 },
+					welcomeText: 'Welcome to the Borobudur Temple',
+				},
+			];
 
-		for (const { mapName, bounds, newPosition, welcomeText } of transitions) {
-			const { xMin, xMax, yMin, yMax } = bounds;
-			const isInsideBounds = (
-			playerPosition.x >= xMin && playerPosition.x <= xMax &&
-			playerPosition.y >= yMin && playerPosition.y <= yMax
-			);
+			for (const { mapName, bounds, newPosition, welcomeText } of transitions) {
+				const { xMin, xMax, yMin, yMax } = bounds;
+				const isInsideBounds =
+					playerPosition.x >= xMin &&
+					playerPosition.x <= xMax &&
+					playerPosition.y >= yMin &&
+					playerPosition.y <= yMax;
 
-			if (isInsideBounds) {
-			if (!unlockedMaps.includes(mapName)) {
-				alert(`${mapName.charAt(0).toUpperCase() + mapName.slice(1)} is still locked!`);
-				return;
+				if (isInsideBounds) {
+					if (!unlockedMaps.includes(mapName)) {
+						alert(`${mapName.charAt(0).toUpperCase() + mapName.slice(1)} is still locked!`);
+						return;
+					}
+
+					setCurrentMap(mapName);
+					setPlayerPosition(newPosition);
+					setActions([]);
+					setLocationText(welcomeText);
+					break;
+				}
 			}
-
-			setCurrentMap(mapName);
-			setPlayerPosition(newPosition);
-			setActions([]);
-			setLocationText(welcomeText);
-			break;
-			}
-		}
 		}
 	}, [playerPosition, currentMap, unlockedMaps]);
-
 
 	useEffect(() => {
 		if (!showWelcomePopup) {
@@ -1615,7 +1670,7 @@ function Game() {
 
 	const [trapHitCooldown, setTrapHitCooldown] = useState(false);
 
-useEffect(() => {
+	useEffect(() => {
 		const trapSize = 80;
 		const interval = setInterval(() => {
 			const playerWidth = playerSize;
@@ -1675,6 +1730,8 @@ useEffect(() => {
 				unlockedItems={unlockedItems}
 				unlockItem={unlockItem}
 				achievements={achievements}
+				level={level}
+				exp={exp}
 			/>
 
 			<GameStatusBar status={playerStatus} />
@@ -1701,37 +1758,37 @@ useEffect(() => {
 						<img src="/images/symbol/map.png" alt="Map Icon" className="w-15 md:w-18 lg:w-20" />
 					</button>
 
-							{isMapPopupOpen && (
-								<div className="fixed inset-0 z-50 backdrop-blur-sm flex items-center justify-center">
-									<div className="relative  rounded-lg p-4 max-w-3xl w-[90%]">
-										<button
-											onClick={() => setIsMapPopupOpen(false)}
-											className="absolute top-4 right-4 text-white hover:text-red-600 text-xl z-10"
-										>
-											&times;
-										</button>
+					{isMapPopupOpen && (
+						<div className="fixed inset-0 z-50 backdrop-blur-sm flex items-center justify-center">
+							<div className="relative  rounded-lg p-4 max-w-3xl w-[90%]">
+								<button
+									onClick={() => setIsMapPopupOpen(false)}
+									className="absolute top-4 right-4 text-white hover:text-red-600 text-xl z-10"
+								>
+									&times;
+								</button>
 
-										<div className="relative w-full h-auto">
-											<img
-												src={mapImages[currentMap]}
-												alt="Full Map"
-												className="w-full h-auto rounded-md object-contain"
-											/>
+								<div className="relative w-full h-auto">
+									<img
+										src={mapImages[currentMap]}
+										alt="Full Map"
+										className="w-full h-auto rounded-md object-contain"
+									/>
 
-											<img
-												src={`/images/characters/${player.base}_${player.direction}.png`}
-												alt="Player Marker"
-												className="absolute w-2 md:w-4 lg:w-5"
-												style={{
-													left: `${(playerPosition.x / mapWidth) * 100}%`,
-													top: `${(playerPosition.y / mapHeight) * 100}%`,
-													transform: 'translate(-50%, -50%)',
-												}}
-											/>
-										</div>
-									</div>
+									<img
+										src={`/images/characters/${player.base}_${player.direction}.png`}
+										alt="Player Marker"
+										className="absolute w-2 md:w-4 lg:w-5"
+										style={{
+											left: `${(playerPosition.x / mapWidth) * 100}%`,
+											top: `${(playerPosition.y / mapHeight) * 100}%`,
+											transform: 'translate(-50%, -50%)',
+										}}
+									/>
 								</div>
-							)}
+							</div>
+						</div>
+					)}
 
 					<div className="m-2 mt-68 p-2 rounded-lg fixed grid grid-cols-3 grid-rows-3 z-10">
 						<div className="col-span-3 flex justify-center items-center ">

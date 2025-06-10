@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import GameBackpack from './GameBackpack';
 import IdentityCard from './GameIdentityCard';
 
-function GameTitleBar({ formattedDate, unlockedItems, unlockItem, achievements }) {
+function GameTitleBar({ formattedDate, unlockedItems, unlockItem, achievements, level, exp}) {
 	const [showCard, setShowCard] = useState(false);
 	const [characterImage, setCharacterImage] = useState('');
 
@@ -44,6 +44,8 @@ function GameTitleBar({ formattedDate, unlockedItems, unlockItem, achievements }
 					onClose={() => setShowCard(false)}
 					characterImage={characterImage}
 					achievements={achievements}
+					level={level}
+					exp={exp}
 				/>
 			)}
 		</>
