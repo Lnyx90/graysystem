@@ -533,13 +533,13 @@ function Game() {
 	};
 
 	const timedActions = {
-		'Capture the Moment': { 
-			duration: 2000, 
-			effects: { happiness: +15, energy: -5 }, 
-			onStart: () => { 
-				showPopup('CaptureMoment'); 
-				setExp(prev => prev + 5);
-			} 
+		'Capture the Moment': {
+			duration: 2000,
+			effects: { happiness: +15, energy: -5 },
+			onStart: () => {
+				showPopup('CaptureMoment');
+				setExp((prev) => prev + 5);
+			},
 		},
 
 		'Take a Picture': {
@@ -547,7 +547,7 @@ function Game() {
 			effects: { happiness: +15, energy: -5 },
 			onStart: () => {
 				showPopup('Takepic');
-				setExp(prev => prev + 4);
+				setExp((prev) => prev + 4);
 			},
 		},
 
@@ -556,17 +556,17 @@ function Game() {
 			effects: { happiness: +15, energy: -5 },
 			onStart: () => {
 				showPopup('Sightseeing');
-				setExp(prev => prev + 5);
+				setExp((prev) => prev + 5);
 			},
 		},
 
-		'Observing Borobudur': { 
-			duration: 2000, 
-			effects: { happiness: +15, energy: -5 }, 
+		'Observing Borobudur': {
+			duration: 2000,
+			effects: { happiness: +15, energy: -5 },
 			onStart: () => {
 				showPopup('ObserveBorobudur');
-				setExp(prev => prev + 6);
-			}
+				setExp((prev) => prev + 6);
+			},
 		},
 
 		'Fly a Lanttern': {
@@ -574,17 +574,17 @@ function Game() {
 			effects: { happiness: +15, energy: -5 },
 			onStart: () => {
 				showPopup('FlyLantern');
-				setExp(prev => prev + 6);
+				setExp((prev) => prev + 6);
 			},
 		},
 
-		'Rest & Eat Food': { 
-			duration: 2000, 
-			effects: { hunger: +20, energy: +10, hygiene: -2 }, 
+		'Rest & Eat Food': {
+			duration: 2000,
+			effects: { hunger: +20, energy: +10, hygiene: -2 },
 			onStart: () => {
 				showPopup('RestEat');
-				setExp(prev => prev + 4);
-			}
+				setExp((prev) => prev + 4);
+			},
 		},
 
 		'Buy Fishing Rod': {
@@ -593,7 +593,7 @@ function Game() {
 			cost: 150,
 			onStart: () => {
 				showPopup('BuyFishingRod');
-				setExp(prev => prev + 3);
+				setExp((prev) => prev + 3);
 			},
 			unlock: 'Fishing Rod',
 		},
@@ -604,7 +604,7 @@ function Game() {
 			earnings: 1000,
 			onStart: () => {
 				showPopup('BecomeCashier');
-				setExp(prev => prev + 9);
+				setExp((prev) => prev + 9);
 			},
 		},
 
@@ -613,7 +613,7 @@ function Game() {
 			effects: { happiness: +10 },
 			onStart: () => {
 				showPopup('Journal');
-				setExp(prev => prev + 6);
+				setExp((prev) => prev + 6);
 			},
 		},
 
@@ -624,7 +624,7 @@ function Game() {
 			unlock: 'Bucket',
 			onStart: () => {
 				showPopup('BuyBucket');
-				setExp(prev => prev + 3);
+				setExp((prev) => prev + 3);
 			},
 		},
 
@@ -635,7 +635,7 @@ function Game() {
 			unlock: 'Bait',
 			onStart: () => {
 				showPopup('BuyBait');
-				setExp(prev => prev + 3);
+				setExp((prev) => prev + 3);
 			},
 		},
 
@@ -646,7 +646,7 @@ function Game() {
 			unlock: 'Sand Bucket',
 			onStart: () => {
 				showPopup('Sandcastle');
-				setExp(prev => prev + 3);
+				setExp((prev) => prev + 3);
 			},
 		},
 
@@ -656,18 +656,18 @@ function Game() {
 			cost: 200,
 			onStart: () => {
 				showPopup('Sandal');
-				setExp(prev => prev + 3);
+				setExp((prev) => prev + 3);
 			},
 			unlock: 'Sandal',
 		},
 
-		'Talk to Fellow Campers': { 
-			duration: 2000, 
-			effects: { happiness: +15, energy: -3 }, 
+		'Talk to Fellow Campers': {
+			duration: 2000,
+			effects: { happiness: +15, energy: -3 },
 			onStart: () => {
 				showPopup('TalkCampers');
-				setExp(prev => prev + 7);
-			}
+				setExp((prev) => prev + 7);
+			},
 		},
 
 		'Buy Magnifying Glass': {
@@ -676,7 +676,7 @@ function Game() {
 			cost: 250,
 			onStart: () => {
 				showPopup('BuyMagnifyingGlass');
-				setExp(prev => prev + 5);
+				setExp((prev) => prev + 5);
 			},
 			unlock: 'Magnifying Glass',
 		},
@@ -686,7 +686,7 @@ function Game() {
 			effects: { happiness: +15, energy: -5 },
 			onStart: () => {
 				showPopup('Journal');
-				setExp(prev => prev + 5);
+				setExp((prev) => prev + 5);
 			},
 			cost: 180,
 			unlock: 'Journal',
@@ -698,7 +698,7 @@ function Game() {
 			cost: 50,
 			onStart: () => {
 				showPopup('BuyDrink');
-				setExp(prev => prev + 3);
+				setExp((prev) => prev + 3);
 			},
 			unlock: 'Drink',
 		},
@@ -709,18 +709,18 @@ function Game() {
 			cost: 350,
 			onStart: () => {
 				showPopup('BuyBinoculars');
-				setExp(prev => prev + 5);
+				setExp((prev) => prev + 5);
 			},
 			unlock: 'Binoculars',
 		},
 
-		Hiking: { 
-			duration: 3000, 
-			effects: { energy: -20, happiness: +15, hunger: -10 }, 
+		Hiking: {
+			duration: 3000,
+			effects: { energy: -20, happiness: +15, hunger: -10 },
 			onStart: () => {
 				showPopup('Hiking');
-				setExp(prev => prev + 10);
-			} 
+				setExp((prev) => prev + 10);
+			},
 		},
 
 		Fishing: {
@@ -728,7 +728,7 @@ function Game() {
 			effects: { hunger: -10, happiness: +15, energy: -5 },
 			onStart: () => {
 				showPopup('Fishing');
-				setExp(prev => prev + 10);
+				setExp((prev) => prev + 10);
 			},
 		},
 
@@ -737,17 +737,17 @@ function Game() {
 			effects: { happiness: +20, energy: -10 },
 			onStart: () => {
 				showPopup('Rentboat');
-				setExp(prev => prev + 12);
+				setExp((prev) => prev + 12);
 			},
 		},
 
 		'Become a Tour Guide': {
 			duration: 3000,
 			effects: { happiness: +25, energy: -15 },
-			earnings: 50000000,
+			earnings: 50000,
 			onStart: () => {
 				showPopup('TourGuide');
-				setExp(prev => prev + 15);
+				setExp((prev) => prev + 15);
 			},
 		},
 
@@ -756,27 +756,27 @@ function Game() {
 			effects: { energy: -15 },
 			onStart: () => {
 				showPopup('Wood');
-				setExp(prev => prev + 8);
+				setExp((prev) => prev + 8);
 			},
 			unlock: 'Wood',
 		},
 
-		'Build a Campfire': { 
-			duration: 2000, 
-			effects: { energy: -15, happiness: +10 }, 
+		'Build a Campfire': {
+			duration: 2000,
+			effects: { energy: -15, happiness: +10 },
 			onStart: () => {
 				showPopup('Campfire');
-				setExp(prev => prev + 8);
-			} 
+				setExp((prev) => prev + 8);
+			},
 		},
 
-		'Set Up Tent': { 
-			duration: 2000, 
-			effects: { energy: -10, hygiene: -3 }, 
+		'Set Up Tent': {
+			duration: 2000,
+			effects: { energy: -10, hygiene: -3 },
 			onStart: () => {
 				showPopup('SetTent');
-				setExp(prev => prev + 7);
-			} 
+				setExp((prev) => prev + 7);
+			},
 		},
 
 		'Cook Food': {
@@ -785,17 +785,17 @@ function Game() {
 			unlock: 'Food',
 			onStart: () => {
 				showPopup('Cook');
-				setExp(prev => prev + 10);
+				setExp((prev) => prev + 10);
 			},
 		},
 
-		'Observe Nature': { 
-			duration: 2000, 
-			effects: { happiness: +20, energy: -5, hygiene: +5 }, 
+		'Observe Nature': {
+			duration: 2000,
+			effects: { happiness: +20, energy: -5, hygiene: +5 },
 			onStart: () => {
 				showPopup('ObserveNature');
-				setExp(prev => prev + 8);
-			} 
+				setExp((prev) => prev + 8);
+			},
 		},
 
 		'Learn Coral Ecosystem': {
@@ -803,7 +803,7 @@ function Game() {
 			effects: { happiness: +20, energy: -5, hygiene: +5 },
 			onStart: () => {
 				showPopup('ObserveCoral');
-				setExp(prev => prev + 8);
+				setExp((prev) => prev + 8);
 			},
 		},
 
@@ -812,7 +812,7 @@ function Game() {
 			effects: { happiness: +20, energy: -5, hygiene: +5 },
 			onStart: () => {
 				showPopup('Crab');
-				setExp(prev => prev + 8);
+				setExp((prev) => prev + 8);
 			},
 		},
 
@@ -821,7 +821,7 @@ function Game() {
 			effects: { hygiene: +15, energy: -3 },
 			onStart: () => {
 				showPopup('GatherWater');
-				setExp(prev => prev + 6);
+				setExp((prev) => prev + 6);
 			},
 			unlock: 'Drink',
 		},
@@ -831,7 +831,7 @@ function Game() {
 			effects: { happiness: +10, hygiene: -5 },
 			onStart: () => {
 				showPopup('Tanning');
-				setExp(prev => prev + 4);
+				setExp((prev) => prev + 4);
 			},
 		},
 
@@ -840,7 +840,7 @@ function Game() {
 			effects: { happiness: +12, energy: -5 },
 			onStart: () => {
 				showPopup('BuildSandcastle');
-				setExp(prev => prev + 5);
+				setExp((prev) => prev + 5);
 			},
 		},
 
@@ -849,7 +849,7 @@ function Game() {
 			effects: { happiness: +15, energy: -7 },
 			onStart: () => {
 				showPopup('Seashell');
-				setExp(prev => prev + 6);
+				setExp((prev) => prev + 6);
 			},
 		},
 
@@ -859,7 +859,7 @@ function Game() {
 			unlock: 'Fauna Book',
 			onStart: () => {
 				showPopup('Museum');
-				setExp(prev => prev + 5);
+				setExp((prev) => prev + 5);
 			},
 		},
 
@@ -868,7 +868,7 @@ function Game() {
 			effects: { happiness: +10, energy: +20, hygiene: -5 },
 			onStart: () => {
 				showPopup('Meditate');
-				setExp(prev => prev + 6);
+				setExp((prev) => prev + 6);
 			},
 		},
 
@@ -877,7 +877,7 @@ function Game() {
 			effects: { happiness: +20, energy: -10, hygiene: -5 },
 			onStart: () => {
 				showPopup('AttendCeremony');
-				setExp(prev => prev + 10);
+				setExp((prev) => prev + 10);
 			},
 		},
 
@@ -886,16 +886,16 @@ function Game() {
 			effects: { happiness: +15, energy: -5 },
 			onStart: () => {
 				showPopup('EnjoyView');
-				setExp(prev => prev + 6);
+				setExp((prev) => prev + 6);
 			},
 		},
-		
+
 		Eat: {
 			duration: 3000,
 			effects: { hunger: +30, energy: +10, hygiene: -5 },
 			onStart: () => {
 				showPopup('Eat');
-				setExp(prev => prev + 7);
+				setExp((prev) => prev + 7);
 			},
 			unlock: 'Bottle',
 		},
@@ -905,7 +905,7 @@ function Game() {
 			effects: { energy: +50, hygiene: -10, happiness: +10 },
 			onStart: () => {
 				showPopup('sleep');
-				setExp(prev => prev + 5);
+				setExp((prev) => prev + 5);
 			},
 		},
 
@@ -914,11 +914,10 @@ function Game() {
 			effects: { hygiene: +30 },
 			onStart: () => {
 				showPopup('bath');
-				setExp(prev => prev + 6);
+				setExp((prev) => prev + 6);
 			},
 			unlock: 'Towel',
 		},
-
 	};
 
 	const startTimedActivity = (activity) => {
@@ -998,23 +997,49 @@ function Game() {
 		setCurrentActivity(null);
 	};
 
+	const mapUnlockRequirements = {
+		mountain: ['Observing Borobudur'],
+		temple: ['Learn Coral Ecosystem'],
+		Beach: ['Become a Tour Guid'],
+	};
+
 	const getUnlockedMaps = (difficulty, completedActions) => {
-		const hasLearnedCoral = completedActions.includes('Learn Coral Ecosystem');
-		const hasVisited = completedActions.includes('Visit Museum');
-		const hasBecomeGuide = completedActions.includes('Become a Tour Guide');
+		const unlockedMaps = [];
 
-		const unlocked = ['default', 'lake'];
+		if (difficulty === 'easy') {
+			unlockedMaps.push('default');
+			unlockedMaps.push('lake');
+			unlockedMaps.push('temple');
+			unlockedMaps.push('beach');
 
-		if (hearts > 2) {
-			if (hasVisited) unlocked.push('mountain');
-		} else if (hearts > 1) {
-			if (hasLearnedCoral && hasVisited) unlocked.push('temple', 'mountain');
-		} else {
-			if (hasBecomeGuide && hasLearnedCoral && hasVisited)
-				unlocked.push('beach', 'temple', 'mountain');
+			if (completedActions.includes('Obeserving Borobudur')) {
+				unlockedMaps.push('mountain');
+			}
+		} else if (difficulty === 'medium') {
+			unlockedMaps.push('default');
+			unlockedMaps.push('lake');
+			unlockedMaps.push('beach');
+			if (completedActions.includes('Learn Coral Ecosystem')) {
+				unlockedMaps.push('temple');
+			}
+			if (completedActions.includes('Obeserving Borobudur')) {
+				unlockedMaps.push('mountain');
+			}
+		} else if (difficulty === 'hard') {
+			unlockedMaps.push('default');
+			unlockedMaps.push('lake');
+			if (completedActions.includes('Become a Tour Guid')) {
+				unlockedMaps.push('beach');
+			}
+			if (completedActions.includes('Learn Coral Ecosystem')) {
+				unlockedMaps.push('temple');
+			}
+			if (completedActions.includes('Obeserving Borobudur')) {
+				unlockedMaps.push('mountain');
+			}
+
+			return unlockedMaps;
 		}
-
-		return unlocked;
 	};
 
 	const actionRequirements = {
@@ -1353,14 +1378,6 @@ function Game() {
 		setUnlockedMaps(getUnlockedMaps(difficulty, actions));
 	}, [actions, difficulty]);
 
-	const handleChangeMap = (newMap) => {
-		if (!unlockedMaps.includes(newMap)) {
-			alert('This location is locked. Complete the required actions to unlock it!');
-			return;
-		}
-		setCurrentMap(newMap);
-	};
-
 	if (width >= 1440) {
 		if (playerPosition.x > minScrollX) {
 			offsetX = Math.max(0, Math.min(playerPosition.x - vwWidth / 2, maxScrollX));
@@ -1572,40 +1589,56 @@ function Game() {
 				playerPosition.y >= 2310 &&
 				playerPosition.y <= 2610
 			) {
-				setCurrentMap('lake');
-				setPlayerPosition({ x: 760, y: 330 });
-				setActions([]);
-				setLocationText('Welcome to Lake Toba');
+				if (unlockedMaps.includes('lake')) {
+					setCurrentMap('lake');
+					setPlayerPosition({ x: 760, y: 330 });
+					setActions([]);
+					setLocationText('Welcome to Lake Toba');
+				} else {
+					setPlayerPosition({ x: 2500, y: 1500 });
+				}
 			} else if (
 				playerPosition.x >= 1330 &&
 				playerPosition.x <= 1480 &&
 				playerPosition.y >= 2340 &&
 				playerPosition.y <= 2550
 			) {
-				setCurrentMap('beach');
-				setPlayerPosition({ x: 1040, y: 720 });
-				setActions([]);
-				setLocationText('Welcome to Kuta Beach');
+				if (unlockedMaps.includes('beach')) {
+					setCurrentMap('beach');
+					setPlayerPosition({ x: 1040, y: 720 });
+					setActions([]);
+					setLocationText('Welcome to Kuta Beach');
+				} else {
+					setPlayerPosition({ x: 2500, y: 1500 });
+				}
 			} else if (
 				playerPosition.x >= 400 &&
 				playerPosition.x <= 1700 &&
 				playerPosition.y >= 0 &&
 				playerPosition.y <= 760
 			) {
-				setCurrentMap('mountain');
-				setPlayerPosition({ x: 3390, y: 2450 });
-				setActions([]);
-				setLocationText('Welcome to the Mountain');
+				if (unlockedMaps.includes('mountain')) {
+					setCurrentMap('mountain');
+					setPlayerPosition({ x: 3390, y: 2450 });
+					setActions([]);
+					setLocationText('Welcome to the Mountain');
+				} else {
+					setPlayerPosition({ x: 2500, y: 1500 });
+				}
 			} else if (
 				playerPosition.x >= 3060 &&
 				playerPosition.x <= 3420 &&
 				playerPosition.y >= 780 &&
 				playerPosition.y <= 1000
 			) {
-				setCurrentMap('temple');
-				setPlayerPosition({ x: 2240, y: 1620 });
-				setActions([]);
-				setLocationText('Welcome to the Borobudur Temple');
+				if (unlockedMaps.includes('temple')) {
+					setCurrentMap('temple');
+					setPlayerPosition({ x: 2240, y: 1620 });
+					setActions([]);
+					setLocationText('Welcome to the Borobudur Temple');
+				} else {
+					setPlayerPosition({ x: 2500, y: 1500 });
+				}
 			} else if (playerPosition.x === 2500 && playerPosition.y === 1500) {
 			}
 		} else if (currentMap === 'lake') {
@@ -1720,11 +1753,9 @@ function Game() {
 		setUnlockedMaps(getUnlockedMaps(difficulty, actions));
 	}, [actions, difficulty]);
 
-
 	useEffect(() => {
-  currentMapRef.current = currentMap;
-}, [currentMap]);
-
+		currentMapRef.current = currentMap;
+	}, [currentMap]);
 
 	useEffect(() => {
 		if (currentMap === 'default') {
@@ -1776,7 +1807,7 @@ function Game() {
 					setPlayerPosition(newPosition);
 					setActions([]);
 					setLocationText(welcomeText);
-					break;
+					return;
 				}
 			}
 		}
@@ -1860,8 +1891,8 @@ function Game() {
 			id="bodyBackground"
 			className="relative w-screen h-screen px-2 py-2 md:py-4 md:px-4 lg:py-8 lg:px-8 overflow-hidden"
 		>
-			<audio ref={clickSoundRef} preload='auto'>
-				<source src='/images/music/click.mp3' type='audio/mpeg' />
+			<audio ref={clickSoundRef} preload="auto">
+				<source src="/images/music/click.mp3" type="audio/mpeg" />
 			</audio>
 
 			<audio id="bgMusic" autoPlay loop volume={0.3}>
@@ -1905,7 +1936,6 @@ function Game() {
 						isShaking ? 'shake' : ''
 					}`}
 				>
-
 					<div className="w-fit h-fit m-2 text-[6px] md:text-[10px] text-white rounded-lg fixed z-10 flex items-center gap-1">
 						<img src="/images/symbol/money.png" alt="Coin" className="w-3 h-3 md:w-4 md:h-4" />
 						{rupiah(money)}
@@ -1937,9 +1967,6 @@ function Game() {
 								transition: 'left 0.3s ease-out top 0.3s ease-out',
 							}}
 						>
-						
-
-		
 							<img
 								src="/images/symbol/trap.png"
 								alt="trap"
@@ -1994,7 +2021,7 @@ function Game() {
 							</div>
 						</div>
 					</div>
-					 <GameVolume />
+					<GameVolume />
 				</div>
 
 				<GameSideBar
