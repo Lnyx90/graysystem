@@ -1037,9 +1037,8 @@ function Game() {
 			if (completedActions.includes('Obeserving Borobudur')) {
 				unlockedMaps.push('mountain');
 			}
-
-			return unlockedMaps;
 		}
+		return unlockedMaps;
 	};
 
 	const actionRequirements = {
