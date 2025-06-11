@@ -1000,12 +1000,11 @@ function Game() {
 	const mapUnlockRequirements = {
 		mountain: ['Observing Borobudur'],
 		temple: ['Learn Coral Ecosystem'],
-		Beach: ['Become a Tour Guid'],
+		beach: ['Become a Tour Guide'],
 	};
 
 	const getUnlockedMaps = (difficulty, completedActions) => {
 		const unlockedMaps = [];
-
 		if (difficulty === 'easy') {
 			unlockedMaps.push('default');
 			unlockedMaps.push('lake');
@@ -1028,7 +1027,7 @@ function Game() {
 		} else if (difficulty === 'hard') {
 			unlockedMaps.push('default');
 			unlockedMaps.push('lake');
-			if (completedActions.includes('Become a Tour Guid')) {
+			if (completedActions.includes('Become a Tour Guide')) {
 				unlockedMaps.push('beach');
 			}
 			if (completedActions.includes('Learn Coral Ecosystem')) {
@@ -1037,10 +1036,12 @@ function Game() {
 			if (completedActions.includes('Obeserving Borobudur')) {
 				unlockedMaps.push('mountain');
 			}
-
-			return unlockedMaps;
 		}
+
+		return unlockedMaps;
 	};
+
+	const [unlockedMaps, setUnlockedMaps] = useState(() => getUnlockedMaps(difficulty, activityLog));
 
 	const actionRequirements = {
 		Fishing: ['Fishing Rod', 'Bait', 'Bucket'],
@@ -1372,11 +1373,9 @@ function Game() {
 		temple: '/images/background/GameTempleMap.jpg',
 	};
 
-	const [unlockedMaps, setUnlockedMaps] = useState(() => getUnlockedMaps(difficulty, actions));
-
 	useEffect(() => {
-		setUnlockedMaps(getUnlockedMaps(difficulty, actions));
-	}, [actions, difficulty]);
+		setUnlockedMaps(getUnlockedMaps(difficulty, activityLog));
+	}, [activityLog, difficulty]);
 
 	if (width >= 1440) {
 		if (playerPosition.x > minScrollX) {
@@ -1729,9 +1728,10 @@ function Game() {
 				setActions(['Buy Sandcastle Bucket', 'Become Cashier', 'Buy Sandals']);
 				setLocationText(['You are near a Seaside Shop']);
 			} else if (
-				playerPosition.x >= 2619 &&
+				playerPosition.x >= 2600 &&
 				playerPosition.x <= 4659 &&
-				playerPosition.y === 1540
+				playerPosition.y >= 1580 &&
+				playerPosition.y <= 1590
 			) {
 				setActions(['Take a Picture', 'Learn Coral Ecosystem', 'Observe Small Marine Life']);
 				setLocationText(['You are at the Beach']);
@@ -1751,7 +1751,7 @@ function Game() {
 
 	useEffect(() => {
 		setUnlockedMaps(getUnlockedMaps(difficulty, actions));
-	}, [actions, difficulty]);
+	}, [activityLog, difficulty]);
 
 	useEffect(() => {
 		currentMapRef.current = currentMap;
@@ -1931,6 +1931,10 @@ function Game() {
 			<GameStatusBar status={playerStatus} />
 
 			<div className="w-9/10 h-13/18 lg:h-14/18 mx-auto grid grid-rows-4 md:grid-cols-4 gap-2">
+				{/* <div className="w-fit h-fit m-2 p-2 text-[6px] md:text-[10px] rounded-lg fixed bg-white z-10">
+					X: {playerPosition.x}, Y: {playerPosition.y}
+				</div> */}
+
 				<div
 					className={`row-span-3 md:row-span-4 md:col-span-3 game-wrapper ${
 						isShaking ? 'shake' : ''
