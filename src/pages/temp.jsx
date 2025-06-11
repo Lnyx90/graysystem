@@ -9,7 +9,7 @@ import LevelSelection from '../components/PickCharLevelSelection';
 import useGameTime from '../hooks/GameTime';
 import { getActionData, goBackToMainMap } from '../hooks/GameMapLocation';
 import '../styles/Game.css';
-import GamePopup from '../components/Gamepopup';
+import GamePopup from '../components/GamePopUp';
 
 function Game() {
 	//Player

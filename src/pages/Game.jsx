@@ -294,7 +294,7 @@ function Game() {
 		'Buy Bucket',
 		'Buy Bait',
 		'Buy Sandcastle Bucket',
-		'Buy Sandal',
+		'Buy Sandals',
 		'Talk to Fellow Campers',
 		'Buy Souvenir',
 		'Buy Magnifying Glass',
@@ -527,7 +527,18 @@ function Game() {
 			if (timedAction.unlock) {
 				unlockItem(timedAction.unlock);
 			}
+
 			setActivityLog((prev) => [...prev, label]);
+
+			const unlockRelatedActions = [
+				'Observing Borobudur',
+				'Become Cashier',
+				'Become a Tour Guide',
+			];
+			if (unlockRelatedActions.includes(label)) {
+				setCompletedActions((prev) => (prev.includes(label) ? prev : [...prev, label]));
+			}
+
 			startTimedActivity({ ...timedAction, label });
 		}
 	};
@@ -650,7 +661,7 @@ function Game() {
 			},
 		},
 
-		'Buy Sandal': {
+		'Buy Sandals': {
 			duration: 1000,
 			effects: { happiness: +10, energy: -3 },
 			cost: 200,
@@ -711,7 +722,7 @@ function Game() {
 				showPopup('BuyBinoculars');
 				setExp((prev) => prev + 5);
 			},
-			unlock: 'Binoculars',
+			unlock: 'Binocular',
 		},
 
 		Hiking: {
@@ -1002,7 +1013,7 @@ function Game() {
 
 	const mapUnlockRequirements = {
 		mountain: ['Observing Borobudur'],
-		temple: ['Learn Coral Ecosystem'],
+		temple: ['Become Cashier'],
 		beach: ['Become a Tour Guide'],
 	};
 
@@ -1021,7 +1032,7 @@ function Game() {
 			unlockedMaps.push('default');
 			unlockedMaps.push('lake');
 			unlockedMaps.push('beach');
-			if (completedActions.includes('Learn Coral Ecosystem')) {
+			if (completedActions.includes('Become Cashier')) {
 				unlockedMaps.push('temple');
 			}
 			if (completedActions.includes('Observing Borobudur')) {
@@ -1033,7 +1044,7 @@ function Game() {
 			if (completedActions.includes('Become a Tour Guide')) {
 				unlockedMaps.push('beach');
 			}
-			if (completedActions.includes('Learn Coral Ecosystem')) {
+			if (completedActions.includes('Become Cashier')) {
 				unlockedMaps.push('temple');
 			}
 			if (completedActions.includes('Observing Borobudur')) {
@@ -1708,9 +1719,9 @@ function Game() {
 				setActions(['Buy Magnifying Glass', 'Buy Journal', 'Buy Drink']);
 				setLocationText(['You are near a shop']);
 			} else if (
-				playerPosition.x >= 3940 &&
+				playerPosition.x >= 4070 &&
 				playerPosition.x <= 4220 &&
-				playerPosition.y === 2380
+				playerPosition.y === 940
 			) {
 				setActions(['Visit Museum']);
 				setLocationText(['You are at the temple']);
@@ -1738,7 +1749,7 @@ function Game() {
 				setActions(['Take a Picture', 'Learn Coral Ecosystem', 'Observe Small Marine Life']);
 				setLocationText(['You are at the Beach']);
 			} else if (
-				playerPosition.x >= 4059 &&
+				playerPosition.x >= 1720 &&
 				playerPosition.x <= 4139 &&
 				playerPosition.y <= 2020 &&
 				playerPosition.y >= 1860

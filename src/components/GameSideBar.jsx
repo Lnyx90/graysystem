@@ -22,34 +22,42 @@ function GameSideBar(props) {
 	} = props;
 
 	const getUnlockedMaps = (difficulty, completedActions) => {
-		const unlocked = ['default', 'lake'];
-
+		const unlockedMaps = [];
 		if (difficulty === 'easy') {
-			unlocked.push('temple', 'beach');
+			unlockedMaps.push('default');
+			unlockedMaps.push('lake');
+			unlockedMaps.push('temple');
+			unlockedMaps.push('beach');
+
 			if (completedActions.includes('Observing Borobudur')) {
-				unlocked.push('mountain');
+				unlockedMaps.push('mountain');
 			}
 		} else if (difficulty === 'medium') {
-			unlocked.push('beach');
-			if (completedActions.includes('Learn Coral Ecosystem')) {
-				unlocked.push('temple');
+			unlockedMaps.push('default');
+			unlockedMaps.push('lake');
+			unlockedMaps.push('beach');
+			if (completedActions.includes('Become Cashier')) {
+				unlockedMaps.push('temple');
 			}
 			if (completedActions.includes('Observing Borobudur')) {
-				unlocked.push('mountain');
+				unlockedMaps.push('mountain');
 			}
 		} else if (difficulty === 'hard') {
+			unlockedMaps.push('default');
+			unlockedMaps.push('lake');
 			if (completedActions.includes('Become a Tour Guide')) {
-				unlocked.push('beach');
+				unlockedMaps.push('beach');
 			}
-			if (completedActions.includes('Learn Coral Ecosystem')) {
-				unlocked.push('temple');
+			if (completedActions.includes('Become Cashier')) {
+				unlockedMaps.push('temple');
 			}
 			if (completedActions.includes('Observing Borobudur')) {
-				unlocked.push('mountain');
+				unlockedMaps.push('mountain');
 			}
 		}
-		return unlocked;
+		return unlockedMaps;
 	};
+
 
 	const unlockedMaps = getUnlockedMaps(difficulty, completedActions);
 
@@ -85,7 +93,7 @@ function GameSideBar(props) {
 			position: { x: 1040, y: 720 },
 			text: 'Welcome to Kuta Beach',
 			requirement: {
-				task: 'Learn Coral Ecosystem',
+				task: 'Become a Tour Guide',
 			},
 		},
 		{
@@ -95,7 +103,7 @@ function GameSideBar(props) {
 			position: { x: 2240, y: 1620 },
 			text: 'Welcome to the Borobudur Temple',
 			requirement: {
-				task: 'Become a Tour Guide',
+				task: 'Become Cashier',
 			},
 		},
 	];
@@ -113,10 +121,10 @@ function GameSideBar(props) {
 			setShowLockedPopup(true);
 			return;
 		}
-		setCurrentMap(map.id);
-		setPlayerPosition(map.position);
-		setActions([]);
-		setLocationText(map.text);
+			setCurrentMap(map.id);
+			setPlayerPosition(map.position);
+			setActions([]);
+			setLocationText(map.text);
 	}
 
 	return (
