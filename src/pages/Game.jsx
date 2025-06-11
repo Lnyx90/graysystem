@@ -997,6 +997,9 @@ function Game() {
 		setCurrentActivity(null);
 	};
 
+	const [lockedMessage, setLockedMessage] = useState('');
+	const [showLockedPopup, setShowLockedPopup] = useState(false);
+
 	const mapUnlockRequirements = {
 		mountain: ['Observing Borobudur'],
 		temple: ['Learn Coral Ecosystem'],
@@ -1011,7 +1014,7 @@ function Game() {
 			unlockedMaps.push('temple');
 			unlockedMaps.push('beach');
 
-			if (completedActions.includes('Obeserving Borobudur')) {
+			if (completedActions.includes('Observing Borobudur')) {
 				unlockedMaps.push('mountain');
 			}
 		} else if (difficulty === 'medium') {
@@ -1021,7 +1024,7 @@ function Game() {
 			if (completedActions.includes('Learn Coral Ecosystem')) {
 				unlockedMaps.push('temple');
 			}
-			if (completedActions.includes('Obeserving Borobudur')) {
+			if (completedActions.includes('Observing Borobudur')) {
 				unlockedMaps.push('mountain');
 			}
 		} else if (difficulty === 'hard') {
@@ -1033,11 +1036,10 @@ function Game() {
 			if (completedActions.includes('Learn Coral Ecosystem')) {
 				unlockedMaps.push('temple');
 			}
-			if (completedActions.includes('Obeserving Borobudur')) {
+			if (completedActions.includes('Observing Borobudur')) {
 				unlockedMaps.push('mountain');
 			}
 		}
-
 		return unlockedMaps;
 	};
 
@@ -1789,6 +1791,46 @@ function Game() {
 				},
 			];
 
+			const mapLocations = [
+		{
+			id: 'lake',
+			label: 'Lake Toba',
+			image: '/images/symbol/lake.jpg',
+			position: { x: 760, y: 330 },
+			text: 'Welcome to Lake Toba',
+		},
+		{
+			id: 'mountain',
+			label: 'Bromo Mountain',
+			image: '/images/symbol/mountain.jpg',
+			position: { x: 3390, y: 2450 },
+			text: 'Welcome to the Mountain',
+			requirement: {
+				task: 'Observing Borobudur',
+			},
+		},
+		{
+			id: 'beach',
+			label: 'Kuta Beach',
+			image: '/images/symbol/beach.jpg',
+			position: { x: 1040, y: 720 },
+			text: 'Welcome to Kuta Beach',
+			requirement: {
+				task: 'Learn Coral Ecosystem',
+			},
+		},
+		{
+			id: 'temple',
+			label: 'Borobudur Temple',
+			image: '/images/symbol/temple.jpg',
+			position: { x: 2240, y: 1620 },
+			text: 'Welcome to the Borobudur Temple',
+			requirement: {
+				task: 'Become a Tour Guide',
+			},
+		},
+	];
+
 			for (const { mapName, bounds, newPosition, welcomeText } of transitions) {
 				const { xMin, xMax, yMin, yMax } = bounds;
 				const isInsideBounds =
@@ -2038,11 +2080,36 @@ function Game() {
 					setPlayerPosition={setPlayerPosition}
 					setActions={setActions}
 					setLocationText={setLocationText}
+					difficulty={difficulty}
+  					completedActions={completedActions}
 					performActions={performActions}
 					activityInProgress={activityInProgress}
 					currentActivity={currentActivity}
 					fastForward={fastForward}
+					unlockedMaps={getUnlockedMaps(difficulty, completedActions)}
+					setLockedMessage={setLockedMessage}
+					setShowLockedPopup={setShowLockedPopup}
 				/>
+
+				{showLockedPopup && (
+					<div className="fixed inset-0 backdrop-blur bg-opacity-50 flex justify-center items-center z-50">
+						<div className="border-2 border-blue-700 bg-white text-gray-800 rounded-2xl p-6 shadow-2xl w-5/7 md:w-2/4 lg:w-2/5 text-center border border-blue-200">
+						<img
+							src={lockedMessage.image}
+							alt={`${lockedMessage.map} Image`}
+							className="mx-auto w-40 h-24 object-cover rounded mb-4"
+						/>
+						<p className="font-bold text-[10px] md:text-xs lg:text-sm mb-4 whitespace-pre-wrap">{lockedMessage.map} is Locked</p>
+						<p className="text-[8px] md:text-xs lg:text-sm text-gray-700">{lockedMessage.requiredTask}</p>
+						<button
+							onClick={() => setShowLockedPopup(false)}
+							className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+						>
+							Close
+						</button>
+					</div>
+				</div>
+			)}
 			</div>
 			<GameDeathPopup
 				deathPopup={deathPopup}

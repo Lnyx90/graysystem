@@ -15,13 +15,108 @@ function GameSideBar(props) {
 		activityInProgress,
 		currentActivity,
 		fastForward,
+		difficulty,
+		completedActions,
+		setLockedMessage,
+		setShowLockedPopup,
 	} = props;
+
+	const getUnlockedMaps = (difficulty, completedActions) => {
+		const unlocked = ['default', 'lake'];
+
+		if (difficulty === 'easy') {
+			unlocked.push('temple', 'beach');
+			if (completedActions.includes('Observing Borobudur')) {
+				unlocked.push('mountain');
+			}
+		} else if (difficulty === 'medium') {
+			unlocked.push('beach');
+			if (completedActions.includes('Learn Coral Ecosystem')) {
+				unlocked.push('temple');
+			}
+			if (completedActions.includes('Observing Borobudur')) {
+				unlocked.push('mountain');
+			}
+		} else if (difficulty === 'hard') {
+			if (completedActions.includes('Become a Tour Guide')) {
+				unlocked.push('beach');
+			}
+			if (completedActions.includes('Learn Coral Ecosystem')) {
+				unlocked.push('temple');
+			}
+			if (completedActions.includes('Observing Borobudur')) {
+				unlocked.push('mountain');
+			}
+		}
+		return unlocked;
+	};
+
+	const unlockedMaps = getUnlockedMaps(difficulty, completedActions);
 
 	function handleBackToMainMap() {
 		setCurrentMap('default');
 		setPlayerPosition({ x: 2500, y: 1500 });
 		setActions([]);
 		setLocationText("You're Lost!");
+	}
+
+	const mapLocations = [
+		{
+			id: 'lake',
+			label: 'Lake Toba',
+			image: '/images/symbol/lake.jpg',
+			position: { x: 760, y: 330 },
+			text: 'Welcome to Lake Toba',
+		},
+		{
+			id: 'mountain',
+			label: 'Bromo Mountain',
+			image: '/images/symbol/mountain.jpg',
+			position: { x: 3390, y: 2450 },
+			text: 'Welcome to the Mountain',
+			requirement: {
+				task: 'Observing Borobudur',
+			},
+		},
+		{
+			id: 'beach',
+			label: 'Kuta Beach',
+			image: '/images/symbol/beach.jpg',
+			position: { x: 1040, y: 720 },
+			text: 'Welcome to Kuta Beach',
+			requirement: {
+				task: 'Learn Coral Ecosystem',
+			},
+		},
+		{
+			id: 'temple',
+			label: 'Borobudur Temple',
+			image: '/images/symbol/temple.jpg',
+			position: { x: 2240, y: 1620 },
+			text: 'Welcome to the Borobudur Temple',
+			requirement: {
+				task: 'Become a Tour Guide',
+			},
+		},
+	];
+
+	function handleMapClick(map) {
+		const isUnlocked = unlockedMaps.includes(map.id);
+		if (!isUnlocked) {
+			setLockedMessage({
+				map: map.label,
+				image: map.image,
+				requiredTask: map.requirement
+					? `Complete ${map.requirement.task} to unlock`
+					: 'This map is locked.',
+			});
+			setShowLockedPopup(true);
+			return;
+		}
+		setCurrentMap(map.id);
+		setPlayerPosition(map.position);
+		setActions([]);
+		setLocationText(map.text);
 	}
 
 	return (
@@ -82,57 +177,21 @@ function GameSideBar(props) {
 				<div className="flex flex-col gap-2">
 					{currentMap === 'default' ? (
 						<div className="flex flex-col items-center gap-2 ">
-							<button
-								onClick={() => {
-									setCurrentMap('lake');
-									setPlayerPosition({ x: 760, y: 330 });
-									setActions([]);
-									setLocationText('Welcome to Lake Toba');
-								}}
-								className="flex flex-col items-center hover:scale-105 transition"
-							>
-								<img src="/images/symbol/lake.jpg" alt="Lake Icon" className="w-8 md:w-25 lg:w-30 rounded-lg" />
-								<span className="text-[6px] md:text-xs">Lake Toba</span>
-							</button>
-
-							<button
-								onClick={() => {
-									setCurrentMap('mountain');
-									setPlayerPosition({ x: 3390, y: 2450 });
-									setActions([]);
-									setLocationText('Welcome to the Mountain');
-								}}
-								className="flex flex-col items-center hover:scale-105 transition"
-							>
-								<img src="/images/symbol/mountain.jpg" alt="Mountain Icon" className="w-8 md:w-25 lg:w-30 rounded-lg" />
-								<span className="text-[6px] md:text-xs"> Bromo Mountain</span>
-							</button>
-
-							<button
-								onClick={() => {
-									setCurrentMap('beach');
-									setPlayerPosition({ x: 1040, y: 720 });
-									setActions([]);
-									setLocationText('Welcome to Kuta Beach');
-								}}
-								className="flex flex-col items-center hover:scale-105 transition"
-							>
-								<img src="/images/symbol/beach.jpg" alt="Beach Icon" className="w-8 md:w-25 lg:w-30 rounded-lg" />
-								<span className="text-[6px] md:text-xs">Kuta Beach</span>
-							</button>
-
-							<button
-								onClick={() => {
-									setCurrentMap('temple');
-									setPlayerPosition({ x: 2240, y: 1620 });
-									setActions([]);
-									setLocationText('Welcome to the Borobudur Temple');
-								}}
-								className="flex flex-col items-center hover:scale-105 transition"
-							>
-								<img src="/images/symbol/temple.jpg" alt="Temple Icon" className="w-8 md:w-25 lg:w-30 rounded-lg" />
-								<span className="text-[6px] md:text-xs">Borobudur Temple</span>
-							</button>
+							{mapLocations.map((map) => {
+								const isUnlocked = unlockedMaps.includes(map.id);
+								return (
+									<button
+										key={map.id}
+										onClick={() => handleMapClick(map)}
+										className={`flex flex-col items-center transition ${
+											isUnlocked ? 'hover:scale-105' : 'opacity-30 grayscale cursor-pointer'
+										}`}
+									>
+										<img src={map.image} alt={`${map.label} Icon`} className="w-8 md:w-25 lg:w-30 rounded-lg" />
+										<span className="text-[6px] md:text-xs">{map.label}</span>
+									</button>
+								);
+							})}
 						</div>
 					) : (
 						actionData.map((action) => (
