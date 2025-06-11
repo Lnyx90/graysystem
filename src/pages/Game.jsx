@@ -1980,7 +1980,7 @@ function Game() {
 				level={level}
 				exp={exp}
 			/>
-
+			
 			<GameStatusBar status={playerStatus} />
 
 			<div className="w-9/10 h-13/18 lg:h-14/18 mx-auto grid grid-rows-4 md:grid-cols-4 gap-2">
