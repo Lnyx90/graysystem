@@ -195,7 +195,7 @@ function IdentityCard({ onClose, userName, achievements, level, exp }) {
 			</div>
 			{showLockedPopup && (
 				<div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/30">
-					<div className="bg-white text-gray-800 rounded-2xl p-6 shadow-2xl w-4/5 md:w-1/2 lg:w-1/3 text-center border border-blue-200">
+					<div className=" border-2 border-blue-700 bg-white text-gray-800 rounded-2xl p-6 shadow-2xl w-4/5 md:w-1/2 lg:w-1/3 text-center border border-blue-200">
 						<p className="text-sm md:text-base lg:text-lg font-medium">{lockedMessage}</p>
 						<button
 							onClick={() => setShowLockedPopup(false)}

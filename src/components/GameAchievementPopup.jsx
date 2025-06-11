@@ -21,7 +21,7 @@ function GameAchievementPopup({ show, icon, title, desc }) {
 						className="w-10 rounded-full"
 					/>
 				</div>
-				<div className="ml-3">
+				<div className="ml-3 ">
 					<h3 className="text-[8px] md:text-xs lg:text-sm font-bold" id="achievement-title">
 						{title}
 					</h3>
