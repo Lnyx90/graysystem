@@ -6,14 +6,12 @@ import Dead from './pages/Dead';
 
 function App() {
 	return (
-		<Router>
+		<Router basename='/graysystem'>
 			<Routes>
 				<Route path='/' element={<HomePage/>}/>
 				<Route path='/pickChar' element={<PickChar/>}/>
 				<Route path='/game' element={<Game/>}/>
 				<Route path='/dead' element={<Dead/>}/>
-				{/* <Route path='/' element={</>}/>
-				<Route path='/' element={</>}/> */}
 			</Routes>
 		</Router>
 	);
