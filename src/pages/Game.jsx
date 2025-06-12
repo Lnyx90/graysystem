@@ -1906,18 +1906,20 @@ function Game() {
 					playerPosition.y <= yMax;
 
 				if (isInsideBounds) {
-					if (!unlockedMaps.includes(mapName)) {
-						setShowLockedPopup(true);
-						setTimeout(() => setShowLockedPopup(false), 4000);
-						return;
-					}
-
-					setCurrentMap(mapName);
-					setPlayerPosition(newPosition);
-					setActions([]);
-					setLocationText(welcomeText);
-					return;
-				}
+						setLockedMessage({
+				map: map.label,
+				image: map.image,
+				requiredTask: map.requirement
+					? `Complete ${map.requirement.task} to unlock`
+					: 'This map is locked.',
+			});
+			setShowLockedPopup(true);
+			return;
+		}
+			setCurrentMap(map.id);
+			setPlayerPosition(map.position);
+			setActions([]);
+			setLocationText(map.text);
 			}
 		}
 	}, [playerPosition, currentMap, unlockedMaps]);
