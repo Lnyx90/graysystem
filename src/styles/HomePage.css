@@ -6,7 +6,7 @@ body {
 }
 
 .home-page-container {
-	background-image: url('images/background/HomePageBackground.gif');
+	background-image: url('/images/background/HomePageBackground.gif');
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;

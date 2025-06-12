@@ -2171,7 +2171,7 @@ function Game() {
 
 				{showLockedPopup && (
 					<div className="fixed inset-0 backdrop-blur bg-opacity-50 flex justify-center items-center z-50">
-						<div className="border-2 border-blue-700 bg-white text-gray-800 rounded-2xl p-6 shadow-2xl w-5/7 md:w-2/4 lg:w-2/5 text-center border border-blue-200">
+						<div className="border-2 border-blue-700 bg-white text-gray-800 rounded-2xl p-6 shadow-2xl w-5/7 md:w-2/4 lg:w-2/5 text-center  border-blue-200">
 							<img
 								src={lockedMessage.image}
 								alt={`${lockedMessage.map} Image`}
