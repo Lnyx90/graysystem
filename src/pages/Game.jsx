@@ -494,7 +494,19 @@ function Game() {
 				setShowHole(false);
 
 				setTimeout(() => {
-					navigate('/dead');
+					navigate('/dead', {
+							state: {
+								score: calculateLifeSatisfactionScore({
+									stats: playerStatus,
+									activities: activityLog,
+									items: unlockedItems,
+									areas: unlockedMaps,
+									level,
+									exp,
+								}),
+							},
+						});
+
 				}, 1500);
 			}, 2000);
 		}
@@ -1854,6 +1866,47 @@ function Game() {
 			},
 		},
 	];
+	
+	const getUnlockedMaps = (difficulty, completedActions) => {
+		const unlockedMaps = [];
+		if (difficulty === 'easy') {
+			unlockedMaps.push('default');
+			unlockedMaps.push('lake');
+			unlockedMaps.push('temple');
+			unlockedMaps.push('beach');
+
+			if (completedActions.includes('Observing Borobudur')) {
+				unlockedMaps.push('mountain');
+			}
+		} else if (difficulty === 'medium') {
+			unlockedMaps.push('default');
+			unlockedMaps.push('lake');
+			unlockedMaps.push('beach');
+			if (completedActions.includes('Become Cashier')) {
+				unlockedMaps.push('temple');
+			}
+			if (completedActions.includes('Observing Borobudur')) {
+				unlockedMaps.push('mountain');
+			}
+		} else if (difficulty === 'hard') {
+			unlockedMaps.push('default');
+			unlockedMaps.push('lake');
+			if (completedActions.includes('Become a Tour Guide')) {
+				unlockedMaps.push('beach');
+			}
+			if (completedActions.includes('Become Cashier')) {
+				unlockedMaps.push('temple');
+			}
+			if (completedActions.includes('Observing Borobudur')) {
+				unlockedMaps.push('mountain');
+			}
+		}
+		return unlockedMaps;
+	};
+
+
+	const unlockedMaps = getUnlockedMaps(difficulty, completedActions);
+
 
 			for (const { mapName, bounds, newPosition, welcomeText } of transitions) {
 				const { xMin, xMax, yMin, yMax } = bounds;
@@ -1866,18 +1919,11 @@ function Game() {
 				if (isInsideBounds) {
 					if (!unlockedMaps.includes(mapName)) {
 						if (!unlockedMaps.includes(mapName)) {
-								setPopup({
-									show: true,
-									image: '/images/symbol/lock.png', 
-									message: `${mapName.charAt(0).toUpperCase() + mapName.slice(1)} is still locked!`,
-									additionalMessage: 'Explore the available map to unlock this map.',
-								});
-								setTimeout(() => {
-										setPopup({ show: false, type: '', message: '', additionalMessage: '', image: '' });
-									}, 4000); 
+									setShowLockedPopup(true);
+									setTimeout(() => setShowLockedPopup(false), 4000);
+									return;
+								}
 
-								return;
-}
 
 					}
 
