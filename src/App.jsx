@@ -6,7 +6,7 @@ import Dead from './pages/Dead';
 
 function App() {
 	return (
-		<Router>
+		<Router basename='/graysystem'>
 			<Routes>
 				<Route path='/' element={<HomePage/>}/>
 				<Route path='/pickChar' element={<PickChar/>}/>
