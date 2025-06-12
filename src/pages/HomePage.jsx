@@ -51,7 +51,7 @@ function HomePage() {
 			</audio>
 
 			<div className='text-center'>
-				<h2 className='mb-6 text-2xl md:text-4xl font-bold text-glow text-glow-home text-glow-pulse-home'>
+				<h2 className='mb-6 text-2xl md:text-3xl lg:text-4xl font-bold text-glow text-glow-home text-glow-pulse-home'>
 					Archipelago Adventure!
 				</h2>
 
