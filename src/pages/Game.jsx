@@ -1779,159 +1779,125 @@ function Game() {
 	}, [playerPosition, currentMap]);
 
 	useEffect(() => {
-		setUnlockedMaps(getUnlockedMaps(difficulty, actions));
-	}, [activityLog, difficulty]);
+  if (currentMap === 'default') {
+    const transitions = [
+      {
+        mapName: 'lake',
+        bounds: { xMin: 3540, xMax: 4790, yMin: 2310, yMax: 2610 },
+        newPosition: { x: 760, y: 330 },
+        welcomeText: 'Welcome to Lake Toba',
+      },
+      {
+        mapName: 'beach',
+        bounds: { xMin: 1330, xMax: 1480, yMin: 2340, yMax: 2550 },
+        newPosition: { x: 1040, y: 720 },
+        welcomeText: 'Welcome to Kuta Beach',
+      },
+      {
+        mapName: 'mountain',
+        bounds: { xMin: 400, xMax: 1700, yMin: 0, yMax: 760 },
+        newPosition: { x: 3390, y: 2450 },
+        welcomeText: 'Welcome to the Mountain',
+      },
+      {
+        mapName: 'temple',
+        bounds: { xMin: 3060, xMax: 3420, yMin: 780, yMax: 1000 },
+        newPosition: { x: 2240, y: 1620 },
+        welcomeText: 'Welcome to the Borobudur Temple',
+      },
+    ];
 
-	useEffect(() => {
-		currentMapRef.current = currentMap;
-	}, [currentMap]);
+    const mapLocations = [
+      {
+        id: 'lake',
+        label: 'Lake Toba',
+        image: 'images/symbol/lake.jpg',
+        position: { x: 760, y: 330 },
+        text: 'Welcome to Lake Toba',
+      },
+      {
+        id: 'mountain',
+        label: 'Bromo Mountain',
+        image: 'images/symbol/mountain.jpg',
+        position: { x: 3390, y: 2450 },
+        text: 'Welcome to the Mountain',
+        requirement: { task: 'Observing Borobudur' },
+      },
+      {
+        id: 'beach',
+        label: 'Kuta Beach',
+        image: 'images/symbol/beach.jpg',
+        position: { x: 1040, y: 720 },
+        text: 'Welcome to Kuta Beach',
+        requirement: { task: 'Learn Coral Ecosystem' },
+      },
+      {
+        id: 'temple',
+        label: 'Borobudur Temple',
+        image: 'images/symbol/temple.jpg',
+        position: { x: 2240, y: 1620 },
+        text: 'Welcome to the Borobudur Temple',
+        requirement: { task: 'Become a Tour Guide' },
+      },
+    ];
 
-	useEffect(() => {
-		if (currentMap === 'default') {
-			const transitions = [
-				{
-					mapName: 'lake',
-					bounds: { xMin: 3540, xMax: 4790, yMin: 2310, yMax: 2610 },
-					newPosition: { x: 760, y: 330 },
-					welcomeText: 'Welcome to Lake Toba',
-				},
+    const getUnlockedMaps = (difficulty, completedActions) => {
+      const unlockedMaps = ['default'];
+      if (difficulty === 'easy') {
+        unlockedMaps.push('lake', 'temple', 'beach');
+        if (completedActions.includes('Observing Borobudur')) unlockedMaps.push('mountain');
+      } else if (difficulty === 'medium') {
+        unlockedMaps.push('lake', 'beach');
+        if (completedActions.includes('Become Cashier')) unlockedMaps.push('temple');
+        if (completedActions.includes('Observing Borobudur')) unlockedMaps.push('mountain');
+      } else if (difficulty === 'hard') {
+        unlockedMaps.push('lake');
+        if (completedActions.includes('Become a Tour Guide')) unlockedMaps.push('beach');
+        if (completedActions.includes('Become Cashier')) unlockedMaps.push('temple');
+        if (completedActions.includes('Observing Borobudur')) unlockedMaps.push('mountain');
+      }
+      return unlockedMaps;
+    };
 
-				{
-					mapName: 'beach',
-					bounds: { xMin: 1330, xMax: 1480, yMin: 2340, yMax: 2550 },
-					newPosition: { x: 1040, y: 720 },
-					welcomeText: 'Welcome to Kuta Beach',
-				},
+    const unlockedMaps = getUnlockedMaps(difficulty, completedActions);
 
-				{
-					mapName: 'mountain',
-					bounds: { xMin: 400, xMax: 1700, yMin: 0, yMax: 760 },
-					newPosition: { x: 3390, y: 2450 },
-					welcomeText: 'Welcome to the Mountain',
-				},
+    for (const { mapName, bounds } of transitions) {
+      const { xMin, xMax, yMin, yMax } = bounds;
+      const isInsideBounds =
+        playerPosition?.x >= xMin &&
+        playerPosition?.x <= xMax &&
+        playerPosition?.y >= yMin &&
+        playerPosition?.y <= yMax;
 
-				{
-					mapName: 'temple',
-					bounds: { xMin: 3060, xMax: 3420, yMin: 780, yMax: 1000 },
-					newPosition: { x: 2240, y: 1620 },
-					welcomeText: 'Welcome to the Borobudur Temple',
-				},
-			];
+      if (!isInsideBounds) continue;
 
-			const mapLocations = [
-				{
-					id: 'lake',
-					label: 'Lake Toba',
-					image: 'images/symbol/lake.jpg',
-					position: { x: 760, y: 330 },
-					text: 'Welcome to Lake Toba',
-				},
-				{
-					id: 'mountain',
-					label: 'Bromo Mountain',
-					image: 'images/symbol/mountain.jpg',
-					position: { x: 3390, y: 2450 },
-					text: 'Welcome to the Mountain',
-					requirement: {
-						task: 'Observing Borobudur',
-					},
-				},
-				{
-					id: 'beach',
-					label: 'Kuta Beach',
-					image: 'images/symbol/beach.jpg',
-					position: { x: 1040, y: 720 },
-					text: 'Welcome to Kuta Beach',
-					requirement: {
-						task: 'Learn Coral Ecosystem',
-					},
-				},
-				{
-					id: 'temple',
-					label: 'Borobudur Temple',
-					image: 'images/symbol/temple.jpg',
-					position: { x: 2240, y: 1620 },
-					text: 'Welcome to the Borobudur Temple',
-					requirement: {
-						task: 'Become a Tour Guide',
-					},
-				},
-			];
+      const map = mapLocations.find((m) => m.id === mapName);
+      if (!map) continue;
 
-		
-	const getUnlockedMaps = (difficulty, completedActions) => {
-		const unlockedMaps = [];
-		if (difficulty === 'easy') {
-			unlockedMaps.push('default');
-			unlockedMaps.push('lake');
-			unlockedMaps.push('temple');
-			unlockedMaps.push('beach');
+      const isUnlocked = unlockedMaps.includes(mapName);
 
-			if (completedActions.includes('Observing Borobudur')) {
-				unlockedMaps.push('mountain');
-			}
-		} else if (difficulty === 'medium') {
-			unlockedMaps.push('default');
-			unlockedMaps.push('lake');
-			unlockedMaps.push('beach');
-			if (completedActions.includes('Become Cashier')) {
-				unlockedMaps.push('temple');
-			}
-			if (completedActions.includes('Observing Borobudur')) {
-				unlockedMaps.push('mountain');
-			}
-		} else if (difficulty === 'hard') {
-			unlockedMaps.push('default');
-			unlockedMaps.push('lake');
-			if (completedActions.includes('Become a Tour Guide')) {
-				unlockedMaps.push('beach');
-			}
-			if (completedActions.includes('Become Cashier')) {
-				unlockedMaps.push('temple');
-			}
-			if (completedActions.includes('Observing Borobudur')) {
-				unlockedMaps.push('mountain');
-			}
-		}
-		return unlockedMaps;
-	};
+      if (!isUnlocked) {
+        setLockedMessage({
+          map: map.label,
+          image: map.image,
+          requiredTask: map.requirement
+            ? `Complete ${map.requirement.task} to unlock`
+            : 'This map is locked.',
+        });
+        setShowLockedPopup(true);
+        return;
+      }
 
-	const unlockedMaps = getUnlockedMaps(difficulty, completedActions);
-
-	function handleBackToMainMap() {
-		setCurrentMap('default');
-		setPlayerPosition({ x: 2500, y: 1500 });
-		setActions([]);
-		setLocationText("You're Lost!");
-	}
+      setCurrentMap(map.id);
+      setPlayerPosition(map.position);
+      setActions([]);
+      setLocationText(map.text);
+      return;
+    }
+  }
+}, [playerPosition, currentMap, difficulty, completedActions]);
 
 
-			for (const { mapName, bounds, newPosition, welcomeText } of transitions) {
-				const { xMin, xMax, yMin, yMax } = bounds;
-				const isInsideBounds =
-					playerPosition.x >= xMin &&
-					playerPosition.x <= xMax &&
-					playerPosition.y >= yMin &&
-					playerPosition.y <= yMax;
-
-				if (isInsideBounds) {
-						setLockedMessage({
-				map: map.label,
-				image: map.image,
-				requiredTask: map.requirement
-					? `Complete ${map.requirement.task} to unlock`
-					: 'This map is locked.',
-			});
-			setShowLockedPopup(true);
-			return;
-		}
-			setCurrentMap(map.id);
-			setPlayerPosition(map.position);
-			setActions([]);
-			setLocationText(map.text);
-			}
-		}
-	}, [playerPosition, currentMap, unlockedMaps]);
 
 	useEffect(() => {
 		if (!showWelcomePopup) {
@@ -2004,6 +1970,9 @@ function Game() {
 
 		return () => clearInterval(interval);
 	}, [trapPosition, playerPosition, playerSize, trapHitCooldown]);
+
+	if (!playerPosition) return null;
+
 
 	//Return
 	return (

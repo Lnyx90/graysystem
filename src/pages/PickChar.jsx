@@ -129,7 +129,7 @@ function PickChar() {
 		>
 			<audio ref={bgMusicRef} src="/audio/bgm.mp3" loop />
 			<audio ref={clickSoundRef} preload="auto">
-				<source src="images/music/click.mp3" type="audio/mpeg" />
+				<source src="/public/images/music/click.mp3" type="audio/mpeg" />
 			</audio>
 
 			<div className="flex flex-col items-center text-center px-4 w-full max-w-4xl z-10">
