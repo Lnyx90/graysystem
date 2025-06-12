@@ -1858,44 +1858,53 @@ function Game() {
 				},
 			];
 
-			const getUnlockedMaps = (difficulty, completedActions) => {
-				const unlockedMaps = [];
-				if (difficulty === 'easy') {
-					unlockedMaps.push('default');
-					unlockedMaps.push('lake');
-					unlockedMaps.push('temple');
-					unlockedMaps.push('beach');
+		
+	const getUnlockedMaps = (difficulty, completedActions) => {
+		const unlockedMaps = [];
+		if (difficulty === 'easy') {
+			unlockedMaps.push('default');
+			unlockedMaps.push('lake');
+			unlockedMaps.push('temple');
+			unlockedMaps.push('beach');
 
-					if (completedActions.includes('Observing Borobudur')) {
-						unlockedMaps.push('mountain');
-					}
-				} else if (difficulty === 'medium') {
-					unlockedMaps.push('default');
-					unlockedMaps.push('lake');
-					unlockedMaps.push('beach');
-					if (completedActions.includes('Become Cashier')) {
-						unlockedMaps.push('temple');
-					}
-					if (completedActions.includes('Observing Borobudur')) {
-						unlockedMaps.push('mountain');
-					}
-				} else if (difficulty === 'hard') {
-					unlockedMaps.push('default');
-					unlockedMaps.push('lake');
-					if (completedActions.includes('Become a Tour Guide')) {
-						unlockedMaps.push('beach');
-					}
-					if (completedActions.includes('Become Cashier')) {
-						unlockedMaps.push('temple');
-					}
-					if (completedActions.includes('Observing Borobudur')) {
-						unlockedMaps.push('mountain');
-					}
-				}
-				return unlockedMaps;
-			};
+			if (completedActions.includes('Observing Borobudur')) {
+				unlockedMaps.push('mountain');
+			}
+		} else if (difficulty === 'medium') {
+			unlockedMaps.push('default');
+			unlockedMaps.push('lake');
+			unlockedMaps.push('beach');
+			if (completedActions.includes('Become Cashier')) {
+				unlockedMaps.push('temple');
+			}
+			if (completedActions.includes('Observing Borobudur')) {
+				unlockedMaps.push('mountain');
+			}
+		} else if (difficulty === 'hard') {
+			unlockedMaps.push('default');
+			unlockedMaps.push('lake');
+			if (completedActions.includes('Become a Tour Guide')) {
+				unlockedMaps.push('beach');
+			}
+			if (completedActions.includes('Become Cashier')) {
+				unlockedMaps.push('temple');
+			}
+			if (completedActions.includes('Observing Borobudur')) {
+				unlockedMaps.push('mountain');
+			}
+		}
+		return unlockedMaps;
+	};
 
-			const unlockedMaps = getUnlockedMaps(difficulty, completedActions);
+	const unlockedMaps = getUnlockedMaps(difficulty, completedActions);
+
+	function handleBackToMainMap() {
+		setCurrentMap('default');
+		setPlayerPosition({ x: 2500, y: 1500 });
+		setActions([]);
+		setLocationText("You're Lost!");
+	}
+
 
 			for (const { mapName, bounds, newPosition, welcomeText } of transitions) {
 				const { xMin, xMax, yMin, yMax } = bounds;
@@ -1906,18 +1915,20 @@ function Game() {
 					playerPosition.y <= yMax;
 
 				if (isInsideBounds) {
-					if (!unlockedMaps.includes(mapName)) {
-						setShowLockedPopup(true);
-						setTimeout(() => setShowLockedPopup(false), 4000);
-						return;
-					}
-
-					setCurrentMap(mapName);
-					setPlayerPosition(newPosition);
-					setActions([]);
-					setLocationText(welcomeText);
-					return;
-				}
+						setLockedMessage({
+				map: map.label,
+				image: map.image,
+				requiredTask: map.requirement
+					? `Complete ${map.requirement.task} to unlock`
+					: 'This map is locked.',
+			});
+			setShowLockedPopup(true);
+			return;
+		}
+			setCurrentMap(map.id);
+			setPlayerPosition(map.position);
+			setActions([]);
+			setLocationText(map.text);
 			}
 		}
 	}, [playerPosition, currentMap, unlockedMaps]);
