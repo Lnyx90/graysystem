@@ -22,7 +22,7 @@ function StartButton({ onClick }) {
 
 			<button
 				onClick={handleClick}
-				className="px-6 py-2 font-semibold text-white bg-green-500 rounded-lg shadow-md hover:bg-green-600 transition button-float"
+				className="text-[8px] md:text-xs lg:text-sm px-6 py-2 font-semibold text-white bg-green-500 rounded-lg shadow-md hover:bg-green-600 transition button-float"
 			>
 				Start Exploring
 			</button>
