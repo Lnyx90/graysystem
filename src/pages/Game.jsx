@@ -495,22 +495,22 @@ function Game() {
 
 				setTimeout(() => {
 					navigate('/dead', {
-							state: {
-								score: calculateLifeSatisfactionScore({
-									stats: playerStatus,
-									activities: activityLog,
-									items: unlockedItems,
-									areas: unlockedMaps,
-									level,
-									exp,
-								}),
-							},
-						});
-
+						state: {
+							score: calculateLifeSatisfactionScore({
+								stats: playerStatus,
+								activities: activityLog,
+								items: unlockedItems,
+								areas: unlockedMaps,
+								level,
+								exp,
+							}),
+						},
+					});
 				}, 1500);
 			}, 2000);
 		}
 	}, [playerStatus, hearts, difficulty, isDead, navigate]);
+
 
 	//Activities
 	const activityInterval = useRef(null);
@@ -1106,21 +1106,34 @@ function Game() {
 		return { ...action, label, locked, cost, earnings };
 	});
 
-	//Life Satisfication Score
-	const calculateLifeSatisfactionScore = ({ stats, activities, items, areas }) => {
+	//Life Satisfaction Score
+	const calculateLifeSatisfactionScore = ({ stats, activities, items, areas, level, exp }) => {
 		let score = 0;
+
+		// Stats contribute up to 40 points
 		const statTotal = stats.reduce((sum, stat) => sum + stat.value, 0);
 		score += (statTotal / 400) * 40;
+
+		// Activities
 		const activityCount = activities.length;
 		const uniqueActivities = new Set(activities).size;
 		score += Math.min(activityCount * 1, 30);
-		score += Math.min(uniqueActivities * 2, 20);
+	score += Math.min(uniqueActivities * 2, 20);
+
+		// Items
 		const uniqueItems = new Set(items).size;
 		score += Math.min(uniqueItems * 2, 20);
+
+		// Areas
 		const areaCount = new Set(areas).size;
 		score += Math.min(areaCount * 5, 20);
-		return Math.round(score);
-	};
+
+	// Level and EXP (up to 20 points)
+	score += Math.min(level * 2, 10);      
+	score += Math.min(exp / 50, 10);       
+
+	return Math.round(score);
+};
 
 	//Popups
 	const [showWelcomePopup, setShowWelcomePopup] = useState(true);
@@ -1853,7 +1866,8 @@ function Game() {
 			},
 		},
 	];
-	
+
+
 	const getUnlockedMaps = (difficulty, completedActions) => {
 		const unlockedMaps = [];
 		if (difficulty === 'easy') {
@@ -1892,6 +1906,8 @@ function Game() {
 	};
 
 
+	
+
 	const unlockedMaps = getUnlockedMaps(difficulty, completedActions);
 
 
@@ -1905,9 +1921,11 @@ function Game() {
 
 				if (isInsideBounds) {
 					if (!unlockedMaps.includes(mapName)) {
-						alert(`${mapName.charAt(0).toUpperCase() + mapName.slice(1)} is still locked!`);
-						return;
-					}
+						setShowLockedPopup(true);
+									setTimeout(() => setShowLockedPopup(false), 4000);
+									return;
+								}
+
 
 					setCurrentMap(mapName);
 					setPlayerPosition(newPosition);

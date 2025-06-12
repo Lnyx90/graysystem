@@ -18,7 +18,7 @@ export const obstacleZones = {
   { x: 1683, y: 777, width: 208, height: 148 },
   { x: 1786, y: 639, width: 142, height: 181 },
   { x: 1661, y: 1032, width: 162, height: 102 },
-  { x: 1398, y: 1042, width: 142, height: 45 },
+ 
   { x: 1513, y: 1184, width: 148, height: 68 },
   { x: 1502, y: 1356, width: 220, height: 168 },
   { x: 1692, y: 1576, width: 187, height: 138 },
