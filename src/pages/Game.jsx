@@ -1369,6 +1369,7 @@ function Game() {
 	}, [showWelcomePopup]);
 
 	//Map
+	
 	let [currentMap, setCurrentMap] = useState('default');
 	const currentMapRef = useRef(currentMap);
 
@@ -1405,6 +1406,10 @@ function Game() {
 		mountain: 'images/background/GameMountainMap.jpeg',
 		temple: 'images/background/GameTempleMap.jpg',
 	};
+
+	useEffect(() => {
+  currentMapRef.current = currentMap;
+}, [currentMap]);
 
 	useEffect(() => {
 		setUnlockedMaps(getUnlockedMaps(difficulty, activityLog));
@@ -2020,9 +2025,11 @@ function Game() {
 			<GameStatusBar status={playerStatus} />
 
 			<div className="w-9/10 h-13/18 lg:h-14/18 mx-auto grid grid-rows-4 md:grid-cols-4 gap-2">
-				{/* <div className="w-fit h-fit m-2 p-2 text-[6px] md:text-[10px] rounded-lg fixed bg-white z-10">
+				 {/*
+				 <div className="w-fit h-fit m-2 p-2 text-[6px] md:text-[10px] rounded-lg fixed bg-white z-10">
 					X: {playerPosition.x}, Y: {playerPosition.y}
-				</div> */}
+				</div>
+				*/}
 
 				<div
 					className={`row-span-3 md:row-span-4 md:col-span-3 game-wrapper ${
