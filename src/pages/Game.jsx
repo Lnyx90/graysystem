@@ -237,7 +237,7 @@ function Game() {
 	}
 
 	//Items
-	const [unlockedItems, setUnlockedItems] = useState(['Knife']);
+	const [unlockedItems, setUnlockedItems] = useState(['Knife', 'Camera', 'Matches', 'Peg', 'Rope', 'Shoes', 'Tent', 'Gloves']);
 
 	const unlockItem = (name) => {
 		setUnlockedItems((prev) => (prev.includes(name) ? prev : [...prev, name]));
