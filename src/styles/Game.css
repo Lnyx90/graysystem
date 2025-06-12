@@ -6,68 +6,69 @@ body {
 }
 
 #titleBar {
-    @apply bg-blue-900
+	@apply bg-blue-900;
 }
 
 #map {
-    background-size: cover;
-    background-repeat: no-repeat;
+	background-size: cover;
+	background-repeat: no-repeat;
 }
 
-#bodyBackground{
-    background-image: url('/images/background/GameBackground.gif');
+#bodyBackground {
+	background-image: url('images/background/GameBackground.gif');
 }
 
 @keyframes shake {
-  0%, 100% {
-    transform: translateX(0);
-  }
-  25% {
-    transform: translateX(-10px);
-  }
-  75% {
-    transform: translateX(10px);
-  }
+	0%,
+	100% {
+		transform: translateX(0);
+	}
+	25% {
+		transform: translateX(-10px);
+	}
+	75% {
+		transform: translateX(10px);
+	}
 }
 
 .shake {
-  animation: shake 0.3s;
+	animation: shake 0.3s;
 }
 
 @keyframes sinkIntoHole {
-  0% {
-    transform: scale(1) translateY(0);
-    opacity: 1;
-    z-index: 10;
-  }
-  50% {
-    transform: scale(0.6) translateY(20px);
-    opacity: 0.5;
-  }
-  100% {
-    transform: scale(0.1) translateY(60px);
-    opacity: 0;
-  }
+	0% {
+		transform: scale(1) translateY(0);
+		opacity: 1;
+		z-index: 10;
+	}
+	50% {
+		transform: scale(0.6) translateY(20px);
+		opacity: 0.5;
+	}
+	100% {
+		transform: scale(0.1) translateY(60px);
+		opacity: 0;
+	}
 }
 
 @keyframes holeFadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
 }
 
 .sink {
-  animation: sinkIntoHole 1s ease forwards;
+	animation: sinkIntoHole 1s ease forwards;
 }
 
 .hole-fade-in {
-  opacity: 1;
-  transition: opacity 0.7s ease-out;
+	opacity: 1;
+	transition: opacity 0.7s ease-out;
 }
 .hole-fade-out {
-  opacity: 0;
-  transition: opacity 0.3s ease-in;
+	opacity: 0;
+	transition: opacity 0.3s ease-in;
 }
