@@ -390,7 +390,7 @@ function Game() {
 		) {
 			setAchievements((prev) => ({ ...prev, photography: true }));
 			showAchievementPopup({
-				icon: '/images/achivements/GameAchievementCapture.png',
+				icon: 'images/achivements/GameAchievementCapture.png',
 				title: 'Achievement Unlocked!',
 				desc: 'You unlocked Photography!',
 			});
@@ -401,7 +401,7 @@ function Game() {
 		if (allGameActions.every((action) => activityLog.includes(action)) && !achievements.explorer) {
 			setAchievements((prev) => ({ ...prev, explorer: true }));
 			showAchievementPopup({
-				icon: '/images/achivements/GameAchievementExplorer.png',
+				icon: 'images/achivements/GameAchievementExplorer.png',
 				title: 'Achievement Unlocked!',
 				desc: 'You unlocked Map Explorer!',
 			});
@@ -412,7 +412,7 @@ function Game() {
 		if (highestMoney >= 10000000 && !achievements.crazyRich) {
 			setAchievements((prev) => ({ ...prev, crazyRich: true }));
 			showAchievementPopup({
-				icon: '/images/achivements/GameAchievementCrazyRich.png',
+				icon: 'images/achivements/GameAchievementCrazyRich.png',
 				title: 'Achievement Unlocked!',
 				desc: 'You unlocked Crazy Rich!',
 			});
@@ -423,7 +423,7 @@ function Game() {
 		if (allItems.every((item) => unlockedItems.includes(item)) && !achievements.collector) {
 			setAchievements((prev) => ({ ...prev, collector: true }));
 			showAchievementPopup({
-				icon: '/images/achivements/GameAchievementCollector.png',
+				icon: 'images/achivements/GameAchievementCollector.png',
 				title: 'Achievement Unlocked!',
 				desc: 'You unlocked Collector!',
 			});
@@ -511,7 +511,6 @@ function Game() {
 		}
 	}, [playerStatus, hearts, difficulty, isDead, navigate]);
 
-
 	//Activities
 	const activityInterval = useRef(null);
 	const [currentActivity, setCurrentActivity] = useState(null);
@@ -542,11 +541,7 @@ function Game() {
 
 			setActivityLog((prev) => [...prev, label]);
 
-			const unlockRelatedActions = [
-				'Observing Borobudur',
-				'Become Cashier',
-				'Become a Tour Guide',
-			];
+			const unlockRelatedActions = ['Observing Borobudur', 'Become Cashier', 'Become a Tour Guide'];
 			if (unlockRelatedActions.includes(label)) {
 				setCompletedActions((prev) => (prev.includes(label) ? prev : [...prev, label]));
 			}
@@ -1118,7 +1113,7 @@ function Game() {
 		const activityCount = activities.length;
 		const uniqueActivities = new Set(activities).size;
 		score += Math.min(activityCount * 1, 30);
-	score += Math.min(uniqueActivities * 2, 20);
+		score += Math.min(uniqueActivities * 2, 20);
 
 		// Items
 		const uniqueItems = new Set(items).size;
@@ -1128,12 +1123,12 @@ function Game() {
 		const areaCount = new Set(areas).size;
 		score += Math.min(areaCount * 5, 20);
 
-	// Level and EXP (up to 20 points)
-	score += Math.min(level * 2, 10);      
-	score += Math.min(exp / 50, 10);       
+		// Level and EXP (up to 20 points)
+		score += Math.min(level * 2, 10);
+		score += Math.min(exp / 50, 10);
 
-	return Math.round(score);
-};
+		return Math.round(score);
+	};
 
 	//Popups
 	const [showWelcomePopup, setShowWelcomePopup] = useState(true);
@@ -1152,197 +1147,197 @@ function Game() {
 
 	const popupConfigs = {
 		bath: {
-			image: '/images/symbol/bath.gif',
+			image: 'images/symbol/bath.gif',
 			message: 'Bath Time!',
 			additionalMessage: 'You feel clean and refreshed!',
 		},
 		BuyFishingRod: {
-			image: '/images/items/pancing.png',
+			image: 'images/items/pancing.png',
 			message: 'Here is Your Fishing Rod!',
 			additionalMessage: 'Check Your Backpack!',
 		},
 		Rentboat: {
-			image: '/images/symbol/boat.gif',
+			image: 'images/symbol/boat.gif',
 			message: 'Get On Board!',
 			additionalMessage: 'Don’t Forget Your Ticket!',
 		},
 		Takepic: {
-			image: '/images/items/kamera.png',
+			image: 'images/items/kamera.png',
 			message: 'Capture the Moment!',
 			additionalMessage: 'Your memories are now preserved!',
 		},
 		FlyLantern: {
-			image: '/images/symbol/lantern.gif',
+			image: 'images/symbol/lantern.gif',
 			message: '',
 			additionalMessage: 'The lantern can’t shine as bright as you',
 		},
 		Journal: {
-			image: '/images/items/bukutulis.png',
+			image: 'images/items/bukutulis.png',
 			message: 'Every Memory is Worth Written',
 			additionalMessage: '',
 		},
 		Wood: {
-			image: '/images/symbol/wood.gif',
+			image: 'images/symbol/wood.gif',
 			message: 'Do it all for the flamin fire',
 			additionalMessage: '',
 		},
 		Cook: {
-			image: '/images/symbol/cook.gif',
+			image: 'images/symbol/cook.gif',
 			message: 'Looking Delicious',
 			additionalMessage: '',
 		},
 		Sandal: {
-			image: '/images/symbol/sandal.avif',
+			image: 'images/symbol/sandal.avif',
 			message: 'Looking Good in Your New Sandals',
 			additionalMessage: '',
 		},
 		Crab: {
-			image: '/images/symbol/crab.gif',
+			image: 'images/symbol/crab.gif',
 			message: 'Get to Know Your New Friend',
 			additionalMessage: 'Be careful of Its Claw',
 		},
 		Sandcastle: {
-			image: '/images/items/sandcastle.png',
+			image: 'images/items/sandcastle.png',
 			message: 'You Bought a Sandcastle Bucket!',
 			additionalMessage: 'Check Your Backpack!',
 		},
 		sleep: {
-			image: '/images/symbol/sleep.png',
+			image: 'images/symbol/sleep.png',
 			message: 'Good Night!',
 			additionalMessage: 'Sleep Tight!',
 		},
 		Eat: {
-			image: '/images/items/makanan.png',
+			image: 'images/items/makanan.png',
 			message: 'Bon Appétit!',
 			additionalMessage: 'Enjoy Your Meal!',
 		},
 		BuyBucket: {
-			image: '/images/items/wadah.png',
+			image: 'images/items/wadah.png',
 			message: 'Bought a Bucket',
 			additionalMessage: 'Check Your Backpack!',
 		},
 		BuyBait: {
-			image: '/images/items/umpan.png',
+			image: 'images/items/umpan.png',
 			message: 'Bought Bait',
 			additionalMessage: 'Check Your Backpack!',
 		},
 		TourGuide: {
-			image: '/images/symbol/tourguide.png',
+			image: 'images/symbol/tourguide.png',
 			message: 'You are now a Tour Guide!',
 			additionalMessage: 'Guide your friends to explore the world!',
 		},
 		BuyBinoculars: {
-			image: '/images/items/binokular.png',
+			image: 'images/items/binokular.png',
 			message: 'Bought Binoculars',
 			additionalMessage: 'Check Your Backpack!',
 		},
 		Fishing: {
-			image: '/images/symbol/fish.png',
+			image: 'images/symbol/fish.png',
 			message: 'Fishing Time!',
 			additionalMessage: 'Relax and enjoy the moment!',
 		},
 		Sightseeing: {
-			image: '/images/symbol/sight.png',
+			image: 'images/symbol/sight.png',
 			message: 'Enjoy the Scenery!',
 			additionalMessage: 'Take a moment to appreciate nature!',
 		},
 		BecomeCashier: {
-			image: '/images/symbol/cashier.png',
+			image: 'images/symbol/cashier.png',
 			message: 'You are now a Cashier!',
 			additionalMessage: 'Manage your transactions wisely!',
 		},
 		ObserveCoral: {
-			image: '/images/symbol/coral.png',
+			image: 'images/symbol/coral.png',
 			message: 'Observe the Coral Ecosystem!',
 			additionalMessage: 'Learn about the beauty of marine life!',
 		},
 		BuildSandcastle: {
-			image: '/images/symbol/Sandcastle.gif',
+			image: 'images/symbol/Sandcastle.gif',
 			message: 'Building Sandcastles is Fun!',
 			additionalMessage: 'Let your creativity shine!',
 		},
 		Seashell: {
-			image: '/images/symbol/seashell.png',
+			image: 'images/symbol/seashell.png',
 			message: 'Seashell Hunt is Exciting!',
 			additionalMessage: 'Discover the treasures of the beach!',
 		},
 		Tanning: {
-			image: '/images/symbol/sun.png',
+			image: 'images/symbol/sun.png',
 			message: 'Enjoy the Sun!',
 			additionalMessage: 'Get that perfect tan!',
 		},
 		Meditate: {
-			image: '/images/symbol/meditate.jpg',
+			image: 'images/symbol/meditate.jpg',
 			message: 'Find Your Inner Peace',
 			additionalMessage: 'Meditation brings clarity and calmness',
 		},
 		AttendCeremony: {
-			image: '/images/symbol/ceremony.jpg',
+			image: 'images/symbol/ceremony.jpg',
 			message: 'Participate in the Ceremony!',
 			additionalMessage: 'Embrace the cultural experience!',
 		},
 		BuyMagnifyingGlass: {
-			image: '/images/items/kacapembesar.png',
+			image: 'images/items/kacapembesar.png',
 			message: 'Bought a Magnifying Glass',
 			additionalMessage: 'Check Your Backpack!',
 		},
 		BuyDrink: {
-			image: '/images/items/minum.png',
+			image: 'images/items/minum.png',
 			message: 'Bought a Drink',
 			additionalMessage: 'Check Your Backpack!',
 		},
 		Museum: {
-			image: '/images/symbol/museum.png',
+			image: 'images/symbol/museum.png',
 			message: 'Visit the Museum!',
 			additionalMessage: 'Explore the wonders of history!',
 		},
 		EnjoyView: {
-			image: '/images/symbol/view.png',
+			image: 'images/symbol/view.png',
 			message: 'Enjoy the View!',
 			additionalMessage: 'Take a moment to appreciate the beauty around you!',
 		},
 		CaptureMoment: {
-			image: '/images/items/kamera.png',
+			image: 'images/items/kamera.png',
 			message: 'Capture the Moment!',
 			additionalMessage: 'Your memories are now preserved!',
 		},
 		RestEat: {
-			image: '/images/items/makanan.png',
+			image: 'images/items/makanan.png',
 			message: 'Rest and Eat!',
 			additionalMessage: 'Take a break and enjoy your meal!',
 		},
 		Hiking: {
-			image: '/images/symbol/hiking.png',
+			image: 'images/symbol/hiking.png',
 			message: 'Hiking Adventure!',
 			additionalMessage: 'Explore the great outdoors!',
 		},
 		SetTent: {
-			image: '/images/items/tenda.png',
+			image: 'images/items/tenda.png',
 			message: 'Set Up Your Tent!',
 			additionalMessage: 'Get ready for a cozy night under the stars!',
 		},
 		TalkCampers: {
-			image: '/images/symbol/talkcampers.png',
+			image: 'images/symbol/talkcampers.png',
 			message: 'Talk to Fellow Campers!',
 			additionalMessage: 'Share stories and make new friends!',
 		},
 		Campfire: {
-			image: '/images/symbol/campfire.gif',
+			image: 'images/symbol/campfire.gif',
 			message: 'Build a Campfire!',
 			additionalMessage: 'Gather around and enjoy the warmth!',
 		},
 		ObserveBorobudur: {
-			image: '/images/symbol/borobudur.png',
+			image: 'images/symbol/borobudur.png',
 			message: 'Observe Borobudur!',
 			additionalMessage: 'Nice ancient architecture!',
 		},
 		GatherWater: {
-			image: '/images/symbol/springwater.png',
+			image: 'images/symbol/springwater.png',
 			message: 'Gather Spring Water!',
 			additionalMessage: 'Stay hydrated and refreshed!',
 		},
 		ObserveNature: {
-			image: '/images/symbol/nature.png',
+			image: 'images/symbol/nature.png',
 			message: 'Observe Nature!',
 			additionalMessage: 'Appreciate the beauty of the environment!',
 		},
@@ -1404,11 +1399,11 @@ function Game() {
 	const width = window.innerWidth;
 
 	const mapImages = {
-		default: '/images/background/GameDefaultMap.png',
-		lake: '/images/background/GameLakeMap.jpg',
-		beach: '/images/background/GameBeach.gif',
-		mountain: '/images/background/GameMountainMap.jpeg',
-		temple: '/images/background/GameTempleMap.jpg',
+		default: 'images/background/GameDefaultMap.png',
+		lake: 'images/background/GameLakeMap.jpg',
+		beach: 'images/background/GameBeach.gif',
+		mountain: 'images/background/GameMountainMap.jpeg',
+		temple: 'images/background/GameTempleMap.jpg',
 	};
 
 	useEffect(() => {
@@ -1743,11 +1738,7 @@ function Game() {
 			) {
 				setActions(['Buy Magnifying Glass', 'Buy Journal', 'Buy Drink']);
 				setLocationText(['You are near a shop']);
-			} else if (
-				playerPosition.x >= 4070 &&
-				playerPosition.x <= 4220 &&
-				playerPosition.y === 940
-			) {
+			} else if (playerPosition.x >= 4070 && playerPosition.x <= 4220 && playerPosition.y === 940) {
 				setActions(['Visit Museum']);
 				setLocationText(['You are at the temple']);
 			} else if (
@@ -1828,88 +1819,83 @@ function Game() {
 			];
 
 			const mapLocations = [
-		{
-			id: 'lake',
-			label: 'Lake Toba',
-			image: '/images/symbol/lake.jpg',
-			position: { x: 760, y: 330 },
-			text: 'Welcome to Lake Toba',
-		},
-		{
-			id: 'mountain',
-			label: 'Bromo Mountain',
-			image: '/images/symbol/mountain.jpg',
-			position: { x: 3390, y: 2450 },
-			text: 'Welcome to the Mountain',
-			requirement: {
-				task: 'Observing Borobudur',
-			},
-		},
-		{
-			id: 'beach',
-			label: 'Kuta Beach',
-			image: '/images/symbol/beach.jpg',
-			position: { x: 1040, y: 720 },
-			text: 'Welcome to Kuta Beach',
-			requirement: {
-				task: 'Learn Coral Ecosystem',
-			},
-		},
-		{
-			id: 'temple',
-			label: 'Borobudur Temple',
-			image: '/images/symbol/temple.jpg',
-			position: { x: 2240, y: 1620 },
-			text: 'Welcome to the Borobudur Temple',
-			requirement: {
-				task: 'Become a Tour Guide',
-			},
-		},
-	];
+				{
+					id: 'lake',
+					label: 'Lake Toba',
+					image: 'images/symbol/lake.jpg',
+					position: { x: 760, y: 330 },
+					text: 'Welcome to Lake Toba',
+				},
+				{
+					id: 'mountain',
+					label: 'Bromo Mountain',
+					image: 'images/symbol/mountain.jpg',
+					position: { x: 3390, y: 2450 },
+					text: 'Welcome to the Mountain',
+					requirement: {
+						task: 'Observing Borobudur',
+					},
+				},
+				{
+					id: 'beach',
+					label: 'Kuta Beach',
+					image: 'images/symbol/beach.jpg',
+					position: { x: 1040, y: 720 },
+					text: 'Welcome to Kuta Beach',
+					requirement: {
+						task: 'Learn Coral Ecosystem',
+					},
+				},
+				{
+					id: 'temple',
+					label: 'Borobudur Temple',
+					image: 'images/symbol/temple.jpg',
+					position: { x: 2240, y: 1620 },
+					text: 'Welcome to the Borobudur Temple',
+					requirement: {
+						task: 'Become a Tour Guide',
+					},
+				},
+			];
 
+			const getUnlockedMaps = (difficulty, completedActions) => {
+				const unlockedMaps = [];
+				if (difficulty === 'easy') {
+					unlockedMaps.push('default');
+					unlockedMaps.push('lake');
+					unlockedMaps.push('temple');
+					unlockedMaps.push('beach');
 
-	const getUnlockedMaps = (difficulty, completedActions) => {
-		const unlockedMaps = [];
-		if (difficulty === 'easy') {
-			unlockedMaps.push('default');
-			unlockedMaps.push('lake');
-			unlockedMaps.push('temple');
-			unlockedMaps.push('beach');
+					if (completedActions.includes('Observing Borobudur')) {
+						unlockedMaps.push('mountain');
+					}
+				} else if (difficulty === 'medium') {
+					unlockedMaps.push('default');
+					unlockedMaps.push('lake');
+					unlockedMaps.push('beach');
+					if (completedActions.includes('Become Cashier')) {
+						unlockedMaps.push('temple');
+					}
+					if (completedActions.includes('Observing Borobudur')) {
+						unlockedMaps.push('mountain');
+					}
+				} else if (difficulty === 'hard') {
+					unlockedMaps.push('default');
+					unlockedMaps.push('lake');
+					if (completedActions.includes('Become a Tour Guide')) {
+						unlockedMaps.push('beach');
+					}
+					if (completedActions.includes('Become Cashier')) {
+						unlockedMaps.push('temple');
+					}
+					if (completedActions.includes('Observing Borobudur')) {
+						unlockedMaps.push('mountain');
+					}
+				}
+				return unlockedMaps;
+			};
 
-			if (completedActions.includes('Observing Borobudur')) {
-				unlockedMaps.push('mountain');
-			}
-		} else if (difficulty === 'medium') {
-			unlockedMaps.push('default');
-			unlockedMaps.push('lake');
-			unlockedMaps.push('beach');
-			if (completedActions.includes('Become Cashier')) {
-				unlockedMaps.push('temple');
-			}
-			if (completedActions.includes('Observing Borobudur')) {
-				unlockedMaps.push('mountain');
-			}
-		} else if (difficulty === 'hard') {
-			unlockedMaps.push('default');
-			unlockedMaps.push('lake');
-			if (completedActions.includes('Become a Tour Guide')) {
-				unlockedMaps.push('beach');
-			}
-			if (completedActions.includes('Become Cashier')) {
-				unlockedMaps.push('temple');
-			}
-			if (completedActions.includes('Observing Borobudur')) {
-				unlockedMaps.push('mountain');
-			}
-		}
-		return unlockedMaps;
-	};
-
-
-	
-
-	const unlockedMaps = getUnlockedMaps(difficulty, completedActions);
-
+			const unlockedMaps = getUnlockedMaps(difficulty, completedActions);
 
 			for (const { mapName, bounds, newPosition, welcomeText } of transitions) {
 				const { xMin, xMax, yMin, yMax } = bounds;
@@ -1922,10 +1908,9 @@ function Game() {
 				if (isInsideBounds) {
 					if (!unlockedMaps.includes(mapName)) {
 						setShowLockedPopup(true);
-									setTimeout(() => setShowLockedPopup(false), 4000);
-									return;
-								}
-
+						setTimeout(() => setShowLockedPopup(false), 4000);
+						return;
+					}
 
 					setCurrentMap(mapName);
 					setPlayerPosition(newPosition);
@@ -2016,11 +2001,11 @@ function Game() {
 			className="relative w-screen h-screen px-2 py-2 md:py-4 md:px-4 lg:py-8 lg:px-8 overflow-hidden"
 		>
 			<audio ref={clickSoundRef} preload="auto">
-				<source src="/images/music/click.mp3" type="audio/mpeg" />
+				<source src="images/music/click.mp3" type="audio/mpeg" />
 			</audio>
 
 			<audio id="bgMusic" autoPlay loop volume={0.3}>
-				<source src="/images/music/game.mp3" type="audio/mpeg" />
+				<source src="images/music/game.mp3" type="audio/mpeg" />
 			</audio>
 
 			<GameWelcomePopup
@@ -2051,7 +2036,7 @@ function Game() {
 				level={level}
 				exp={exp}
 			/>
-			
+
 			<GameStatusBar status={playerStatus} />
 
 			<div className="w-9/10 h-13/18 lg:h-14/18 mx-auto grid grid-rows-4 md:grid-cols-4 gap-2">
@@ -2065,7 +2050,7 @@ function Game() {
 					}`}
 				>
 					<div className="w-fit h-fit m-2 text-[6px] md:text-[10px] text-white rounded-lg fixed z-10 flex items-center gap-1">
-						<img src="/images/symbol/money.png" alt="Coin" className="w-3 h-3 md:w-4 md:h-4" />
+						<img src="images/symbol/money.png" alt="Coin" className="w-3 h-3 md:w-4 md:h-4" />
 						{rupiah(money)}
 					</div>
 
@@ -2096,7 +2081,7 @@ function Game() {
 							}}
 						>
 							<img
-								src="/images/symbol/trap.png"
+								src="images/symbol/trap.png"
 								alt="trap"
 								className="absolute z-10 w-20 h-20 transition-all duration-300"
 								style={{
@@ -2106,7 +2091,7 @@ function Game() {
 								}}
 							/>
 							<img
-								src="/images/symbol/hole.png"
+								src="images/symbol/hole.png"
 								className="relative w-15 h-15 z-0 transition-opacity duration-300"
 								style={{
 									left: `${playerPosition.x + 30}px`,
@@ -2143,7 +2128,7 @@ function Game() {
 								<p>{player.name}</p>
 								<img
 									className="self-center"
-									src={`/images/characters/${player.base}_${player.direction}.png`}
+									src={`images/characters/${player.base}_${player.direction}.png`}
 									alt="player"
 								/>
 							</div>
@@ -2163,7 +2148,7 @@ function Game() {
 					setActions={setActions}
 					setLocationText={setLocationText}
 					difficulty={difficulty}
-  					completedActions={completedActions}
+					completedActions={completedActions}
 					performActions={performActions}
 					activityInProgress={activityInProgress}
 					currentActivity={currentActivity}
@@ -2176,22 +2161,26 @@ function Game() {
 				{showLockedPopup && (
 					<div className="fixed inset-0 backdrop-blur bg-opacity-50 flex justify-center items-center z-50">
 						<div className="border-2 border-blue-700 bg-white text-gray-800 rounded-2xl p-6 shadow-2xl w-5/7 md:w-2/4 lg:w-2/5 text-center border border-blue-200">
-						<img
-							src={lockedMessage.image}
-							alt={`${lockedMessage.map} Image`}
-							className="mx-auto w-40 h-24 object-cover rounded mb-4"
-						/>
-						<p className="font-bold text-[10px] md:text-xs lg:text-sm mb-4 whitespace-pre-wrap">{lockedMessage.map} is Locked</p>
-						<p className="text-[8px] md:text-xs lg:text-sm text-gray-700">{lockedMessage.requiredTask}</p>
-						<button
-							onClick={() => setShowLockedPopup(false)}
-							className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-						>
-							Close
-						</button>
+							<img
+								src={lockedMessage.image}
+								alt={`${lockedMessage.map} Image`}
+								className="mx-auto w-40 h-24 object-cover rounded mb-4"
+							/>
+							<p className="font-bold text-[10px] md:text-xs lg:text-sm mb-4 whitespace-pre-wrap">
+								{lockedMessage.map} is Locked
+							</p>
+							<p className="text-[8px] md:text-xs lg:text-sm text-gray-700">
+								{lockedMessage.requiredTask}
+							</p>
+							<button
+								onClick={() => setShowLockedPopup(false)}
+								className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+							>
+								Close
+							</button>
+						</div>
 					</div>
-				</div>
-			)}
+				)}
 			</div>
 			<GameDeathPopup
 				deathPopup={deathPopup}

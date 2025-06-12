@@ -6,9 +6,7 @@ function StartButton({ onClick }) {
 	const handleClick = () => {
 		if (clickSoundRef.current) {
 			clickSoundRef.current.currentTime = 0;
-			clickSoundRef.current.play().catch((err) =>
-				console.log('Play error:', err)
-			);
+			clickSoundRef.current.play().catch((err) => console.log('Play error:', err));
 		}
 
 		if (onClick) {
@@ -18,13 +16,13 @@ function StartButton({ onClick }) {
 
 	return (
 		<>
-			<audio ref={clickSoundRef} preload='auto'>
-				<source src='/images/music/click.mp3' type='audio/mpeg' />
+			<audio ref={clickSoundRef} preload="auto">
+				<source src="images/music/click.mp3" type="audio/mpeg" />
 			</audio>
 
 			<button
 				onClick={handleClick}
-				className='px-6 py-2 font-semibold text-white bg-green-500 rounded-lg shadow-md hover:bg-green-600 transition button-float'
+				className="px-6 py-2 font-semibold text-white bg-green-500 rounded-lg shadow-md hover:bg-green-600 transition button-float"
 			>
 				Start Exploring
 			</button>

@@ -6,7 +6,7 @@ body {
 }
 
 .home-page-container {
-	background-image: url('/images/background/HomePageBackground.gif');
+	background-image: url('images/background/HomePageBackground.gif');
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -15,15 +15,13 @@ body {
 }
 
 .text-glow {
-	text-shadow: 0 0 5px #34d399, 0 0 10px #34d399, 0 0 20px #34d399,
-		0 0 30px #10b981;
+	text-shadow: 0 0 5px #34d399, 0 0 10px #34d399, 0 0 20px #34d399, 0 0 30px #10b981;
 }
 
 @keyframes glowPulse {
 	0%,
 	100% {
-		text-shadow: 0 0 5px #34d399, 0 0 10px #34d399, 0 0 20px #34d399,
-			0 0 30px #10b981;
+		text-shadow: 0 0 5px #34d399, 0 0 10px #34d399, 0 0 20px #34d399, 0 0 30px #10b981;
 	}
 	50% {
 		text-shadow: none;

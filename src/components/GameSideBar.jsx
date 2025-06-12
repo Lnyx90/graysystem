@@ -58,7 +58,6 @@ function GameSideBar(props) {
 		return unlockedMaps;
 	};
 
-
 	const unlockedMaps = getUnlockedMaps(difficulty, completedActions);
 
 	function handleBackToMainMap() {
@@ -72,14 +71,14 @@ function GameSideBar(props) {
 		{
 			id: 'lake',
 			label: 'Lake Toba',
-			image: '/images/symbol/lake.jpg',
+			image: 'images/symbol/lake.jpg',
 			position: { x: 760, y: 330 },
 			text: 'Welcome to Lake Toba',
 		},
 		{
 			id: 'mountain',
 			label: 'Bromo Mountain',
-			image: '/images/symbol/mountain.jpg',
+			image: 'images/symbol/mountain.jpg',
 			position: { x: 3390, y: 2450 },
 			text: 'Welcome to the Mountain',
 			requirement: {
@@ -89,7 +88,7 @@ function GameSideBar(props) {
 		{
 			id: 'beach',
 			label: 'Kuta Beach',
-			image: '/images/symbol/beach.jpg',
+			image: 'images/symbol/beach.jpg',
 			position: { x: 1040, y: 720 },
 			text: 'Welcome to Kuta Beach',
 			requirement: {
@@ -99,7 +98,7 @@ function GameSideBar(props) {
 		{
 			id: 'temple',
 			label: 'Borobudur Temple',
-			image: '/images/symbol/temple.jpg',
+			image: 'images/symbol/temple.jpg',
 			position: { x: 2240, y: 1620 },
 			text: 'Welcome to the Borobudur Temple',
 			requirement: {
@@ -121,10 +120,10 @@ function GameSideBar(props) {
 			setShowLockedPopup(true);
 			return;
 		}
-			setCurrentMap(map.id);
-			setPlayerPosition(map.position);
-			setActions([]);
-			setLocationText(map.text);
+		setCurrentMap(map.id);
+		setPlayerPosition(map.position);
+		setActions([]);
+		setLocationText(map.text);
 	}
 
 	return (
@@ -136,7 +135,7 @@ function GameSideBar(props) {
 					</div>
 
 					<div className="flex items-center justify-center">
-						<img src="/images/symbol/time.png" className="w-3 md:w-8" alt="Time Icon" />
+						<img src="images/symbol/time.png" className="w-3 md:w-8" alt="Time Icon" />
 						<span className="text-[6px] md:text-[10px] lg:text-[15px]">{formattedTime}</span>
 					</div>
 
@@ -195,7 +194,11 @@ function GameSideBar(props) {
 											isUnlocked ? 'hover:scale-105' : 'opacity-30 grayscale cursor-pointer'
 										}`}
 									>
-										<img src={map.image} alt={`${map.label} Icon`} className="w-8 md:w-25 lg:w-30 rounded-lg" />
+										<img
+											src={map.image}
+											alt={`${map.label} Icon`}
+											className="w-8 md:w-25 lg:w-30 rounded-lg"
+										/>
 										<span className="text-[6px] md:text-xs">{map.label}</span>
 									</button>
 								);
@@ -203,7 +206,10 @@ function GameSideBar(props) {
 						</div>
 					) : (
 						actionData.map((action) => (
-							<div key={action.id} className="mt-1 lg:mt-2 md:mt-3 flex justify-between items-center">
+							<div
+								key={action.id}
+								className="mt-1 lg:mt-2 md:mt-3 flex justify-between items-center"
+							>
 								<button
 									onClick={() => !action.locked && performActions(action)}
 									className={`h-fit w-9/10 p-1 mx-auto text-white text-[5px] md:text-xs lg:text-sm rounded-lg ${

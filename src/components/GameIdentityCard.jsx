@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 function IdentityCard({ onClose, userName, achievements, level, exp }) {
 	const [flipped, setFlipped] = useState(false);
 	const imageBase = localStorage.getItem('PlayerImageBase') || 'char1';
-	const characterImage = `/images/characters/${imageBase}_right.png`;
+	const characterImage = `images/characters/${imageBase}_right.png`;
 	const [showLockedPopup, setShowLockedPopup] = useState(false);
 	const [lockedMessage, setLockedMessage] = useState('');
 
@@ -50,7 +50,7 @@ function IdentityCard({ onClose, userName, achievements, level, exp }) {
 							<div className="text-[8px] md:text-base lg:text-lg flex flex-col items-start justify-center">
 								<p className="">Name : {userName}</p>
 								<p className="">Level: {level}</p>
-								<p className="whitespace-pre">Exp  : {exp}/100</p>
+								<p className="whitespace-pre">Exp : {exp}/100</p>
 							</div>
 						</div>
 					</div>
@@ -80,7 +80,7 @@ function IdentityCard({ onClose, userName, achievements, level, exp }) {
 						<div className="w-full grid grid-cols-2 grid-rows-3 gap-y-4 px-2 md:px-0">
 							<div className="w-12 md:w-24 flex flex-col items-center mx-auto">
 								<img
-									src="/images/achivements/GameAchievementCapture.png"
+									src="images/achivements/GameAchievementCapture.png"
 									className={!achievements.photography ? 'grayscale opacity-40 cursor-pointer' : ''}
 									onClick={() => {
 										if (!achievements.photography) {
@@ -104,7 +104,7 @@ function IdentityCard({ onClose, userName, achievements, level, exp }) {
 
 							<div className="w-12 md:w-24 flex flex-col items-center mx-auto">
 								<img
-									src="/images/achivements/GameAchievementExplorer.png"
+									src="images/achivements/GameAchievementExplorer.png"
 									className={!achievements.explorer ? 'grayscale opacity-40 cursor-pointer' : ''}
 									onClick={() => {
 										if (!achievements.explorer) {
@@ -124,7 +124,7 @@ function IdentityCard({ onClose, userName, achievements, level, exp }) {
 
 							<div className="col-span-2 flex flex-col items-center mx-auto w-12 md:w-24">
 								<img
-									src="/images/achivements/GameAchievementCampSkills.png"
+									src="images/achivements/GameAchievementCampSkills.png"
 									className={!achievements.campSkills ? 'grayscale opacity-40 cursor-pointer' : ''}
 									onClick={() => {
 										if (!achievements.campSkills) {
@@ -148,7 +148,7 @@ function IdentityCard({ onClose, userName, achievements, level, exp }) {
 
 							<div className="w-12 md:w-24 flex flex-col items-center mx-auto">
 								<img
-									src="/images/achivements/GameAchievementCrazyRich.png"
+									src="images/achivements/GameAchievementCrazyRich.png"
 									className={!achievements.crazyRich ? 'grayscale opacity-40 cursor-pointer' : ''}
 									onClick={() => {
 										if (!achievements.crazyRich) {
@@ -170,7 +170,7 @@ function IdentityCard({ onClose, userName, achievements, level, exp }) {
 
 							<div className="w-12 md:w-24 flex flex-col items-center mx-auto">
 								<img
-									src="/images/achivements/GameAchievementCollector.png"
+									src="images/achivements/GameAchievementCollector.png"
 									className={!achievements.collector ? 'grayscale opacity-40 cursor-pointer' : ''}
 									onClick={() => {
 										if (!achievements.collector) {
